@@ -93,7 +93,7 @@ const LoginPage = () => {
             {/* Username Field */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Username or Email
+                Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -110,7 +110,7 @@ const LoginPage = () => {
                   className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
                     errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
                   }`}
-                  placeholder="Enter your username or email"
+                  placeholder="Enter your email"
                 />
               </div>
               {errors.username && (
@@ -163,7 +163,7 @@ const LoginPage = () => {
                 type="button"
                 onClick={handleLogin}
                 disabled={isLoading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                className="relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center">
@@ -171,9 +171,9 @@ const LoginPage = () => {
                     Signing in...
                   </div>
                 ) : (
-                  <div className="flex items-center ">
+                 <div className="flex items-center">
                     Sign in
-                    <ArrowRight className="ml-2 h-4 w-4 border-b-2 border-blue-500 dark:border-blue-400 dark:text-white" />
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 )}
               </button>
