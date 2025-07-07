@@ -1,63 +1,64 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getUserProfile, refreshToken as refreshTokenAPI } from "../services/apiServices";
-import { useNavigate } from "react-router-dom";
+import { createContext, useEffect, useState } from "react";
+import { getUserProfile } from "../services/apiServices";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
 
-  const fetchUser = async () => {
+  const getProfile = async () => {
     try {
       setIsLoading(true);
-      // Try to get user profile (this will use stored tokens)
-      const response = await getUserProfile();
-      setUser(response);
-    } catch (err) {
-      console.log("Initial fetch failed, trying refresh token...", err);
-      try {
-        // Try to refresh the token
-        await refreshTokenAPI();
-        // Retry getting user profile after refresh
-        const refreshedUser = await getUserProfile();
-        setUser(refreshedUser);
-      } catch (refreshErr) {
-        console.log("Refresh token failed, redirecting to login...", refreshErr);
-        setUser(null);
-        navigate("/login");
-      }
+      const profile = await getUserProfile();
+      setUser(profile);
+    } catch (error) {
+      setUser(null);
+      console.error("Error fetching user:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    const initializeAuth = async () => {
+      // Check if we have a stored user from localStorage
+      const storedUser = localStorage.getItem("user");
+      
+      if (token) {
+        // If we have a token, try to get fresh profile data
+        await getProfile();
+      } else if (storedUser) {
+        // If no token but we have stored user data, set it and stop loading
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          console.error("Error parsing stored user:", error);
+          setUser(null);
+        }
+        setIsLoading(false);
+      } else {
+        // No token and no stored user
+        setIsLoading(false);
+      }
+    };
 
-  const login = (userData) => {
-    setUser(userData);
-  };
-
-  const logout = () => {
-    setUser(null);
-    navigate("/login");
-  };
+    initializeAuth();
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      setUser, 
-      login, 
-      logout, 
-      isLoading, 
-      setIsLoading
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        setIsLoading,
+        token,
+        setToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

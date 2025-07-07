@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { getUserProfile } from "../../services/apiServices";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const AdminDashboard = () => {
-  const { user, setUser, setIsLoading } = useAuth();
-
+const { user } = useContext(AuthContext);
 
   return <h1>Welcome Admin {user?.username} . id: {user?.id}</h1>;
 

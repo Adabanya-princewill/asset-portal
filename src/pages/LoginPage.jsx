@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, CreditCard } from 'lucide-react';
+import { useContext, useState, useEffect } from 'react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../services/apiServices";
-import { useAuth } from "../contexts/AuthContext";
+import { AuthContext } from '../contexts/AuthContext';
+import logo from '../assets/novabank_logo.png'; 
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -11,20 +12,8 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const { setUser } = useAuth();
+  const { setUser, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // Check for success message from account creation
-  const successMessage = location.state?.message;
-  const prefilledEmail = location.state?.email;
-
-  // Set prefilled email if coming from account creation
-  useState(() => {
-    if (prefilledEmail) {
-      setUsername(prefilledEmail);
-    }
-  }, [prefilledEmail]);
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -42,13 +31,10 @@ const LoginPage = () => {
     }
 
     try {
-      const data = await login(username, password, setUser);
-      console.log("data", data)
-     // setUser({ username: data.username, role: data.role });
+      const userData = await login(username, password, setUser, setToken);
       navigate("/");
+
     } catch (err) {
-      console.log("Login failed", err);
-      // Handle different types of errors
       if (err.response?.status === 401) {
         setErrors({ general: 'Invalid credentials. Please check your username and password.' });
       } else if (err.code === 'ERR_NETWORK') {
@@ -68,16 +54,25 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/background.png')",
+    backgroundBlendMode: 'overlay',
+    backgroundColor: 'rgba(170, 205, 231, 1)',
+  }}>
+
       {/* Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-            <CreditCard className="w-7 h-7 text-white" />
-          </div>
+          {/* Logo */}
+          <img
+            src={logo}
+            alt="Logo"
+            className="h-12 w-auto object-contain"
+          />
         </div>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Welcome back
+        <h2 className="mt-12 text-center text-2xl font-bold tracking-tight text-gray-900">
+          Welcome to Nova Asset Portal
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Sign in to your account
@@ -88,13 +83,6 @@ const LoginPage = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl sm:rounded-2xl sm:px-10 border border-gray-100">
           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            {/* Success Message */}
-            {successMessage && (
-              <div className="rounded-md bg-green-50 p-4">
-                <div className="text-sm text-green-700">{successMessage}</div>
-              </div>
-            )}
-
             {/* General Error */}
             {errors.general && (
               <div className="rounded-md bg-red-50 p-4">
@@ -175,7 +163,7 @@ const LoginPage = () => {
                 type="button"
                 onClick={handleLogin}
                 disabled={isLoading}
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center">
@@ -183,9 +171,9 @@ const LoginPage = () => {
                     Signing in...
                   </div>
                 ) : (
-                  <div className="flex items-center">
+                  <div className="flex items-center ">
                     Sign in
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="ml-2 h-4 w-4 border-b-2 border-blue-500 dark:border-blue-400 dark:text-white" />
                   </div>
                 )}
               </button>

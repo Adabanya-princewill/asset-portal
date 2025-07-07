@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, CreditCard, User } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { createAccount } from "../services/apiServices";
-import { useAuth } from "../contexts/AuthContext";
+import { AuthContext } from '../contexts/AuthContext';
+
 
 const CreateAccountPage = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ const CreateAccountPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const { setUser } = useAuth();
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
