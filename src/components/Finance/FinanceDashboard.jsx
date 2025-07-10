@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
-const FinanceDashboard = () => {
+const FinanceDashboardPage = () => {
   const { user } = useContext(AuthContext);
 
 
@@ -9,4 +9,4 @@ const FinanceDashboard = () => {
 
 };
 
-export default FinanceDashboard;
+export default FinanceDashboardPage;

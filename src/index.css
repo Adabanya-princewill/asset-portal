@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+:root {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+  /* for vertical scrollbar */
+  height: 3px;
+  /* for horizontal scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #B4EBFF;
+  border-radius: 10px;
+}
+
+.pop-table::-webkit-scrollbar {
+  width: 6px;
+  /* for vertical scrollbar */
+  height: 1px;
+  /* for horizontal scrollbar */
+  
+}
+
+.pop-table::-webkit-scrollbar-thumb {
+  background-color: #B4EBFF;
+  border-radius: 10px;
+}
+
+a.active {
+  color: #01B0F1;
+}
+
+.page-title {
+  font-weight: 600;
+  font-size: 24px;
+  color: #000000;
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}

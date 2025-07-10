@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 
-const ControlDashboard = () => {
+const ControlDashboardPage = () => {
   const { user } = useContext(AuthContext);
 
 
@@ -9,4 +9,4 @@ const ControlDashboard = () => {
 
 };
 
-export default ControlDashboard;
+export default ControlDashboardPage;

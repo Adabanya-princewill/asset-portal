@@ -1,0 +1,33 @@
+.welcome {
+  /* do to this anything you do for the wrapper */
+  text-align: right;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding-top: 30px;
+}
+
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.text {
+  font-weight: 500;
+  font-size: 18px;
+  color: #000000;
+}
+
+@media (max-width: 900px) {
+  .menu-btn {
+    display: inline-block;
+  }
+}

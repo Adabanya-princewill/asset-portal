@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Set the correct backend URL
-const baseUrl = "http://localhost:9000/api";
+const baseUrl = "http://Localhost:9000/api";
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -48,6 +48,15 @@ export const refreshToken = async () => {
   }
 };
 
+export const getDepartments = async () => {
+  try {
+    const response = await api.get(`/ad/all-departments`);
+    return response.data.data || [];
+
+  } catch (error) {
+    console.error("Failed to fetch departments:", error);
+  }
+};
 
 export const getUserProfile = async () => {
   try {

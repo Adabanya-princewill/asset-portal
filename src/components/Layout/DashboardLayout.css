@@ -1,0 +1,50 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  padding: 10px;
+  /* column-gap: 40px; */
+
+  /*index.css should have something like this*/
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.outlets {
+  margin-left: 320px;
+  width: 1010px;
+  overflow-x: hidden;
+}
+
+@media (min-width: 1441px) {
+  .outlets {
+    margin-left: 420px;
+    width: 1015px;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .outlets {
+    /* wasn't good in macbook initial value - 300px */
+    margin-left: 280px;
+    width: 735px
+  }
+}
+
+@media (max-width: 900px) {
+  .outlets {
+    margin-left: 0;
+    width: 740px;
+  }
+
+  .wrapper {
+    display: block;
+    width: revert;
+  }
+}
+
+@media (max-width: 900px) {
+  .outlets {
+    width: revert;
+  }
+}
