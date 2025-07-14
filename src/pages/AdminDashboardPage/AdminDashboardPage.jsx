@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "./AdminDashboardPage.css";
 import { AuthContext } from "../../contexts/AuthContext";
-import EditRolePage from "../UserManagementPage/EditRolePage";
-import CreateUserPage from "../UserManagementPage/CreateUserPage";
 
 const AdminDashboardPage = () => {
   const { user } = useContext(AuthContext);
@@ -15,7 +13,6 @@ const AdminDashboardPage = () => {
             Welcome Admin {user?.username} . id: {user?.id}
           </h1>
         </div>
-        {/* <CreateUserPage /> */}
       </div>
     </>
   );

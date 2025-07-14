@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// Set the correct backend URL
+// backend URL
 const baseUrl = "http://Localhost:9000/api";
 
 const api = axios.create({
   baseURL: baseUrl,
 });
 
-// Add token to every request if available
+// Adds token to every request if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {

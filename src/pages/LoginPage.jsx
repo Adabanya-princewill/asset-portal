@@ -102,7 +102,8 @@ const LoginPage = () => {
                 <input
                   id="username"
                   name="username"
-                  type="text"
+                  type="email"
+                  required
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -130,6 +131,7 @@ const LoginPage = () => {
                 <input
                   id="password"
                   name="password"
+                  required
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   value={password}

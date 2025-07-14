@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import FinanceDashboardPage from "../../components/Finance/FinanceDashboard";
-import ControlDashboardPage from "../../components/InternalControl/ControlDashboard";
+import FinanceDashboardPage from "../FinanceDashboardPage/FinanceDashboardPage";
+import ControlDashboardPage from "../ControlDashboardPage/ControlDashboardPage";
 import AdminDashboardPage from "../AdminDashboardPage/AdminDashboardPage";
 import AuditDashboardPage from "../AuditDashboardPage/AuditDashboardPage";
 import CorporateDashboardPage from "../CorporateDashboardPage/CorporateDashboardPage";
@@ -13,7 +13,7 @@ const DashboardPage = () => {
 
   const { user } = useContext(AuthContext);
 
-    const dashboards = {
+  const dashboards = {
     ADMIN: AdminDashboardPage,
     IT_SUPPORT: SupportDashboardPage,
     FINANCE: FinanceDashboardPage,
@@ -27,8 +27,8 @@ const DashboardPage = () => {
 
   return (
     <>
-    {DashboardComponent ? <DashboardComponent /> : <UnauthorizedPage />}
-    </>     
+      {DashboardComponent ? <DashboardComponent /> : <UnauthorizedPage />}
+    </>
   );
 };
 

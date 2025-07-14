@@ -4,7 +4,7 @@ import '../SideBar/SideBar.css';
 import logo from '../../assets/novabank_logo.png';
 import { FaAngleDown, FaAngleUp, FaMedal } from "react-icons/fa";
 import { AuthContext } from '../../contexts/AuthContext';
-import { adminMenuItems, auditMenuItems, controlMenuItems, corporateMenuItems, financeMenuItems } from '../../menu/menuItems';
+import { adminMenuItems, auditMenuItems, controlMenuItems, corporateMenuItems, financeMenuItems, supportMenuItems } from '../../menu/menuItems';
 
 
 
@@ -27,12 +27,14 @@ const SideBar = ({
   } else if (userRole === 'CORPORATE_SERVICE') {
     menuItems = corporateMenuItems;
   } else if (userRole === 'IT_SUPPORT') {
-    menuItems = corporateMenuItems;
+    menuItems = supportMenuItems;
   } else if (userRole === 'AUDITOR') {
     menuItems = auditMenuItems;
   } else if (userRole === 'FINANCE') {
     menuItems = financeMenuItems;
   }
+
+
   // Helper to get submenu open state
   const isSubmenuOpen = (key) => {
     if (key === "reward") return showRewardSubmenu;

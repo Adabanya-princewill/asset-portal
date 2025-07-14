@@ -1,4 +1,3 @@
-import React from 'react'
 import './LoaderPageIcon.css'
 const LoaderIcon = () => {
   return (

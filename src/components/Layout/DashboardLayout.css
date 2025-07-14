@@ -2,6 +2,10 @@
   display: grid;
   grid-template-columns: 20% 1fr;
   padding: 10px;
+     /* background-color: #F9FAFA; */
+
+    /* height: 100vh; */
+
   /* column-gap: 40px; */
 
   /*index.css should have something like this*/

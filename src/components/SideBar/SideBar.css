@@ -22,14 +22,14 @@
   margin-left: 18px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .navlinks {
   margin-top: 60px;
   display: flex;
   flex-direction: column;
-  gap: 20px;  
+  /* gap: 20px;   */
   color: #000000;
   font-weight: 500;
   font-size: 16px;
@@ -38,7 +38,7 @@
 .sidebar {
   background-color: #F9FAFA;
   border-radius: 16px;
-  height: 85vh;
+  height: 97vh;
   position: fixed;
   display: flex;
   width: 20%;
@@ -83,7 +83,8 @@
     right: 0;
     width: 300px;
     height: 100vh;
-    background-color: #aacde7;
+      background-color: #daecee;
+    /* background-color: #aacde7; */
     color: black;
     padding: 20px;
     border-radius: 20px 0 0 20px;

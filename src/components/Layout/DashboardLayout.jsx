@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import '../admin/AdminDashboard.css';
 import './DashboardLayout.css';
 import TopBanner from '../Top Banner/TopBanner';
 import SideBar from '../SideBar/SideBar';
@@ -13,8 +12,6 @@ const DashboardLayout = () => {
   const [showRewardSubmenu, setShowRewardSubmenu] = useState(false);
   const [showReportSubmenu, setShowReportSubmenu] = useState(false);
   const [showUserSubmenu, setShowUserSubmenu] = useState(false);
-
-  //const {user } = useContext(AuthContext);
 
   const toggleSubmenu = (option) => {
     if (option == "reward") {
@@ -33,10 +30,9 @@ const DashboardLayout = () => {
 
   useClickOutside(dropdownRef, () => setShowDropdown(false));
 
-  
+
   return (
     <div>
-      {/* Dropdown  starts */}
       <MobileSidebar
         showDropdown={showDropdown}
         dropdownRef={dropdownRef}
@@ -45,8 +41,7 @@ const DashboardLayout = () => {
         showReportSubmenu={showReportSubmenu}
         showUserSubmenu={showUserSubmenu}
       />
-      {/*Dropdown ends  */}
-      <TopBanner toggleSidebar={toggleSidebar} />
+
       <div className='wrapper'>
         <SideBar
           toggleSubmenu={toggleSubmenu}
@@ -55,8 +50,8 @@ const DashboardLayout = () => {
           showUserSubmenu={showUserSubmenu}
         />
         <div className="outlets">
+          <TopBanner toggleSidebar={toggleSidebar} />
           <Outlet />
-         {/* {DashboardComponent ? <DashboardComponent /> : <UnauthorizedPage />} */}
         </div>
       </div>
 
