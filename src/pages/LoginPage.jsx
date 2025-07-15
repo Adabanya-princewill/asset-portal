@@ -3,7 +3,8 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../services/apiServices";
 import { AuthContext } from '../contexts/AuthContext';
-import logo from '../assets/novabank_logo.png'; 
+import logo from '../assets/novabank_logo.png';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -31,17 +32,11 @@ const LoginPage = () => {
     }
 
     try {
-      const userData = await login(username, password, setUser, setToken);
-      navigate("/");
-
-    } catch (err) {
-      if (err.response?.status === 401) {
-        setErrors({ general: 'Invalid credentials. Please check your username and password.' });
-      } else if (err.code === 'ERR_NETWORK') {
-        setErrors({ general: 'Unable to connect to server. Please try again later.' });
-      } else {
-        setErrors({ general: 'Login failed. Please try again.' });
-      }
+      await login(username, password, setUser, setToken);
+      toast.success('Login successful');
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -55,11 +50,11 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-cover bg-center"
-  style={{
-    backgroundImage: "url('/background.png')",
-    backgroundBlendMode: 'overlay',
-    backgroundColor: 'rgba(170, 205, 231, 1)',
-  }}>
+      style={{
+        backgroundImage: "url('/background.png')",
+        backgroundBlendMode: 'overlay',
+        backgroundColor: 'rgba(170, 205, 231, 1)',
+      }}>
 
       {/* Header */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -108,9 +103,8 @@ const LoginPage = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                    errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.username ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter your email"
                 />
               </div>
@@ -137,9 +131,8 @@ const LoginPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className={`block w-full pl-10 pr-12 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                    errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
-                  }`}
+                  className={`block w-full pl-10 pr-12 py-3 border rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300 hover:border-gray-400'
+                    }`}
                   placeholder="Enter your password"
                 />
                 <button
@@ -173,13 +166,13 @@ const LoginPage = () => {
                     Signing in...
                   </div>
                 ) : (
-                 <div className="flex items-center">
+                  <div className="flex items-center">
                     Sign in
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </div>
                 )}
               </button>
-            </div>           
+            </div>
           </form>
         </div>
       </div>

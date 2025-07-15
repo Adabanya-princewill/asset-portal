@@ -17,22 +17,37 @@ api.interceptors.request.use((config) => {
 });
 
 export const login = async (username, password, setUser, setToken) => {
-  const res = await api.post(`/auth/login`, { username, password });
-  console.log("Login successful:", res.data);
+  try {
+    const response = await api.post('/auth/login', { username, password });
+    if (response.data?.code === "200") {
+      const { accessToken, data } = response.data;
 
-  const accessToken = res.data.accessToken;
-  const user = res.data.data[0];
+      const user = data[0];
 
-  // Store in localStorage
-  localStorage.setItem("token", accessToken);
-  localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
 
-  // Update context state
-  setUser({ username: user.username, role: user.role, id: user.id });
-  setToken(accessToken);
+      // Update app state
+      setUser({
+        username: user.username,
+        role: user.role,
+        id: user.id,
+      });
 
-  return user;
+      setToken(accessToken);
+
+      console.log('Login successful');
+
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Invalid credential");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
+  }
 };
+
 
 export const refreshToken = async () => {
   try {
@@ -52,34 +67,66 @@ export const getDepartments = async () => {
   try {
     const response = await api.get(`/ad/all-departments`);
     return response.data.data || [];
-
   } catch (error) {
     console.error("Failed to fetch departments:", error);
+    throw error;
   }
 };
+
+export const getLocations = async () => {
+  try {
+    const response = await api.get(`/ad/all-location`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch locations:", error);
+    throw error;
+  }
+};
+
+export const getCategories = async () => {
+  try {
+    const response = await api.get(`/ad/all-category`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch categories:", error);
+    throw error;
+  }
+};
+
 
 export const createUser = async (formData) => {
   try {
     const response = await api.post(`/auth/create-user`, formData);
-    console.log(response.data.data);
-    return response.data.data;
+
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "User creation failed");
+    }
 
   } catch (error) {
-    console.error("Failed to create user:", error);
+    const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
   }
 };
+
+
 
 
 export const EditUserRole = async (username, role) => {
   try {
-    const response = await api.put(`/ad/edit-role`, {username, role});
-    console.log(response.data.data);
-    return response.data.data;
-
+    const response = await api.put(`/ad/edit-role`, { username, role });
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to edit role");
+    }
   } catch (error) {
-    console.error("Failed to edit user:", error);
+    const message = error.response?.data?.message || error.message || "Failed to edit user role";
+    throw new Error(message);
   }
 };
+
 
 export const getUserProfile = async () => {
   try {
@@ -115,4 +162,135 @@ export const logout = (setUser, setToken) => {
   localStorage.removeItem("user");
   setUser(null);
   setToken(null);
+};
+
+
+export const createDepartment = async (payload) => {
+  try {
+    const response = await api.post("/ic/create-department", payload);
+    if (response.data?.code === "201") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to create department");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to create department";
+    throw new Error(message);
+  }
+};
+
+export const editDepartment = async (id, payload) => {
+  try {
+    const response = await api.put(`/ic/department/${id}`, payload);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      console.log(response.data?.message)
+      throw new Error(response.data?.message || "Failed to edit department");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to edit department role";
+    throw new Error(message);
+  }
+};
+
+export const deleteDepartment = async (id) => {
+  try {
+    const response = await api.delete(`/ic/department/${id}`);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to delete department");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to delete department";
+    throw new Error(message);
+  }
+};
+
+
+export const createLocation = async (payload) => {
+  try {
+    const response = await api.post("/ic/create-location", payload);
+    if (response.data?.code === "201") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to create location");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to create location";
+    throw new Error(message);
+  }
+};
+
+export const editLocation = async (id, payload) => {
+  try {
+    const response = await api.put(`/ic/location/${id}`, payload);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      console.log(response.data?.message)
+      throw new Error(response.data?.message || "Failed to edit location");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to edit location role";
+    throw new Error(message);
+  }
+};
+
+export const deleteLocation = async (id) => {
+  try {
+    const response = await api.delete(`/ic/location/${id}`);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to delete location");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to delete location";
+    throw new Error(message);
+  }
+};
+
+export const createCategory = async (payload) => {
+  try {
+    const response = await api.post("/ic/create-category", payload);
+    if (response.data?.code === "201") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to create category");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to create category";
+    throw new Error(message);
+  }
+};
+
+export const editCategory = async (id, payload) => {
+  try {
+    const response = await api.put(`/ic/category/${id}`, payload);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      console.log(response.data?.message)
+      throw new Error(response.data?.message || "Failed to edit category");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to edit category role";
+    throw new Error(message);
+  }
+};
+
+export const deleteCategory = async (id) => {
+  try {
+    const response = await api.delete(`/ic/category/${id}`);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to delete category");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to delete category";
+    throw new Error(message);
+  }
 };

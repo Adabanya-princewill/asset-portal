@@ -61,13 +61,14 @@ export const corporateMenuItems = [
   },
   {
     label: "View Assets",
-    to: "/assets",
+    to: "/view",
     icon: <CiBoxList size={20} />,
   },
   {
     label: "Manage Assets",
+    to: "/asset",
     icon: <BsDatabaseFillGear size={20} />,
-    submenuKey: "reward",
+    submenuKey: "asset",
     submenu: [
       { label: "Create Asset", to: "/create-asset" },
       { label: "Transfer Asset", to: "/transfer-asset" },

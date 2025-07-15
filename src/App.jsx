@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { Toaster } from 'react-hot-toast';
 import LoginPage from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import DashboardLayout from "./components/Layout/DashboardLayout";
@@ -17,35 +18,42 @@ import TransferAssetPage from "./pages/CorporateDashboardPage/AssetManagement/Tr
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<ProtectedRoute />}>
-            <Route element={<DashboardLayout />}>
-              <Route index element={<DashboardPage />} />
+    <>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<ProtectedRoute />}>
+              <Route element={<DashboardLayout />}>
+                <Route index element={<DashboardPage />} />
 
-              {/* Admin Routes */}
-              <Route path="/edit-user" element={<EditRolePage />} />
-              <Route path="/create-user" element={<CreateUserPage />} />
+                {/* Admin Routes */}
+                <Route path="/edit-user" element={<EditRolePage />} />
+                <Route path="/create-user" element={<CreateUserPage />} />
 
-              {/* Internal Control Routes */}
-              <Route path="/manage-assets" element={<ManageAssetPage />} />
-              <Route path="/manage-locations" element={<ManageLocationPage />} />
-              <Route path="/manage-departments" element={<ManageDepartmentPage />} />
-              <Route path="/manage-categories" element={<ManageCategoryPage />} />
+                {/* Internal Control Routes */}
+                <Route path="/manage-assets" element={<ManageAssetPage />} />
+                <Route path="/manage-locations" element={<ManageLocationPage />} />
+                <Route path="/manage-departments" element={<ManageDepartmentPage />} />
+                <Route path="/manage-categories" element={<ManageCategoryPage />} />
 
-              {/* Corporate Service Routes */}
-              <Route path="/assets" element={<ViewAssetsPage />} />
-              <Route path="/create-asset" element={<CreateAssetPage />} />
-              <Route path="/transfer-asset" element={<TransferAssetPage />} />
-              <Route path="/retrieve-asset" element={<RetrieveAssetPage />} />
+                {/* Corporate Service Routes */}
+                <Route path="/view" element={<ViewAssetsPage />} />
+                <Route path="/create-asset" element={<CreateAssetPage />} />
+                <Route path="/transfer-asset" element={<TransferAssetPage />} />
+                <Route path="/retrieve-asset" element={<RetrieveAssetPage />} />
 
-              
+
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </>
+
   );
 }

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { User, Shield, Save, AlertCircle } from 'lucide-react';
 import { EditUserRole } from '../../services/apiServices';
+import toast from 'react-hot-toast';
 
 const EditUserForm = () => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
   const roles = [
     'ADMIN',
@@ -20,32 +18,26 @@ const EditUserForm = () => {
 
   const handleSubmit = async () => {
     if (!username || !role) {
-      setMessage('Please fill in all fields');
-      setMessageType('error');
+      toast.error("Please fill in all fields");
       return;
     }
 
     setIsLoading(true);
-    setMessage('');
-
     try {
       await EditUserRole(username, role);
-      setMessage('User role updated successfully!');
-      setMessageType('success');
+      toast.success("User role updated successfully!");
       setUsername('');
       setRole('');
     } catch (error) {
-      setMessage('Network error. Please try again.');
-      setMessageType('error');
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="w-full max-w-sm bg-white shadow-md rounded-xl mx-auto p-6">
       <div className="flex items-center mb-6">
-        <User className="h-6 w-6 text-blue-600 mr-2" />
         <h2 className="text-2xl font-bold text-gray-800">Edit User Role</h2>
       </div>
 
@@ -70,15 +62,14 @@ const EditUserForm = () => {
             Role
           </label>
           <div className="relative">
-            <Shield className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">Select a role</option>
+              <option value="">---Select a role---</option>
               {roles.map((roleOption) => (
                 <option key={roleOption} value={roleOption}>
                   {roleOption.replace(/_/g, ' ')}
@@ -87,20 +78,6 @@ const EditUserForm = () => {
             </select>
           </div>
         </div>
-
-        {message && (
-          <div
-            aria-live="polite"
-            className={`flex items-center p-3 rounded-md border ${
-              messageType === 'success'
-                ? 'bg-green-50 text-green-800 border-green-200'
-                : 'bg-red-50 text-red-800 border-red-200'
-            }`}
-          >
-            <AlertCircle className="h-5 w-5 mr-2" />
-            {message}
-          </div>
-        )}
 
         <button
           onClick={handleSubmit}
@@ -114,7 +91,6 @@ const EditUserForm = () => {
             </>
           ) : (
             <>
-              <Save className="h-5 w-5 mr-2" />
               Update Role
             </>
           )}

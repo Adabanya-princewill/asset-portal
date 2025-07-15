@@ -1,5 +1,6 @@
+import React from 'react'
 import './LoaderPageIcon.css'
-const LoaderIcon = () => {
+const LoaderPageIcon = () => {
   return (
     <div>
       <div className="loader-container">
@@ -12,4 +13,4 @@ const LoaderIcon = () => {
   )
 }
 
-export default LoaderIcon
+export default LoaderPageIcon

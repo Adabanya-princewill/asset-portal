@@ -9,13 +9,13 @@ import { useClickOutside } from '../hooks/ClickOutside';
 const DashboardLayout = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  const [showRewardSubmenu, setShowRewardSubmenu] = useState(false);
+  const [showAssetSubmenu, setShowAssetSubmenu] = useState(false);
   const [showReportSubmenu, setShowReportSubmenu] = useState(false);
   const [showUserSubmenu, setShowUserSubmenu] = useState(false);
 
   const toggleSubmenu = (option) => {
-    if (option == "reward") {
-      return setShowRewardSubmenu(!showRewardSubmenu);
+    if (option == "asset") {
+      return setShowAssetSubmenu(!showAssetSubmenu);
     }
     if (option == "user") {
       return setShowUserSubmenu(!showUserSubmenu);
@@ -37,7 +37,7 @@ const DashboardLayout = () => {
         showDropdown={showDropdown}
         dropdownRef={dropdownRef}
         toggleSubmenu={toggleSubmenu}
-        showRewardSubmenu={showRewardSubmenu}
+        showAssetSubmenu={showAssetSubmenu}
         showReportSubmenu={showReportSubmenu}
         showUserSubmenu={showUserSubmenu}
       />
@@ -45,7 +45,7 @@ const DashboardLayout = () => {
       <div className='wrapper'>
         <SideBar
           toggleSubmenu={toggleSubmenu}
-          showRewardSubmenu={showRewardSubmenu}
+          showAssetSubmenu={showAssetSubmenu}
           showReportSubmenu={showReportSubmenu}
           showUserSubmenu={showUserSubmenu}
         />

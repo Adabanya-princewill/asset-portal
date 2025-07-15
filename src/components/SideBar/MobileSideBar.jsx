@@ -10,7 +10,7 @@ const MobileSidebar = ({
   showUserSubmenu,
   toggleSubmenu,
   showDropdown,
-  showRewardSubmenu,
+  showAssetSubmenu,
   dropdownRef,
   showReportSubmenu
 }) => {
@@ -34,7 +34,7 @@ const MobileSidebar = ({
   }
 
   const isSubmenuOpen = (key) => {
-    if (key === "reward") return showRewardSubmenu;
+    if (key === "reward") return showAssetSubmenu;
     if (key === "report") return showReportSubmenu;
     if (key === "user") return showUserSubmenu;
     return false;

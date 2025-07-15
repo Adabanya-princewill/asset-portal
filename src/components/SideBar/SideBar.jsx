@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import '../SideBar/SideBar.css';
 import logo from '../../assets/novabank_logo.png';
-import { FaAngleDown, FaAngleUp, FaMedal } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { AuthContext } from '../../contexts/AuthContext';
 import { adminMenuItems, auditMenuItems, controlMenuItems, corporateMenuItems, financeMenuItems, supportMenuItems } from '../../menu/menuItems';
 
@@ -11,7 +11,7 @@ import { adminMenuItems, auditMenuItems, controlMenuItems, corporateMenuItems, f
 const SideBar = ({
   showUserSubmenu,
   toggleSubmenu,
-  showRewardSubmenu,
+  showAssetSubmenu,
   showReportSubmenu,
 }) => {
   const location = useLocation();
@@ -37,7 +37,7 @@ const SideBar = ({
 
   // Helper to get submenu open state
   const isSubmenuOpen = (key) => {
-    if (key === "reward") return showRewardSubmenu;
+    if (key === "asset") return showAssetSubmenu;
     if (key === "report") return showReportSubmenu;
     if (key === "user") return showUserSubmenu;
     return false;
