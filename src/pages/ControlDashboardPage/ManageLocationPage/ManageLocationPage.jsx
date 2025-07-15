@@ -118,7 +118,7 @@ const ManageLocationPage = () => {
   // Filter and paginate
   const filteredLocations = locations.filter(dept =>
     dept.locationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    dept.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
+    dept.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -178,7 +178,7 @@ const ManageLocationPage = () => {
                   Location Name
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created By
+                  Address
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -199,7 +199,7 @@ const ManageLocationPage = () => {
                       {dept.locationName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {dept.createdBy}
+                      {dept.address}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">

@@ -5,7 +5,47 @@ const baseUrl = "http://Localhost:9000/api";
 
 const api = axios.create({
   baseURL: baseUrl,
+  withCredentials: true,
 });
+
+let isRefreshing = false;
+
+// refresh token if 401 and try the original request again
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Do not retry for login or refresh-token calls
+    const isLogin = originalRequest.url.includes('/auth/login');
+    const isRefresh = originalRequest.url.includes('/auth/refresh-token');
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isLogin && !isRefresh) {
+      originalRequest._retry = true;
+
+      try {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          const newToken = await refreshToken(); 
+          isRefreshing = false;
+
+          // Update token in header and retry original request
+          originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+          return api(originalRequest);
+        }
+      } catch (refreshError) {
+        isRefreshing = false;
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = 'http://localhost:5173/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 
 // Adds token to every request if available
 api.interceptors.request.use((config) => {
@@ -89,6 +129,16 @@ export const getCategories = async () => {
     return response.data.data || [];
   } catch (error) {
     console.error("Failed to fetch categories:", error);
+    throw error;
+  }
+};
+
+export const getAssetByStatus = async (status) => {
+  try {
+    const response = await api.get(`/ic/assets?status=${status}`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch assets for approval:", error);
     throw error;
   }
 };
@@ -248,6 +298,34 @@ export const deleteLocation = async (id) => {
     }
   } catch (error) {
     const message = error.response?.data?.message || error.message || "Failed to delete location";
+    throw new Error(message);
+  }
+};
+
+export const approveAsset = async (id) => {
+  try {
+    const response = await api.post(`/ic/assets/approve/${id}`);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to approve asset");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to approve asset";
+    throw new Error(message);
+  }
+};
+
+export const rejectAsset = async (id) => {
+  try {
+    const response = await api.post(`/ic/assets/reject/${id}`);
+    if (response.data?.code === "200") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to reject asset");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to reject asset";
     throw new Error(message);
   }
 };

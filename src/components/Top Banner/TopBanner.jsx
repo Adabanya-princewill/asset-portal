@@ -12,7 +12,7 @@ const TopBanner = ({ toggleSidebar }) => {
 
   const handleLogOut = async () => {
     try {
-      await logout(setUser, setToken);
+      logout(setUser, setToken);
     } catch (error) {
       console.log(error);
     }
@@ -25,7 +25,7 @@ const TopBanner = ({ toggleSidebar }) => {
       <span className='text'>Welcome, {user.username}</span>
       <button className='menu-btn' onClick={toggleSidebar}>☰</button>
       
-      <button className='logout-btn' onClick={() => handleLogOut()} title="Logout">
+      <button className='logout-btn cursor-pointer' onClick={() => handleLogOut()} title="Logout">
         <HiOutlineLogout size={iconSize} color="#e63945" />
       </button>
     </div>
