@@ -19,18 +19,18 @@ api.interceptors.request.use((config) => {
 export const login = async (username, password, setUser, setToken) => {
   const res = await api.post(`/auth/login`, { username, password });
   console.log("Login successful:", res.data);
-  
+
   const accessToken = res.data.accessToken;
   const user = res.data.data[0];
-  
+
   // Store in localStorage
   localStorage.setItem("token", accessToken);
   localStorage.setItem("user", JSON.stringify(user));
-  
+
   // Update context state
   setUser({ username: user.username, role: user.role, id: user.id });
   setToken(accessToken);
-  
+
   return user;
 };
 
@@ -55,6 +55,29 @@ export const getDepartments = async () => {
 
   } catch (error) {
     console.error("Failed to fetch departments:", error);
+  }
+};
+
+export const createUser = async (formData) => {
+  try {
+    const response = await api.post(`/auth/create-user`, formData);
+    console.log(response.data.data);
+    return response.data.data;
+
+  } catch (error) {
+    console.error("Failed to create user:", error);
+  }
+};
+
+
+export const EditUserRole = async (username, role) => {
+  try {
+    const response = await api.put(`/ad/edit-role`, {username, role});
+    console.log(response.data.data);
+    return response.data.data;
+
+  } catch (error) {
+    console.error("Failed to edit user:", error);
   }
 };
 

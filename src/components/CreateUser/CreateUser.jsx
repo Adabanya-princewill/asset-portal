@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getDepartments } from "../../services/apiServices";
+import { createUser, getDepartments } from "../../services/apiServices";
 
-const UserForm = () => {
+const CreateUser = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -33,9 +33,17 @@ const UserForm = () => {
     }));
   };
 
+  const handleCreateUser = async (formData) => {
+    try {
+      await createUser(formData);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    handleCreateUser(formData);
     setFormData({
       email: "",
       password: "",
@@ -47,11 +55,7 @@ const UserForm = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
-      style={{
-        backgroundImage: "url('/background.png')",
-      }}
-    >
+      className="min-h-screen flex items-center justify-center bg-cover bg-center px-4">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-lg bg-white shadow-lg rounded-2xl p-8 space-y-4"
@@ -151,4 +155,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default CreateUser;

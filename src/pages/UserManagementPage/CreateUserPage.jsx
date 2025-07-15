@@ -1,10 +1,10 @@
 import React from "react";
-import UserRoles from "../../components/CreateUser/UserRoles";
+import CreateUser from "../../components/CreateUser/CreateUser";
 
 const CreateUserPage = () => {
   return (
-    <div>
-      <UserRoles />
+    <div className="bg-[#faf9f9] rounded-2xl">
+      <CreateUser />
     </div>
   );
 };

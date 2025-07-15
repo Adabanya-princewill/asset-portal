@@ -16,7 +16,7 @@
 .outlets {
   margin-left: 320px;
   width: 1010px;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 @media (min-width: 1441px) {

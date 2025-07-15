@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import FinanceDashboardPage from "../FinanceDashboardPage/FinanceDashboardPage";
-import ControlDashboardPage from "../ControlDashboardPage/ControlDashboardPage";
+import ControlDashboardPage from "../ControlDashboardPage/Dashboard/ControlDashboardPage";
 import AdminDashboardPage from "../AdminDashboardPage/AdminDashboardPage";
 import AuditDashboardPage from "../AuditDashboardPage/AuditDashboardPage";
-import CorporateDashboardPage from "../CorporateDashboardPage/CorporateDashboardPage";
+import CorporateDashboardPage from "../CorporateDashboardPage/Dashboard/CorporateDashboardPage";
 import SupportDashboardPage from "../SupportDashboardPage/SupportDashboardPage";
 import "./DashboardPage.css";
 import { AuthContext } from "../../contexts/AuthContext";
