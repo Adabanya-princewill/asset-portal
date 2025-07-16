@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../services/apiServices";
 import { AuthContext } from '../contexts/AuthContext';
 import logo from '../assets/novabank_logo.png';
