@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
 
   try {
     const response = await axios.post(
-      "http://192.168.20.158:9000/api/cs/create-asset",
+      "http://192.168.20.246:9000/api/cs/create-asset",
       payload,
       {
         headers: {
@@ -121,7 +121,7 @@ const handleSubmit = async (e) => {
         onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-md space-y-6"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2 ">
           Create New Asset
         </h2>
 
