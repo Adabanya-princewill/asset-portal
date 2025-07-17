@@ -133,6 +133,16 @@ export const getCategories = async () => {
   }
 };
 
+export const getAllAssets = async () => {
+  try {
+    const response = await api.get(`/cs/all-assets`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch assets:", error);
+    throw error;
+  }
+};
+
 export const getAssetByStatus = async (status) => {
   try {
     const response = await api.get(`/ic/assets?status=${status}`);
@@ -236,6 +246,20 @@ export const createDepartment = async (payload) => {
     }
   } catch (error) {
     const message = error.response?.data?.message || error.message || "Failed to create department";
+    throw new Error(message);
+  }
+};
+
+export const createAsset = async (payload) => {
+  try {
+    const response = await api.post("/cs/create-asset", payload);
+    if (response.data?.code === "201") {
+      return response.data?.data;
+    } else {
+      throw new Error(response.data?.message || "Failed to create asset");
+    }
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Failed to create asset";
     throw new Error(message);
   }
 };

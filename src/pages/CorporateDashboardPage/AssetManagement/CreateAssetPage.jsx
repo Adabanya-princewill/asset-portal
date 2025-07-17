@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getCategories, getDepartments, getLocations } from "../../../services/apiServices";
+import { createAsset, getCategories, getDepartments, getLocations } from "../../../services/apiServices";
 import toast from "react-hot-toast";
 
 const CreateAssetPage = () => {
@@ -52,7 +52,7 @@ const CreateAssetPage = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
   // Prepare payload, removing optional empty fields
   const payload = { ...formData };
@@ -66,20 +66,8 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const response = await axios.post(
-      "http://192.168.20.246:9000/api/cs/create-asset",
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
+    await createAsset(payload);
     toast.success("Asset created successfully!");
-    console.log("Success:", response.data);
-
-    // Reset form
     setFormData({
       assetTag: "",
       assetName: "",
@@ -96,10 +84,9 @@ const handleSubmit = async (e) => {
     });
   } catch (error) {
     console.error("Failed to create asset:", error);
-    toast.error("Failed to create asset.");
+    toast.error(error.message || "Failed to create asset.");
   }
 };
-
 
   // Map API data to {id, name} for SelectInput
   const categoryOptions = categories.map(cat => ({
@@ -132,7 +119,7 @@ const handleSubmit = async (e) => {
           <TextInput label="Purchase Price" name="purchasePrice" type="number" value={formData.purchasePrice} onChange={handleChange} required />
           <TextInput label="Acquisition Date" name="acquisitionDate" type="date" value={formData.acquisitionDate} onChange={handleChange} required />
           <TextInput label="Warranty Expiry Date" name="warrantyExpirationDate" type="date" value={formData.warrantyExpirationDate} onChange={handleChange} required />
-          <SelectInput label="Condition" name="condition" value={formData.condition} onChange={handleChange} options={[{ id: "GOOD", name: "GOOD" }, { id: "FAIR", name: "FAIR" }, { id: "BAD", name: "BAD" }]} />
+          <SelectInput label="Condition" name="condition" value={formData.condition} onChange={handleChange} options={[{ id: "GOOD", name: "GOOD" }, { id: "EXCELLENT", name: "EXCELLENT" }, { id: "FAIR", name: "FAIR" }, { id: "POOR", name: "POOR" }]} />
           <TextInput label="Employee ID (optional)" name="employeeId" value={formData.employeeId} onChange={handleChange} />
           <SelectInput label="Category" name="categoryId" value={formData.categoryId} onChange={handleChange} options={categoryOptions} required />
           <SelectInput label="Location" name="locationId" value={formData.locationId} onChange={handleChange} options={locationOptions} required />

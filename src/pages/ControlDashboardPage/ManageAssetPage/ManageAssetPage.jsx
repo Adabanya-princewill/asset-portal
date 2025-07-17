@@ -60,7 +60,7 @@ const ManageAssetsPage = () => {
   };
 
   const handleReject = async (id) => {
-     if (!window.confirm('Are you sure you want to reject this asset?')) return;
+    if (!window.confirm('Are you sure you want to reject this asset?')) return;
     try {
       await rejectAsset(id);
       toast.success('Asset rejected');

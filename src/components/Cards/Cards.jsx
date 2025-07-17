@@ -1,19 +1,13 @@
-import React from 'react'
-import './Cards.css'
-import { FiInfo } from "react-icons/fi";
-
-const Cards = ({ title, number }) => {
-  const iconSize = 20;
-
+export const Cards = ({ title, number, onClick, isActive }) => {
   return (
-    <div className='dash-div'>
-      <div className='top-card'>
-        <span className='card-title'>{title}</span>
-        <FiInfo size={iconSize} color='#A1A1A1' />
-      </div>
-      <span className='figure'>{number}</span>
+    <div
+      onClick={onClick}
+      className={`cursor-pointer rounded-lg p-4 m-2 w-full max-w-xs transition-colors duration-200 ${
+        isActive ? 'bg-blue-600 text-white' : 'bg-[#f9fafb] hover:bg-[#e3e3e3]'
+      }`}
+    >
+      <div className="text-sm font-medium">{title}</div>
+      <div className="text-2xl font-bold">{number}</div>
     </div>
-  )
-}
-
-export default Cards
+  );
+};
