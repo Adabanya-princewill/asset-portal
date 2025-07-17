@@ -20,6 +20,7 @@ const DashboardPage = () => {
     AUDITOR: AuditDashboardPage,
     CORPORATE_SERVICE: CorporateDashboardPage,
     INTERNAL_CONTROL: ControlDashboardPage,
+    SUPER_ADMIN: AdminDashboardPage
   };
 
   const DashboardComponent = dashboards[user.role];

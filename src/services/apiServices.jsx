@@ -143,6 +143,16 @@ export const getAssetByStatus = async (status) => {
   }
 };
 
+export const deleteUser = async (employeeId) => {
+  try {
+    const response = await api.delete(`/auth/delete?employeeId=${employeeId}`);
+    return response;
+  } catch (error) {
+     const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
+  }
+};
+
 
 export const createUser = async (formData) => {
   try {
@@ -172,6 +182,7 @@ export const EditUserRole = async (username, role) => {
       throw new Error(response.data?.message || "Failed to edit role");
     }
   } catch (error) {
+    console.log(error);
     const message = error.response?.data?.message || error.message || "Failed to edit user role";
     throw new Error(message);
   }

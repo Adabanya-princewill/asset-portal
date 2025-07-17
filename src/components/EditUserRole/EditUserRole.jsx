@@ -22,6 +22,15 @@ const EditUserForm = () => {
       return;
     }
 
+    const isValidEmail = (username) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);
+
+    if (!isValidEmail(username)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+
+
     setIsLoading(true);
     try {
       await EditUserRole(username, role);
@@ -30,10 +39,13 @@ const EditUserForm = () => {
       setRole('');
     } catch (error) {
       toast.error(error.message);
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
+
+
 
   return (
     <div className="w-full max-w-sm bg-white shadow-md rounded-xl mx-auto p-6">
@@ -47,7 +59,7 @@ const EditUserForm = () => {
             Username
           </label>
           <input
-            type="text"
+            type="email"
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

@@ -15,6 +15,7 @@ import ViewAssetsPage from "./pages/CorporateDashboardPage/ViewAssetsPage/ViewAs
 import CreateAssetPage from "./pages/CorporateDashboardPage/AssetManagement/CreateAssetPage";
 import RetrieveAssetPage from "./pages/CorporateDashboardPage/AssetManagement/RetrieveAssetPage";
 import TransferAssetPage from "./pages/CorporateDashboardPage/AssetManagement/TransferAssetPage";
+import DeleteUserPage from "./pages/UserManagementPage/DeleteUserPage";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
                 {/* Admin Routes */}
                 <Route path="/edit-user" element={<EditRolePage />} />
                 <Route path="/create-user" element={<CreateUserPage />} />
+                <Route path="/delete-user" element={<DeleteUserPage />} />
 
                 {/* Internal Control Routes */}
                 <Route path="/manage-assets" element={<ManageAssetPage />} />

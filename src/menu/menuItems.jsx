@@ -48,10 +48,11 @@ export const adminMenuItems = [
     submenu: [
       { label: "Create User", to: "/create-user" },
       { label: "Edit Role", to: "/edit-user" },
-
+      { label: "Deactivate User", to: "/delete-user" },
     ],
   },
 ];
+
 
 export const corporateMenuItems = [
   {
