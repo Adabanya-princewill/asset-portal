@@ -71,6 +71,12 @@
   }
 }
 
+@media (min-width: 1441px) {
+  .sidebar {
+    width: 15%;
+  }
+}
+
 @media (max-width: 900px) {
   .sidebar {
     display: none;

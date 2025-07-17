@@ -22,7 +22,7 @@ const ManageAssetsPage = () => {
     setLoading(true);
     try {
       const res = await getAssetByStatus(status);
-      setAssets(res || []);
+      setAssets(res.reverse() || []);
       setCurrentPage(1); // Reset page to 1 on new data load
     } catch (err) {
       toast.error(err.message || 'Failed to load assets for approval');
@@ -60,6 +60,7 @@ const ManageAssetsPage = () => {
   };
 
   const handleReject = async (id) => {
+     if (!window.confirm('Are you sure you want to reject this asset?')) return;
     try {
       await rejectAsset(id);
       toast.success('Asset rejected');
@@ -171,7 +172,7 @@ const ManageAssetsPage = () => {
                       {asset.approvalStatus.charAt(0) + asset.approvalStatus.slice(1).toLowerCase()}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(asset.createdAt).toLocaleDateString()}
+                      {new Date(asset.createdAt).toLocaleDateString("en-GB")}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">

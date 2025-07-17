@@ -24,6 +24,8 @@ const SideBar = ({
     menuItems = adminMenuItems;
   } else if (userRole === 'INTERNAL_CONTROL') {
     menuItems = controlMenuItems;
+  } else if (userRole === 'SUPER_ADMIN') {
+    menuItems = adminMenuItems;
   } else if (userRole === 'CORPORATE_SERVICE') {
     menuItems = corporateMenuItems;
   } else if (userRole === 'IT_SUPPORT') {
