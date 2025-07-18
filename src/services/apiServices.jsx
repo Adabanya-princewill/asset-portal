@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // backend URL
-const baseUrl = "http://192.168.20.246:9000/api";
+const baseUrl = "http://localhost:9000/api";
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -26,7 +26,7 @@ api.interceptors.response.use(
       try {
         if (!isRefreshing) {
           isRefreshing = true;
-          const newToken = await refreshToken(); 
+          const newToken = await refreshToken();
           isRefreshing = false;
 
           // Update token in header and retry original request
@@ -158,7 +158,7 @@ export const deleteUser = async (employeeId) => {
     const response = await api.delete(`/auth/delete?employeeId=${employeeId}`);
     return response;
   } catch (error) {
-     const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message = error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
@@ -180,7 +180,47 @@ export const createUser = async (formData) => {
   }
 };
 
+export const transferAsset = async (payload) => {
+  try {
+    const response = await api.post(`/cs/asset/transfer`, payload);
 
+    if (response.data?.code === "200") {
+      return response.data?.message;
+    } else {
+      throw new Error(response.data?.message || "Asset transfer failed");
+    }
+
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
+  }
+};
+
+
+export const retrieveAsset = async (retrievalType, payload) => {
+  try {
+    if (retrievalType === 'all') {
+      const response = await api.put(`/cs/asset/retrieve-all`, payload);
+      if (response.data?.code === "200") {
+        return response.data?.message;
+      } else {
+        throw new Error(response.data?.message || "Asset retrieval failed");
+      }
+    } else {
+      const response = await api.put(`/cs/asset/retrieve`, payload);
+      if (response.data?.code === "200") {
+        return response.data?.message;
+      } else {
+        throw new Error(response.data?.message || "Asset retrieval failed");
+      }
+    }
+
+
+  } catch (error) {
+    const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
+  }
+};
 
 
 export const EditUserRole = async (username, role) => {

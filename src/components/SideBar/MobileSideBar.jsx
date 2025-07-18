@@ -43,47 +43,52 @@ const MobileSidebar = ({
   return (
     <>
       <div ref={dropdownRef} className={`dropdown-sidebar ${showDropdown ? 'active' : ''}`}>
-        <img
-          src={logo}
-          alt="Nova Bank Logo"
-          className="w-[134.93px] h-[50px]"
-        />
-        <div className="navlinks">
-          {menuItems.map((item, idx) =>
-            item.submenu ? (
-              <div key={idx}>
-                <div
-                  onClick={() => toggleSubmenu(item.submenuKey)}
-                  className={`${location.pathname.includes(item.submenuKey) ? "sidebar-link sidebar-link-active" : "sidebar-link"}`}
-                  style={{ cursor: "pointer" }}
-                >
-                  {item.icon} {item.label} {isSubmenuOpen(item.submenuKey) ? <FaAngleUp /> : <FaAngleDown />}
-                </div>
-                <div className={`submenu ${isSubmenuOpen(item.submenuKey) ? 'submenu-open' : ''}`}>
-                  {item.submenu.map((sub, subIdx) => (
-                    <NavLink
-                      key={subIdx}
-                      to={sub.to}
-                      className="submenu-link"
+       <img
+              src={logo}
+              alt="Nova Bank Logo"
+              className="w-[134.93px] h-[50px]"
+            />
+            <div className="navlinks">
+              {menuItems.map((item, idx) =>
+                item.submenu ? (
+                  <div key={idx}>
+                    <div
+                      onClick={() => toggleSubmenu(item.submenuKey)}
+                      className={
+                        location.pathname.includes(item.submenuKey)
+                          ? "sidebar-link sidebar-link-active"
+                          : "sidebar-link"
+                      }
+                      style={{ cursor: "pointer" }}
                     >
-                      {sub.label}
-                    </NavLink>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <NavLink
-                key={idx}
-                to={item.to}
-                className={({ isActive }) =>
-                  isActive ? "sidebar-link sidebar-link-active" : "sidebar-link"
-                }
-              >
-                {item.icon} {item.label}
-              </NavLink>
-            )
-          )}
-        </div>
+                      {item.icon} {item.label}{" "}
+                      {isSubmenuOpen(item.submenuKey) ? <FaAngleUp /> : <FaAngleDown />}
+                    </div>
+                    <div className={`submenu ${isSubmenuOpen(item.submenuKey) ? 'submenu-open' : ''}`}>
+                      {item.submenu.map((sub, subIdx) => (
+                        <NavLink
+                          key={subIdx}
+                          to={sub.to}
+                          className="submenu-link"
+                        >
+                          {sub.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <NavLink
+                    key={idx}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      isActive ? "sidebar-link sidebar-link-active" : "sidebar-link"
+                    }
+                  >
+                    {item.icon} {item.label}
+                  </NavLink>
+                )
+              )}
+            </div>
       </div>
     </>
   )

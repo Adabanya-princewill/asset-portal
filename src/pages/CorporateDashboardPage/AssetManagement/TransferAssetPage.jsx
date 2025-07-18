@@ -1,10 +1,9 @@
 import React from 'react'
+import TransferAssetForm from '../../../components/TransferAssetForm'
 
 const TransferAssetPage = () => {
   return (
-    <div>
-      Tansfer Asset
-    </div>
+   <TransferAssetForm />
   )
 }
 
