@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
-import { getDepartments, getLocations, transferAsset } from "../services/apiServices";
+import { useState } from "react";
+import { transferAsset } from "../services/apiServices";
 import toast from "react-hot-toast";
+import { useDropdownContext } from "../contexts/DropdownContext";
 
 const TransferAssetForm = () => {
+  const { departments, locations, loading } = useDropdownContext();
+
   const [formData, setFormData] = useState({
     assetTag: "",
     toEmployeeId: "",
@@ -13,25 +16,6 @@ const TransferAssetForm = () => {
   });
 
   const [transferType, setTransferType] = useState("");
-  const [departments, setDepartments] = useState([]);
-  const [locations, setLocations] = useState([]);
-
-  // Fetch dropdown options using useEffect
-  useEffect(() => {
-    const fetchDropdowns = async () => {
-      try {
-        const [deptRes, locRes] = await Promise.all([
-          getDepartments(),
-          getLocations(),
-        ]);
-        setDepartments(deptRes);
-        setLocations(locRes);
-      } catch (error) {
-        console.error("Error fetching dropdown data:", error);
-      }
-    };
-    fetchDropdowns();
-  }, []);
 
   const handleTransferTypeChange = (e) => {
     const selected = e.target.value;
@@ -57,12 +41,9 @@ const TransferAssetForm = () => {
     e.preventDefault();
     const payload = { ...formData };
 
-
     if (!payload.toEmployeeId) delete payload.toEmployeeId;
     if (!payload.toDepartmentId) delete payload.toDepartmentId;
     if (!payload.toLocationId) delete payload.toLocationId;
-
-    console.log(payload);
 
     try {
       const res = await transferAsset(payload);
@@ -75,146 +56,147 @@ const TransferAssetForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-xl mx-auto p-6 bg-white shadow rounded space-y-6"
-    >
-      <h2 className="text-xl font-bold text-gray-800 mb-2">Transfer Asset</h2>
+      <form
+        onSubmit={handleSubmit}
+        className="mx-auto p-6 bg-white shadow rounded space-y-6"
+      >
+        <h2 className="text-xl font-bold text-gray-800 mb-2">Transfer Asset</h2>
 
-      {/* Select Transfer Type */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Transfer Type
-        </label>
-        <select
-          value={transferType}
-          onChange={handleTransferTypeChange}
-          className="w-full px-3 py-2 border rounded-lg"
-        >
-          <option value="">-- select --</option>
-          <option value="employee">To Another Employee</option>
-          <option value="department">To Another Department</option>
-          <option value="location">To Another Location</option>
-          <option value="employee-department">Employee & Department</option>
-          <option value="department-location">Department & Location</option>
-          <option value="employee-location">Employee & Location</option>
-          <option value="employee-department-location">Employee Location Department</option>
-        </select>
-      </div>
-
-      {/* Asset Tag */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Asset Tag *
-        </label>
-        <input
-          type="text"
-          name="assetTag"
-          value={formData.assetTag}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded-lg"
-          placeholder="e.g., AST-001"
-        />
-      </div>
-
-      {/* Conditional Fields */}
-      {(transferType.includes("employee")) && (
+        {/* Transfer Type */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Transfer to Employee
+            Transfer Type
+          </label>
+          <select
+            value={transferType}
+            onChange={handleTransferTypeChange}
+            className="w-full px-3 py-2 border rounded-lg"
+          >
+            <option value="">-- select --</option>
+            <option value="employee">To Another Employee</option>
+            <option value="department">To Another Department</option>
+            <option value="location">To Another Location</option>
+            <option value="employee-department">Employee & Department</option>
+            <option value="department-location">Department & Location</option>
+            <option value="employee-location">Employee & Location</option>
+            <option value="employee-department-location">Employee, Department & Location</option>
+          </select>
+        </div>
+
+        {/* Asset Tag */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Asset Tag *
           </label>
           <input
             type="text"
-            name="toEmployeeId"
-            value={formData.toEmployeeId}
+            name="assetTag"
+            value={formData.assetTag}
             onChange={handleChange}
+            required
             className="w-full px-3 py-2 border rounded-lg"
-            placeholder="e.g., NOVA005"
+            placeholder="e.g., AST-001"
           />
         </div>
-      )}
 
-      {(transferType.includes("department")) && (
+        {transferType.includes("employee") && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Transfer to Employee
+            </label>
+            <input
+              type="text"
+              name="toEmployeeId"
+              value={formData.toEmployeeId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-lg"
+              placeholder="e.g., NOVA005"
+            />
+          </div>
+        )}
+
+        {transferType.includes("department") && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Transfer to Department
+            </label>
+            <select
+              name="toDepartmentId"
+              value={formData.toDepartmentId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-lg"
+              disabled={loading}
+            >
+              <option value="">Select Department</option>
+              {departments.map((dept) => (
+                <option key={dept.departmentId} value={dept.departmentId}>
+                  {dept.departmentName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {transferType.includes("location") && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Transfer to Location
+            </label>
+            <select
+              name="toLocationId"
+              value={formData.toLocationId}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded-lg"
+              disabled={loading}
+            >
+              <option value="">Select Location</option>
+              {locations.map((loc) => (
+                <option key={loc.locationId} value={loc.locationId}>
+                  {loc.locationName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Reason */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Transfer to Department
+            Reason *
           </label>
-          <select
-            name="toDepartmentId"
-            value={formData.toDepartmentId}
+          <input
+            type="text"
+            name="reason"
+            value={formData.reason}
             onChange={handleChange}
+            required
             className="w-full px-3 py-2 border rounded-lg"
-          >
-            <option value="">Select Department</option>
-            {departments?.map((dept) => (
-              <option key={dept.departmentId} value={dept.departmentId}>
-                {dept.departmentName}
-              </option>
-            ))}
-          </select>
+            placeholder="e.g., Role change"
+          />
         </div>
-      )}
 
-      {(transferType.includes("location")) && (
+        {/* Notes */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Transfer to Location
+            Notes *
           </label>
-          <select
-            name="toLocationId"
-            value={formData.toLocationId}
+          <textarea
+            name="notes"
+            value={formData.notes}
             onChange={handleChange}
+            required
             className="w-full px-3 py-2 border rounded-lg"
-          >
-            <option value="">Select Location</option>
-            {locations.map((loc) => (
-              <option key={loc.locationId} value={loc.locationId}>
-                {loc.locationName}
-              </option>
-            ))}
-          </select>
+            placeholder="Describe the reason for transfer..."
+          />
         </div>
-      )}
 
-      {/* Reason */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Reason *
-        </label>
-        <input
-          type="text"
-          name="reason"
-          value={formData.reason}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded-lg"
-          placeholder="e.g., Role change"
-        />
-      </div>
-
-      {/* Notes */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Notes *
-        </label>
-        <textarea
-          name="notes"
-          value={formData.notes}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border rounded-lg"
-          placeholder="Describe the reason for transfer..."
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
-      >
-        Transfer Asset
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
+        >
+          Transfer Asset
+        </button>
+      </form>
     </div>
   );
 };

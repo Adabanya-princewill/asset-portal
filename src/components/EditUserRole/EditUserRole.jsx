@@ -33,8 +33,8 @@ const EditUserForm = () => {
 
     setIsLoading(true);
     try {
-      await EditUserRole(username, role);
-      toast.success("User role updated successfully!");
+      const res = await EditUserRole(username, role);
+      toast.success(res || "User role updated successfully!");
       setUsername('');
       setRole('');
     } catch (error) {

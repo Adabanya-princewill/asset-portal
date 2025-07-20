@@ -169,7 +169,7 @@ export const createUser = async (formData) => {
     const response = await api.post(`/auth/create-user`, formData);
 
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "User creation failed");
     }
@@ -227,7 +227,7 @@ export const EditUserRole = async (username, role) => {
   try {
     const response = await api.put(`/ad/edit-role`, { username, role });
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to edit role");
     }
@@ -280,7 +280,7 @@ export const createDepartment = async (payload) => {
   try {
     const response = await api.post("/ic/create-department", payload);
     if (response.data?.code === "201") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to create department");
     }
@@ -294,7 +294,7 @@ export const createAsset = async (payload) => {
   try {
     const response = await api.post("/cs/create-asset", payload);
     if (response.data?.code === "201") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to create asset");
     }
@@ -308,7 +308,7 @@ export const editDepartment = async (id, payload) => {
   try {
     const response = await api.put(`/ic/department/${id}`, payload);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       console.log(response.data?.message)
       throw new Error(response.data?.message || "Failed to edit department");
@@ -323,7 +323,7 @@ export const deleteDepartment = async (id) => {
   try {
     const response = await api.delete(`/ic/department/${id}`);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to delete department");
     }
@@ -338,7 +338,7 @@ export const createLocation = async (payload) => {
   try {
     const response = await api.post("/ic/create-location", payload);
     if (response.data?.code === "201") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to create location");
     }
@@ -352,7 +352,7 @@ export const editLocation = async (id, payload) => {
   try {
     const response = await api.put(`/ic/location/${id}`, payload);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       console.log(response.data?.message)
       throw new Error(response.data?.message || "Failed to edit location");
@@ -367,7 +367,7 @@ export const deleteLocation = async (id) => {
   try {
     const response = await api.delete(`/ic/location/${id}`);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to delete location");
     }
@@ -381,7 +381,7 @@ export const approveAsset = async (id) => {
   try {
     const response = await api.post(`/ic/assets/approve/${id}`);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to approve asset");
     }
@@ -395,7 +395,7 @@ export const rejectAsset = async (id) => {
   try {
     const response = await api.post(`/ic/assets/reject/${id}`);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to reject asset");
     }
@@ -409,7 +409,7 @@ export const createCategory = async (payload) => {
   try {
     const response = await api.post("/ic/create-category", payload);
     if (response.data?.code === "201") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to create category");
     }
@@ -423,7 +423,7 @@ export const editCategory = async (id, payload) => {
   try {
     const response = await api.put(`/ic/category/${id}`, payload);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       console.log(response.data?.message)
       throw new Error(response.data?.message || "Failed to edit category");
@@ -438,7 +438,7 @@ export const deleteCategory = async (id) => {
   try {
     const response = await api.delete(`/ic/category/${id}`);
     if (response.data?.code === "200") {
-      return response.data?.data;
+      return response.data?.message;
     } else {
       throw new Error(response.data?.message || "Failed to delete category");
     }

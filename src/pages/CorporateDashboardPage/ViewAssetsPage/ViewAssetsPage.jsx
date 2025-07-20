@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { getAllAssets } from '../../../services/apiServices';
-import {  ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Cards } from '../../../components/Cards/Cards';
+import { useNavigate } from 'react-router-dom';
+import { useAssetContext } from '../../../contexts/AssetContext';
 
 
 const ViewAssetsPage = () => {
-  const [assets, setAssets] = useState([]);
-  const [totalAssets, setTotalAssets] = useState(null);
-  const [pendingAssets, setPendingAssets] = useState(null);
-  const [approvedAssets, setApprovedAssets] = useState(null);
-  const [rejectedAssets, setRejectedAssets] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [status, setStatus] = useState('TOTAL ASSETS');
 
+  const navigate = useNavigate();
+  const {
+    assets,
+    setAssets,
+    totalAssets,
+    pendingAssets,
+    approvedAssets,
+    rejectedAssets,
+    getAssetsByStatus
+  } = useAssetContext();
+
   const itemsPerPage = 5;
 
   useEffect(() => {
+    if (assets.length > 0) return;
     const fetchAssets = async () => {
       try {
         setLoading(true);
@@ -30,10 +39,6 @@ const ViewAssetsPage = () => {
 
         setAssets(res);
         console.log(res);
-        setTotalAssets(res.length);
-        setPendingAssets(res.filter((a) => a.approvalStatus === 'PENDING').length);
-        setApprovedAssets(res.filter((a) => a.approvalStatus === 'APPROVED').length);
-        setRejectedAssets(res.filter((a) => a.approvalStatus === 'REJECTED').length);
       } catch (error) {
         console.error('Error fetching assets:', error);
       } finally {
@@ -44,16 +49,11 @@ const ViewAssetsPage = () => {
     fetchAssets();
   }, []);
 
-  const filteredAssets = assets
-    .filter((asset) => {
-      if (status === 'TOTAL ASSETS') return true;
-      return asset.approvalStatus === status.split(' ')[0]; // e.g. "APPROVED"
-    })
-    .filter(
-      (asset) =>
-        asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (asset.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const filteredAssets = getAssetsByStatus(status).filter(
+    (asset) =>
+      asset?.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (asset?.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const totalItems = filteredAssets.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -89,7 +89,7 @@ const ViewAssetsPage = () => {
       <div className="flex justify-between flex-wrap">
         <Cards
           title="TOTAL ASSETS"
-          number={totalAssets ?? 0}
+          number={totalAssets}
           onClick={() => {
             setStatus('TOTAL ASSETS');
             setCurrentPage(1);
@@ -98,7 +98,7 @@ const ViewAssetsPage = () => {
         />
         <Cards
           title="PENDING ASSETS"
-          number={pendingAssets ?? 0}
+          number={pendingAssets.length}
           onClick={() => {
             setStatus('PENDING ASSETS');
             setCurrentPage(1);
@@ -107,7 +107,7 @@ const ViewAssetsPage = () => {
         />
         <Cards
           title="APPROVED ASSETS"
-          number={approvedAssets ?? 0}
+          number={approvedAssets.length}
           onClick={() => {
             setStatus('APPROVED ASSETS');
             setCurrentPage(1);
@@ -116,7 +116,7 @@ const ViewAssetsPage = () => {
         />
         <Cards
           title="REJECTED ASSETS"
-          number={rejectedAssets ?? 0}
+          number={rejectedAssets.length}
           onClick={() => {
             setStatus('REJECTED ASSETS');
             setCurrentPage(1);
@@ -132,7 +132,7 @@ const ViewAssetsPage = () => {
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset Tag</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset Name</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Price</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Approval Status</th>
@@ -154,10 +154,11 @@ const ViewAssetsPage = () => {
               </tr>
             ) : (
               currentAssets.map((asset) => (
-                <tr key={asset.assetId} className="hover:bg-gray-50">
+                <tr key={asset.assetId} onClick={() => navigate(`/view/${asset.assetId}`, { state: { asset } })}
+                  className="hover:bg-gray-50">
                   <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{asset.assetTag}</td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{asset.assetName}</td>
-                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                     {asset.location?.locationName || '--'}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -199,9 +200,8 @@ const ViewAssetsPage = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-3 py-1 text-sm rounded ${
-                  currentPage === page ? 'bg-blue-600 text-white' : 'border border-gray-300 hover:bg-gray-50'
-                }`}
+                className={`px-3 py-1 text-sm rounded ${currentPage === page ? 'bg-blue-600 text-white' : 'border border-gray-300 hover:bg-gray-50'
+                  }`}
               >
                 {page}
               </button>

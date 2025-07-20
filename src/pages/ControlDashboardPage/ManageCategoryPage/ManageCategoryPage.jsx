@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Plus, Edit, Trash2, Search,
   ChevronLeft, ChevronRight, X
 } from 'lucide-react';
 import {
   createCategory, deleteCategory,
-  editCategory, getCategories
+  editCategory
 } from '../../../services/apiServices';
 import toast from 'react-hot-toast';
+import { useDropdownContext } from '../../../contexts/DropdownContext';
+import { useNavigate } from 'react-router-dom';
 
 const ManageCategoryPage = () => {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { categories, refreshDropdown } = useDropdownContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const navigate = useNavigate();
 
-  // Modal state
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalData, setModalData] = useState({
@@ -27,26 +28,13 @@ const ManageCategoryPage = () => {
     categoryId: null
   });
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      const res = await getCategories();
-      setCategories(res.reverse());
-    } catch (err) {
-      toast.error("Failed to load categories");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleOpenModal = () => {
     setIsEditing(false);
     setModalData({
-      categoryName: '', description: '',
-      usefulLifeYears: '', depreciationRate: '',
+      categoryName: '',
+      description: '',
+      usefulLifeYears: '',
+      depreciationRate: '',
       categoryId: null
     });
     setShowModal(true);
@@ -85,15 +73,15 @@ const ManageCategoryPage = () => {
       return;
     }
     try {
-      await createCategory({
+      const res = await createCategory({
         categoryName: modalData.categoryName.trim(),
         description: modalData.description.trim(),
         usefulLifeYears: modalData.usefulLifeYears,
         depreciationRate: Number(modalData.depreciationRate)
       });
-      toast.success("Category created");
+      toast.success(res || "Category created");
       handleCloseModal();
-      loadCategories();
+      refreshDropdown("categories");
     } catch (err) {
       toast.error(err.message || "Error creating category");
     }
@@ -105,15 +93,15 @@ const ManageCategoryPage = () => {
       return;
     }
     try {
-      await editCategory(modalData.categoryId, {
+      const res = await editCategory(modalData.categoryId, {
         categoryName: modalData.categoryName.trim(),
         description: modalData.description.trim(),
         usefulLifeYears: modalData.usefulLifeYears,
         depreciationRate: Number(modalData.depreciationRate)
       });
-      toast.success("Category updated");
+      toast.success(res || "Category updated");
       handleCloseModal();
-      loadCategories();
+      refreshDropdown("categories");
     } catch (err) {
       toast.error(err.message || "Failed to update category");
     }
@@ -122,9 +110,9 @@ const ManageCategoryPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
     try {
-      await deleteCategory(id);
-      toast.success("Category deleted successfully");
-      loadCategories();
+      const res = await deleteCategory(id);
+      toast.success(res || "Category deleted successfully");
+      refreshDropdown("categories");
     } catch (error) {
       toast.error(error.message || "Failed to delete category");
     }
@@ -139,12 +127,6 @@ const ManageCategoryPage = () => {
   const indexOfFirst = indexOfLast - itemsPerPage;
   const currentCategories = filteredCategories.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
-
-  if (loading) return (
-    <div className="flex items-center justify-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-    </div>
-  );
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -189,16 +171,21 @@ const ManageCategoryPage = () => {
                   </td>
                 </tr>
               ) : currentCategories.map(cat => (
-                <tr key={cat.categoryId} className="hover:bg-gray-50">
+                <tr onClick={() => navigate(`/manage-categories/${cat.categoryId}`, { state: cat })} key={cat.categoryId} className="hover:bg-gray-50">
                   <td className="px-6 py-4">{cat.categoryName}</td>
                   <td className="px-6 py-4">{cat.description}</td>
                   <td className="px-6 py-4">{cat.usefulLifeYears}</td>
                   <td className="px-6 py-4">{cat.depreciationRate}</td>
                   <td className="px-6 py-4 flex gap-2">
-                    <button onClick={() => handleOpenEditModal(cat)} className="text-blue-600 hover:text-blue-900 p-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenEditModal(cat);
+                      }}
+                      className="text-blue-600 hover:text-blue-900 p-1">
                       <Edit size={16} />
                     </button>
-                    <button onClick={() => handleDelete(cat.categoryId)} className="text-red-600 hover:text-red-900 p-1">
+                    <button onClick={(e) =>{ e.stopPropagation(); handleDelete(cat.categoryId)}} className="text-red-600 hover:text-red-900 p-1">
                       <Trash2 size={16} />
                     </button>
                   </td>

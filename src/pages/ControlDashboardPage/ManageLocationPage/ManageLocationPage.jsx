@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Plus, Edit, Trash2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import { createLocation, deleteLocation, editLocation, getLocations } from '../../../services/apiServices';
+import { createLocation, deleteLocation, editLocation } from '../../../services/apiServices';
 import toast from 'react-hot-toast';
 import LocationModal from '../../../components/locationModal';
+import { useDropdownContext } from '../../../contexts/DropdownContext';
+import { useNavigate } from 'react-router-dom';
 
 const ManageLocationPage = () => {
-  const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { locations, refreshDropdown } = useDropdownContext();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-
-  // Modal state
+const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalData, setModalData] = useState({
@@ -19,22 +20,6 @@ const ManageLocationPage = () => {
     address: '',
     locationId: null
   });
-
-  // Load locations on component mount
-  useEffect(() => {
-    loadLocations();
-  }, []);
-
-  const loadLocations = async () => {
-    try {
-      const res = await getLocations();
-      setLocations(res.reverse());
-    } catch (err) {
-      toast.error("Failed to load locations");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleOpenModal = () => {
     setIsEditing(false);
@@ -72,13 +57,13 @@ const ManageLocationPage = () => {
     }
 
     try {
-      await createLocation({
+      const res = await createLocation({
         locationName: modalData.locationName.trim(),
         address: modalData.address.trim()
       });
-      toast.success("Location created");
+      toast.success(res || "Location created");
       handleCloseModal();
-      loadLocations();
+      refreshDropdown("locations");
     } catch (err) {
       toast.error(err.message || "Error creating location");
     }
@@ -91,13 +76,13 @@ const ManageLocationPage = () => {
     }
 
     try {
-      await editLocation(modalData.locationId, {
+      const res = await editLocation(modalData.locationId, {
         locationName: modalData.locationName.trim(),
         address: modalData.address.trim()
       });
-      toast.success("Location updated");
+      toast.success(res || "Location updated");
       handleCloseModal();
-      loadLocations();
+      refreshDropdown("locations");
     } catch (err) {
       toast.error(err.message || "Failed to update location");
     }
@@ -106,19 +91,18 @@ const ManageLocationPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this location?')) {
       try {
-        await deleteLocation(id);
-        toast.success("Location deleted successfully");
-        loadLocations();
+        const res = await deleteLocation(id);
+        toast.success(res || "Location deleted successfully");
+        refreshDropdown("locations");
       } catch (error) {
         toast.error(error.message || "Failed to delete location");
       }
     }
   };
 
-  // Filter and paginate
-  const filteredLocations = locations.filter(dept =>
-    dept.locationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    dept.address.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredLocations = locations.filter(loc =>
+    loc.locationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    loc.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -129,14 +113,6 @@ const ManageLocationPage = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -193,24 +169,24 @@ const ManageLocationPage = () => {
                   </td>
                 </tr>
               ) : (
-                currentLocations.map((dept) => (
-                  <tr key={dept.locationId} className="hover:bg-gray-50">
+                currentLocations.map((loc) => (
+                  <tr onClick={() => navigate(`/manage-locations/${loc.locationId}`, { state: loc })} key={loc.locationId} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {dept.locationName}
+                      {loc.locationName}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {dept.address}
+                      {loc.address}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
                         <button
-                          onClick={() => handleOpenEditModal(dept)}
+                          onClick={(e) => {e.stopPropagation(); handleOpenEditModal(loc)}}
                           className="text-blue-600 hover:text-blue-900 p-1"
                         >
                           <Edit size={16} />
                         </button>
                         <button
-                          onClick={() => handleDelete(dept.locationId)}
+                          onClick={(e) => {e.stopPropagation(); handleDelete(loc.locationId)}}
                           className="text-red-600 hover:text-red-900 p-1"
                         >
                           <Trash2 size={16} />

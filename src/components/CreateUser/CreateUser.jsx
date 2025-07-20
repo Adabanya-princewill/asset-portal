@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { createUser, getDepartments } from "../../services/apiServices";
+import { useState } from "react";
+import { createUser } from "../../services/apiServices";
 import toast from "react-hot-toast";
+import { useDropdownContext } from "../../contexts/DropdownContext";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -11,21 +12,9 @@ const CreateUser = () => {
     departmentId: "",
   });
 
-  const [departments, setDepartments] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { departments} = useDropdownContext();
 
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const response = await getDepartments();
-        setDepartments(response);
-      } catch (error) {
-        toast.error("Failed to load departments");
-        console.error("Fetch departments error:", error);
-      }
-    };
-    fetchDepartments();
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,8 +28,8 @@ const CreateUser = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await createUser(formData);
-      toast.success("User created successfully");
+      const res = await createUser(formData);
+      toast.success(res || "User created successfully");
       setFormData({
         email: "",
         password: "",

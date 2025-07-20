@@ -1,83 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Plus, Edit, Trash2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import { createDepartment, deleteDepartment, editDepartment, getDepartments } from '../../../services/apiServices';
+import { createDepartment, deleteDepartment, editDepartment } from '../../../services/apiServices';
 import toast from 'react-hot-toast';
-
+import { useDropdownContext } from '../../../contexts/DropdownContext';
+import { useNavigate } from 'react-router-dom';
 
 const ManageDepartmentPage = () => {
-  const [departments, setDepartments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { departments, refreshDropdown } = useDropdownContext();
   const [newDepartmentName, setNewDepartmentName] = useState('');
   const [editingDepartment, setEditingDepartment] = useState(null);
   const [editName, setEditName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-
-  // Load departments on component mount
-  useEffect(() => {
-    loadDepartments();
-  }, []);
-
-  const loadDepartments = async () => {
-    try {
-      const res = await getDepartments();
-      setDepartments(res.reverse());
-    } catch (err) {
-      toast.error("Failed to load departments");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
   const handleCreate = async () => {
     if (!newDepartmentName.trim()) return;
     try {
-      const payload = { departmentName: newDepartmentName.trim() };
-      await createDepartment(payload);
-      toast.success("Department created");
+      const res = await createDepartment({ departmentName: newDepartmentName.trim() });
+      toast.success(res || "Department created");
       setNewDepartmentName('');
-      loadDepartments();
+      refreshDropdown("departments");
     } catch (err) {
       toast.error(err.message || "Error creating department");
     }
   };
 
-
   const handleEdit = async (department) => {
-    if (editingDepartment && editingDepartment.departmentId === department.departmentId) {
-      // Save changes
+    if (editingDepartment?.departmentId === department.departmentId) {
       if (!editName.trim()) return;
-
       try {
-        await editDepartment(department.departmentId, {
-          departmentName: editName.trim()
-        });
-        toast.success("Updated successfully");
+        const res = await editDepartment(department.departmentId, { departmentName: editName.trim() });
+        toast.success(res || "Updated successfully");
         setEditingDepartment(null);
-        loadDepartments();
-      } catch (error) {
-        toast.error(error.message || "Failed to update department");
-        console.error('Error updating department:', error);
+        refreshDropdown("departments");
+      } catch (err) {
+        toast.error(err.message || "Failed to update department");
       }
     } else {
-      // Start editing
       setEditingDepartment(department);
       setEditName(department.departmentName);
     }
   };
 
-
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this department?')) {
-      try {
-        await deleteDepartment(id);
-        toast.success("department deleted successfully")
-        await loadDepartments();
-      } catch (error) {
-        toast.error(error.message || "Failed to delete department");
-        console.error('Error deleting department:', error);
-      }
+    if (!window.confirm('Delete this department?')) return;
+    try {
+      const res = await deleteDepartment(id);
+      toast.success(res || "Deleted");
+      refreshDropdown("departments");
+    } catch (err) {
+      toast.error(err.message || "Failed to delete");
     }
   };
 
@@ -86,36 +60,25 @@ const ManageDepartmentPage = () => {
     setEditName('');
   };
 
-
-  // Filter departments based on search
-  const filteredDepartments = departments.filter(dept =>
-    dept.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    dept.createdBy.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDepartments = filteredDepartments.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
   const handleKeyPress = (e, action) => {
     if (e.key === 'Enter') {
       action();
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const filteredDepartments = departments.filter(d =>
+    d.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (d.createdBy || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentDepartments = filteredDepartments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -157,8 +120,7 @@ const ManageDepartmentPage = () => {
           </div>
         </div>
 
-
-        {/* Table Section */}
+        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
@@ -183,9 +145,9 @@ const ManageDepartmentPage = () => {
                 </tr>
               ) : (
                 currentDepartments.map((dept) => (
-                  <tr key={dept.departmentId} className="hover:bg-gray-50">
+                  <tr onClick={() => navigate(`/manage-departments/${dept.departmentId}`, { state: dept })} key={dept.departmentId} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {editingDepartment && editingDepartment.departmentId === dept.departmentId ? (
+                      {editingDepartment?.departmentId === dept.departmentId ? (
                         <input
                           type="text"
                           value={editName}
@@ -205,16 +167,16 @@ const ManageDepartmentPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
-                        {editingDepartment && editingDepartment.departmentId === dept.departmentId ? (
+                        {editingDepartment?.departmentId === dept.departmentId ? (
                           <>
                             <button
-                              onClick={() => handleEdit(dept)}
+                              onClick={(e) => {e.stopPropagation(); handleEdit(dept)}}
                               className="text-green-600 hover:text-green-900 p-1"
                             >
                               Save
                             </button>
                             <button
-                              onClick={cancelEdit}
+                              onClick={(e) => {e.stopPropagation(); cancelEdit()}}
                               className="text-gray-600 hover:text-gray-900 p-1"
                             >
                               Cancel
@@ -223,13 +185,13 @@ const ManageDepartmentPage = () => {
                         ) : (
                           <>
                             <button
-                              onClick={() => handleEdit(dept)}
+                              onClick={(e) => {e.stopPropagation(); handleEdit(dept)}}
                               className="text-blue-600 hover:text-blue-900 p-1"
                             >
                               <Edit size={16} />
                             </button>
                             <button
-                              onClick={() => handleDelete(dept.departmentId)}
+                              onClick={(e) => {e.stopPropagation(); handleDelete(dept.departmentId)}}
                               className="text-red-600 hover:text-red-900 p-1"
                             >
                               <Trash2 size={16} />

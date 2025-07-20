@@ -2,36 +2,65 @@ import React, { useState, useEffect } from 'react';
 import { Search, ChevronLeft, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { approveAsset, getAssetByStatus, rejectAsset } from '../../../services/apiServices';
-
+import { useAssetContext } from '../../../contexts/AssetContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { handleApproveAsset, handleRejectAsset } from '../../../utils/assetActions';
 const statusTabs = ['PENDING', 'APPROVED', 'REJECTED'];
 
 const ManageAssetsPage = () => {
-  const [status, setStatus] = useState('PENDING');
+  const location = useLocation();
+  const initialStatus = location.state?.status || 'PENDING';
+  const [status, setStatus] = useState(initialStatus);
   const [assets, setAssets] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const navigate = useNavigate();
+  const { cache, updateCache, clearCacheFor } = useAssetContext();
 
-  // Fetch assets by status
   useEffect(() => {
-    fetchAssets(status);
+    if (!cache[status]) {
+      fetchAssets(status);
+    } else {
+      setAssets(cache[status]);
+      setCurrentPage(1);
+    }
   }, [status]);
 
-  const fetchAssets = async (status) => {
+  const fetchAssets = async (statusToFetch) => {
     setLoading(true);
     try {
-      const res = await getAssetByStatus(status);
-      setAssets(res.reverse() || []);
-      setCurrentPage(1); // Reset page to 1 on new data load
+      const res = await getAssetByStatus(statusToFetch);
+      const reversed = res.reverse() || [];
+      updateCache(statusToFetch, reversed);
+      setAssets(reversed);
+      setCurrentPage(1);
     } catch (err) {
-      toast.error(err.message || 'Failed to load assets for approval');
+      toast.error(err.message || 'Failed to load assets');
       setAssets([]);
     } finally {
       setLoading(false);
     }
   };
 
+  const handleApprove = (id) =>
+    handleApproveAsset({
+      assetId: id,
+      status,
+      clearCacheFor,
+      fetchAssets,
+    });
+
+  const handleReject = (id) =>
+    handleRejectAsset({
+      assetId: id,
+      status,
+      clearCacheFor,
+      fetchAssets,
+    });
+
+  // Pagination + Search (same as before)
   const filteredAssets = assets.filter(asset =>
     asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (asset.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -46,29 +75,6 @@ const ManageAssetsPage = () => {
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
-  };
-
-  const handleApprove = async (id) => {
-    try {
-      await approveAsset(id);
-      toast.success('Asset approved');
-      fetchAssets(status);
-    } catch (error) {
-      toast.error(error.message || "Failed to approve asset");
-      console.error("Asset approval error:", error);
-    }
-  };
-
-  const handleReject = async (id) => {
-    if (!window.confirm('Are you sure you want to reject this asset?')) return;
-    try {
-      await rejectAsset(id);
-      toast.success('Asset rejected');
-      fetchAssets(status);
-    } catch (error) {
-      toast.error(error.message || "Failed to reject asset");
-      console.error("Asset rejection error:", error);
-    }
   };
 
   return (
@@ -143,19 +149,19 @@ const ManageAssetsPage = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="px-4 py-4 text-center text-gray-500">
+                  <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
                     Loading assets...
                   </td>
                 </tr>
               ) : currentAssets.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-4 py-4 text-center text-gray-500">
+                  <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
                     No assets found
                   </td>
                 </tr>
               ) : (
                 currentAssets.map((asset) => (
-                  <tr key={asset.assetId} className="hover:bg-gray-50">
+                  <tr onClick={() => navigate(`/manage-assets/${asset.assetId}`, { state: { asset, status } })} key={asset.assetId} className="hover:bg-gray-50">
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {asset.assetTag}
                     </td>
@@ -179,14 +185,14 @@ const ManageAssetsPage = () => {
                         {status === 'PENDING' && (
                           <>
                             <button
-                              onClick={() => handleApprove(asset.assetId)}
+                              onClick={(e) => { e.stopPropagation(); handleApprove(asset.assetId) }}
                               className="text-green-600 hover:text-green-900 p-1"
                               title="Approve"
                             >
                               <CheckCircle size={20} />
                             </button>
                             <button
-                              onClick={() => handleReject(asset.assetId)}
+                              onClick={(e) => { e.stopPropagation(); handleReject(asset.assetId) }}
                               className="text-red-600 hover:text-red-900 p-1"
                               title="Reject"
                             >
@@ -196,7 +202,7 @@ const ManageAssetsPage = () => {
                         )}
                         {status === 'REJECTED' && (
                           <button
-                            onClick={() => handleApprove(asset.assetId)}
+                            onClick={(e) => { e.stopPropagation(); handleApprove(asset.assetId) }}
                             className="text-green-600 hover:text-green-900 p-1"
                             title="Approve"
                           >
@@ -210,7 +216,6 @@ const ManageAssetsPage = () => {
                 ))
               )}
             </tbody>
-
           </table>
         </div>
 
