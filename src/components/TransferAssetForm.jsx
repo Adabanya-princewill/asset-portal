@@ -128,9 +128,9 @@ const TransferAssetForm = () => {
               disabled={loading}
             >
               <option value="">Select Department</option>
-              {departments.map((dept) => (
-                <option key={dept.departmentId} value={dept.departmentId}>
-                  {dept.departmentName}
+              {departments?.map((dept) => (
+                <option key={dept?.departmentId} value={dept?.departmentId}>
+                  {dept?.departmentName}
                 </option>
               ))}
             </select>
@@ -150,7 +150,7 @@ const TransferAssetForm = () => {
               disabled={loading}
             >
               <option value="">Select Location</option>
-              {locations.map((loc) => (
+              {locations?.map((loc) => (
                 <option key={loc.locationId} value={loc.locationId}>
                   {loc.locationName}
                 </option>

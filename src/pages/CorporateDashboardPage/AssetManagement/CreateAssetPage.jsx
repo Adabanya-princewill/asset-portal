@@ -64,15 +64,15 @@ const CreateAssetPage = () => {
     }
   };
 
-  const categoryOptions = categories.map((cat) => ({
+  const categoryOptions = categories?.map((cat) => ({
     id: cat.categoryId,
     name: cat.categoryName,
   }));
-  const departmentOptions = departments.map((dept) => ({
+  const departmentOptions = departments?.map((dept) => ({
     id: dept.departmentId,
     name: dept.departmentName,
   }));
-  const locationOptions = locations.map((loc) => ({
+  const locationOptions = locations?.map((loc) => ({
     id: loc.locationId,
     name: loc.locationName,
   }));

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllAssets } from '../../../services/apiServices';
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Cards } from '../../../components/Cards/Cards';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAssetContext } from '../../../contexts/AssetContext';
 
 
@@ -10,7 +10,9 @@ const ViewAssetsPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [status, setStatus] = useState('TOTAL ASSETS');
+    const location = useLocation();
+    const initialStatus = location.state?.status || 'TOTAL ASSETS';
+    const [status, setStatus] = useState(initialStatus);
 
   const navigate = useNavigate();
   const {
@@ -38,7 +40,6 @@ const ViewAssetsPage = () => {
         }
 
         setAssets(res);
-        console.log(res);
       } catch (error) {
         console.error('Error fetching assets:', error);
       } finally {
@@ -52,7 +53,8 @@ const ViewAssetsPage = () => {
   const filteredAssets = getAssetsByStatus(status).filter(
     (asset) =>
       asset?.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (asset?.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
+      (asset?.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (asset?.user?.employeeId || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalItems = filteredAssets.length;
@@ -154,7 +156,7 @@ const ViewAssetsPage = () => {
               </tr>
             ) : (
               currentAssets.map((asset) => (
-                <tr key={asset.assetId} onClick={() => navigate(`/view/${asset.assetId}`, { state: { asset } })}
+                <tr key={asset.assetId} onClick={() => navigate(`/view/${asset.assetId}`,  { state: { asset, status } })}
                   className="hover:bg-gray-50">
                   <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{asset.assetTag}</td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{asset.assetName}</td>

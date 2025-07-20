@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ChevronLeft, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { approveAsset, getAssetByStatus, rejectAsset } from '../../../services/apiServices';
+import { getAssetByStatus } from '../../../services/apiServices';
 import { useAssetContext } from '../../../contexts/AssetContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleApproveAsset, handleRejectAsset } from '../../../utils/assetActions';

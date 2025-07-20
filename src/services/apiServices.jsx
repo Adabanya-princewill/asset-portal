@@ -143,6 +143,26 @@ export const getAllAssets = async () => {
   }
 };
 
+export const getAssetHistories = async (id) => {
+  try {
+    const response = await api.get(`/cs/assets/${id}/history`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch asset histories:", error);
+    throw error;
+  }
+};
+
+export const getAllAssetHistories = async () => {
+  try {
+    const response = await api.get(`/cs/assets/history`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch asset histories:", error);
+    throw error;
+  }
+};
+
 export const getAssetByStatus = async (status) => {
   try {
     const response = await api.get(`/ic/assets?status=${status}`);
