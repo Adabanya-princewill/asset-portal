@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getDepartments, getLocations, getCategories } from '../services/apiServices';
+import { AuthContext } from './AuthContext';
 
 const DropdownContext = createContext();
 export const useDropdownContext = () => useContext(DropdownContext);
@@ -9,6 +10,10 @@ export const DropdownProvider = ({ children }) => {
   const [locations, setLocations] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  const {token} = useContext(AuthContext);
 
   const refreshDropdown = async (types = 'all') => {
     try {
@@ -48,6 +53,10 @@ export const DropdownProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!token) {
+      setIsLoading(false);
+      return;
+    }
     refreshDropdown('all');
   }, []);
 
