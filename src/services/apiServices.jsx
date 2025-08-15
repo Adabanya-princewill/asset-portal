@@ -173,6 +173,16 @@ export const getAssetByStatus = async (status) => {
   }
 };
 
+export const getAssetByCategoryName = async (categoryName) => {
+  try {
+    const response = await api.get(`/it/view-all?categoryName=${categoryName}`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch assets in category: "+ categoryName, error);
+    throw error;
+  }
+};
+
 export const deleteUser = async (employeeId) => {
   try {
     const response = await api.delete(`/auth/delete?employeeId=${employeeId}`);

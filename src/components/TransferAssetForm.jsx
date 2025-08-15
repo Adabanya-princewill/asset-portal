@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDropdownContext } from "../contexts/DropdownContext";
 
 const TransferAssetForm = () => {
-  const { departments, locations, loading } = useDropdownContext();
+  const { departments, locations, loadingDepartments, loadingLocations } = useDropdownContext();
 
   const [formData, setFormData] = useState({
     assetTag: "",
@@ -48,6 +48,14 @@ const TransferAssetForm = () => {
     try {
       const res = await transferAsset(payload);
       toast.success(res);
+      setFormData({
+        assetTag: "",
+        toEmployeeId: "",
+        toDepartmentId: "",
+        toLocationId: "",
+        reason: "",
+        notes: "",
+      })
     } catch (error) {
       toast.error(error.message || "Something went wrong");
       console.error("Transfer Failed:", error);
@@ -125,7 +133,7 @@ const TransferAssetForm = () => {
               value={formData.toDepartmentId}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
-              disabled={loading}
+              disabled={loadingDepartments}
             >
               <option value="">Select Department</option>
               {departments?.map((dept) => (
@@ -147,7 +155,7 @@ const TransferAssetForm = () => {
               value={formData.toLocationId}
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded-lg"
-              disabled={loading}
+              disabled={loadingLocations}
             >
               <option value="">Select Location</option>
               {locations?.map((loc) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { createAsset } from "../../../services/apiServices";
 import { useDropdownContext } from "../../../contexts/DropdownContext"; // adjust path as needed
@@ -9,6 +9,7 @@ const CreateAssetPage = () => {
     departments,
     locations,
     loading,
+    refreshDropdown
   } = useDropdownContext();
 
   const [formData, setFormData] = useState({
@@ -63,6 +64,12 @@ const CreateAssetPage = () => {
       toast.error(error.message || "Failed to create asset.");
     }
   };
+
+   useEffect(() => {
+    if (!categories || !departments || !locations) {
+      refreshDropdown();
+    }
+  }, []);
 
   const categoryOptions = categories?.map((cat) => ({
     id: cat.categoryId,

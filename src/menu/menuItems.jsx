@@ -5,6 +5,7 @@ import { BsDatabaseFillGear } from "react-icons/bs";
 import { TbCategoryPlus } from "react-icons/tb";
 import { FaBuildingUser, FaUsersGear } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
+import { BiTransferAlt } from "react-icons/bi";
 
 export const controlMenuItems = [
   {
@@ -76,7 +77,7 @@ export const corporateMenuItems = [
       { label: "Retrieve Asset", to: "/retrieve-asset" },
     ],
   },
-   {
+  {
     label: "Asset History",
     to: "/history",
     icon: <FaHistory size={20} />,
@@ -104,5 +105,15 @@ export const supportMenuItems = [
     label: "Dashboard",
     to: "/",
     icon: <TbLayoutDashboardFilled size={20} />,
+  },
+  {
+    label: "Transfer Assets",
+    to: "/transfer-asset",
+    icon: <BiTransferAlt size={20} />
+  },
+  {
+    label: "Assets",
+    to: "/it-assets",
+    icon: <BsDatabaseFillGear size={20} />
   }
 ];

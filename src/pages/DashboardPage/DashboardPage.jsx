@@ -4,7 +4,7 @@ import ControlDashboardPage from "../ControlDashboardPage/Dashboard/ControlDashb
 import AdminDashboardPage from "../AdminDashboardPage/AdminDashboardPage";
 import AuditDashboardPage from "../AuditDashboardPage/AuditDashboardPage";
 import CorporateDashboardPage from "../CorporateDashboardPage/Dashboard/CorporateDashboardPage";
-import SupportDashboardPage from "../SupportDashboardPage/SupportDashboardPage";
+import SupportDashboardPage from "../SupportDashboardPage/Dashboard/SupportDashboardPage";
 import "./DashboardPage.css";
 import { AuthContext } from "../../contexts/AuthContext";
 import UnauthorizedPage from "../UnauthorizedPage";

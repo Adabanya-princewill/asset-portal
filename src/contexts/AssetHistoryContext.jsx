@@ -12,7 +12,7 @@ export const AssetHistoryProvider = ({ children }) => {
   const [lastFetched, setLastFetched] = useState(null);
 
   const { token, user } = useContext(AuthContext);
-  console.log(user);
+//  console.log(user);
 
   useEffect(() => {
     const fetchHistories = async () => {
@@ -20,7 +20,8 @@ export const AssetHistoryProvider = ({ children }) => {
         setLoading(false);
         return;
       }
-      if (user.role == "CORPORATE_SERVICE") {
+      
+      if (user?.role == "CORPORATE_SERVICE") {
         try {
           const res = await getAllAssetHistories();
           const sorted = res.sort((a, b) => new Date(b.actionDate) - new Date(a.actionDate));

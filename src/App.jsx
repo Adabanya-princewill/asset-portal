@@ -27,6 +27,8 @@ import AssetHistoryPage from "./pages/CorporateDashboardPage/AssetHistoryPage/As
 import AllAssetHistoriesPage from "./pages/CorporateDashboardPage/AssetHistoryPage/AllAssetHistoryPage";
 import AssetHistoryDetailPage from "./pages/CorporateDashboardPage/AssetHistoryPage/AssetHistoryDetailsPage";
 import { AssetHistoryProvider } from "./contexts/AssetHistoryContext";
+import ITAssetsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetPage";
+import ITAssetDetailsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetDetailsPage";
 
 
 export default function App() {
@@ -35,45 +37,50 @@ export default function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <BrowserRouter>
         <AuthProvider>
-            <AssetProvider>
-              <DropdownProvider>
-                <AssetHistoryProvider>
-                  <Routes>
-                    <Route path="/login" element={<LoginPage />} />
+          <AssetProvider>
+            <DropdownProvider>
+              <AssetHistoryProvider>
+                <Routes>
+                  <Route path="/login" element={<LoginPage />} />
 
-                    <Route path="/" element={<ProtectedRoute />}>
-                      <Route element={<DashboardLayout />}>
-                        <Route index element={<DashboardPage />} />
+                  <Route path="/" element={<ProtectedRoute />}>
+                    <Route element={<DashboardLayout />}>
+                      <Route index element={<DashboardPage />} />
 
-                        {/* Admin Routes */}
-                        <Route path="/edit-user" element={<EditRolePage />} />
-                        <Route path="/create-user" element={<CreateUserPage />} />
-                        <Route path="/delete-user" element={<DeleteUserPage />} />
+                      {/* Admin Routes */}
+                      <Route path="/edit-user" element={<EditRolePage />} />
 
-                        {/* Internal Control Routes */}
-                        <Route path="/manage-assets" element={<ManageAssetPage />} />
-                        <Route path="/manage-assets/:assetId" element={<AssetDetailsPage />} />
-                        <Route path="/manage-locations" element={<ManageLocationPage />} />
-                        <Route path="/manage-locations/:locationId" element={<LocationDetailsPage />} />
-                        <Route path="/manage-departments" element={<ManageDepartmentPage />} />
-                        <Route path="/manage-departments/:departmentId" element={<DepartmentDetailsPage />} />
-                        <Route path="/manage-categories" element={<ManageCategoryPage />} />
-                        <Route path="/manage-categories/:catoryId" element={<CategoryDetailsPage />} />
+                      <Route path="/create-user" element={<CreateUserPage />} />
+                      <Route path="/delete-user" element={<DeleteUserPage />} />
 
-                        {/* Corporate Service Routes */}
-                        <Route path="/view" element={<ViewAssetsPage />} />
-                        <Route path="/view/:assetId" element={<ViewAssetDetailsPage />} />
-                        <Route path="/create-asset" element={<CreateAssetPage />} />
-                        <Route path="/transfer-asset" element={<TransferAssetPage />} />
-                        <Route path="/retrieve-asset" element={<RetrieveAssetPage />} />
-                        <Route path="/history/:id" element={<AssetHistoryDetailPage />} />
-                        <Route path="/history" element={<AllAssetHistoriesPage />} />
-                      </Route>
+                      {/* Internal Control Routes */}
+                      <Route path="/manage-assets" element={<ManageAssetPage />} />
+                      <Route path="/manage-assets/:assetId" element={<AssetDetailsPage />} />
+                      <Route path="/manage-locations" element={<ManageLocationPage />} />
+                      <Route path="/manage-locations/:locationId" element={<LocationDetailsPage />} />
+                      <Route path="/manage-departments" element={<ManageDepartmentPage />} />
+                      <Route path="/manage-departments/:departmentId" element={<DepartmentDetailsPage />} />
+                      <Route path="/manage-categories" element={<ManageCategoryPage />} />
+                      <Route path="/manage-categories/:catoryId" element={<CategoryDetailsPage />} />
+
+                      {/* Corporate Service Routes */}
+                      <Route path="/view" element={<ViewAssetsPage />} />
+                      <Route path="/view/:assetId" element={<ViewAssetDetailsPage />} />
+                      <Route path="/create-asset" element={<CreateAssetPage />} />
+                      <Route path="/transfer-asset" element={<TransferAssetPage />} />
+                      <Route path="/retrieve-asset" element={<RetrieveAssetPage />} />
+                      <Route path="/history/:id" element={<AssetHistoryDetailPage />} />
+                      <Route path="/history" element={<AllAssetHistoriesPage />} />
+
+                      {/* IT support Routes */}
+                      <Route path="/it-assets" element={<ITAssetsPage />} />
+                      <Route path="/it-assets/:assetId" element={<ITAssetDetailsPage />} />
                     </Route>
-                  </Routes>
-                </AssetHistoryProvider>
-              </DropdownProvider>
-            </AssetProvider>
+                  </Route>
+                </Routes>
+              </AssetHistoryProvider>
+            </DropdownProvider>
+          </AssetProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

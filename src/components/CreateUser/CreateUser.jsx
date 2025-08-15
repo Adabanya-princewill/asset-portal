@@ -92,6 +92,7 @@ const CreateUser = () => {
           <option value="AUDIT">Audit</option>
           <option value="FINANCE">Finance</option>
           <option value="IT SUPPORT">IT Support</option>
+          <option value="CORPORATE_SERVICE">Corporate Service</option>
           <option value="INTERNAL CONTROL">Internal Control</option>
         </select>
       </div>
@@ -119,7 +120,7 @@ const CreateUser = () => {
           className="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none text-sm"
         >
           <option value="">-- Select Department --</option>
-          {departments.map((dept) => (
+          {departments?.map((dept) => (
             <option key={dept.departmentId} value={dept.departmentId}>
               {dept.departmentName}
             </option>
