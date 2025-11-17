@@ -12,7 +12,7 @@ const ManageDepartmentPage = () => {
   const [editName, setEditName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(10);
   const navigate = useNavigate();
 
   const handleCreate = async () => {
@@ -123,15 +123,15 @@ const ManageDepartmentPage = () => {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Department Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Created By
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>

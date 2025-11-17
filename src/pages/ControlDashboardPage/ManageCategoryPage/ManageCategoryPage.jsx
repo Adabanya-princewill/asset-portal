@@ -153,13 +153,13 @@ const ManageCategoryPage = () => {
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase">Description</th>
-                <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase">Useful Life (yrs)</th>
-                <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase">Depreciation Rate</th>
-                <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Description</th>
+                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Useful Life (yrs)</th>
+                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Depreciation Rate</th>
+                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Actions</th>
               </tr>
             </thead>
 

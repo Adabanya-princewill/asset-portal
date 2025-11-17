@@ -42,6 +42,11 @@ export const adminMenuItems = [
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
+    label: "Create Department",
+    to: "/manage-departments",
+    icon: <FaBuildingUser size={20} />,
+  },
+  {
     label: "User Management",
     to: "/user",
     icon: <FaUsersGear size={20} />,
@@ -52,6 +57,7 @@ export const adminMenuItems = [
       { label: "Deactivate User", to: "/delete-user" },
     ],
   },
+  
 ];
 
 
@@ -89,6 +95,11 @@ export const auditMenuItems = [
     label: "Dashboard",
     to: "/",
     icon: <TbLayoutDashboardFilled size={20} />,
+  },
+  {
+    label: "View Log",
+    to: "/view-log",
+    icon: <FaHistory size={20} />,
   }
 ];
 

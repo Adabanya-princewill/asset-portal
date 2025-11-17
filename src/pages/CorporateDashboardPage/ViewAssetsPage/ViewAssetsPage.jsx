@@ -4,15 +4,15 @@ import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Cards } from '../../../components/Cards/Cards';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAssetContext } from '../../../contexts/AssetContext';
-
+import '../../../index.css'; // ensure Tailwind + custom CSS is available
 
 const ViewAssetsPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-    const location = useLocation();
-    const initialStatus = location.state?.status || 'TOTAL ASSETS';
-    const [status, setStatus] = useState(initialStatus);
+  const location = useLocation();
+  const initialStatus = location.state?.status || 'TOTAL ASSETS';
+  const [status, setStatus] = useState(initialStatus);
 
   const navigate = useNavigate();
   const {
@@ -25,7 +25,7 @@ const ViewAssetsPage = () => {
     getAssetsByStatus
   } = useAssetContext();
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 15;
 
   useEffect(() => {
     if (assets.length > 0) return;
@@ -67,6 +67,17 @@ const ViewAssetsPage = () => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
   };
+
+  // 🌀 Tailwind blinking animation
+  // Add this in your global CSS (index.css or tailwind.css):
+  /*
+  @keyframes blink {
+    50% { opacity: 0.4; }
+  }
+  .blink {
+    animation: blink 1s infinite;
+  }
+  */
 
   return (
     <>
@@ -130,34 +141,38 @@ const ViewAssetsPage = () => {
       {/* Table */}
       <div className="overflow-x-auto mt-8">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-[#00B0F0] font-bold text-[#000000]">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset Tag</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset Name</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Purchase Price</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Approval Status</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Asset Tag</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Asset Name</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Location</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Department</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Purchase Price</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Current Value</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Approval Status</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Category</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan="6" className="px-4 py-4 text-center text-gray-500">
+                <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
                   Loading assets...
                 </td>
               </tr>
             ) : currentAssets.length === 0 ? (
               <tr>
-                <td colSpan="6" className="px-4 py-4 text-center text-gray-500">
+                <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
                   No assets found
                 </td>
               </tr>
             ) : (
               currentAssets.map((asset) => (
-                <tr key={asset.assetId} onClick={() => navigate(`/view/${asset.assetId}`,  { state: { asset, status } })}
-                  className="hover:bg-gray-50">
+                <tr
+                  key={asset.assetId}
+                  onClick={() => navigate(`/view/${asset.assetId}`, { state: { asset, status } })}
+                  className="hover:bg-gray-50 cursor-pointer"
+                >
                   <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{asset.assetTag}</td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">{asset.assetName}</td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -170,10 +185,26 @@ const ViewAssetsPage = () => {
                     {asset.purchasePrice || '--'}
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {asset.currentValue || '--'}
+                  </td>
+
+                  {/* ✅ Color + Blink Status */}
+                  <td
+                    className={`px-4 py-4 whitespace-nowrap text-sm font-semibold ${
+                      asset.approvalStatus === 'PENDING'
+                        ? 'text-red-600 blink'
+                        : asset.approvalStatus === 'APPROVED'
+                        ? 'text-green-600'
+                        : asset.approvalStatus === 'REJECTED'
+                        ? 'text-orange-500 blink'
+                        : 'text-gray-600'
+                    }`}
+                  >
                     {asset.approvalStatus.charAt(0) + asset.approvalStatus.slice(1).toLowerCase()}
                   </td>
+
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {asset.category.categoryName || "--"}
+                    {asset.category?.categoryName || '--'}
                   </td>
                 </tr>
               ))
@@ -202,8 +233,9 @@ const ViewAssetsPage = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-3 py-1 text-sm rounded ${currentPage === page ? 'bg-blue-600 text-white' : 'border border-gray-300 hover:bg-gray-50'
-                  }`}
+                className={`px-3 py-1 text-sm rounded ${
+                  currentPage === page ? 'bg-blue-600 text-white' : 'border border-gray-300 hover:bg-gray-50'
+                }`}
               >
                 {page}
               </button>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // backend URL
-const baseUrl = "http://localhost:9000/api";
+const baseUrl = "http://10.0.240.31:9024/api";
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -17,10 +17,15 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     // Do not retry for login or refresh-token calls
-    const isLogin = originalRequest.url.includes('/auth/login');
-    const isRefresh = originalRequest.url.includes('/auth/refresh-token');
+    const isLogin = originalRequest.url.includes("/auth/login");
+    const isRefresh = originalRequest.url.includes("/auth/refresh-token");
 
-    if (error.response?.status === 401 && !originalRequest._retry && !isLogin && !isRefresh) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isLogin &&
+      !isRefresh
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -30,14 +35,14 @@ api.interceptors.response.use(
           isRefreshing = false;
 
           // Update token in header and retry original request
-          originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
           return api(originalRequest);
         }
       } catch (refreshError) {
         isRefreshing = false;
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = 'http://localhost:5173/login';
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.replace(`${window.location.origin}/login`);
         return Promise.reject(refreshError);
       }
     }
@@ -45,7 +50,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 
 // Adds token to every request if available
 api.interceptors.request.use((config) => {
@@ -98,7 +102,7 @@ export const refreshToken = async () => {
   } catch (error) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "http://localhost:5173/login";
+    window.location.replace(`${window.location.origin}/login`);
     throw error;
   }
 };
@@ -357,9 +361,15 @@ export const deleteDepartment = async (id) => {
     } else {
       throw new Error(response.data?.message || "Failed to delete department");
     }
-  } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to delete department";
-    throw new Error(message);
+  } catch (error) {    
+    console.log(error.status)
+    if (error.status === 403) {
+      const message = "You do not have permission to delete this department.";
+      throw new Error(message);
+    } else {
+      const message = error.response?.data?.message || error.message || "Failed to delete department";
+      throw new Error(message);
+    }
   }
 };
 

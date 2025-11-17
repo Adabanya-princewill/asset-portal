@@ -31,6 +31,8 @@ const MobileSidebar = ({
     menuItems = controlMenuItems;
   } else if (userRole === 'CORPORATE_SERVICE') {
     menuItems = corporateMenuItems;
+  } else if (userRole === 'SUPER_ADMIN') {
+    menuItems = adminMenuItems;
   }
 
   const isSubmenuOpen = (key) => {

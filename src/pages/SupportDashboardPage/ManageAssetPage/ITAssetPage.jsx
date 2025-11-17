@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronLeft, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { getAssetByCategoryName, getAssetByStatus } from '../../../services/apiServices';
-import { useAssetContext } from '../../../contexts/AssetContext';
+import { getAssetByCategoryName } from '../../../services/apiServices';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleApproveAsset, handleRejectAsset } from '../../../utils/assetActions';
 
 
 const ITAssetsPage = () => {
@@ -13,7 +11,7 @@ const ITAssetsPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +22,6 @@ const ITAssetsPage = () => {
     setLoading(true);
     try {
       const res = await getAssetByCategoryName("Laptop");
-      console.log(res);
       const reversed = res.reverse() || [];
       setAssets(reversed);
       setCurrentPage(1);
@@ -36,7 +33,7 @@ const ITAssetsPage = () => {
     }
   };
 
-  // Pagination + Search (same as before)
+  // Search filter
   const filteredAssets = assets?.filter(asset =>
     asset?.assetName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (asset?.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -57,7 +54,7 @@ const ITAssetsPage = () => {
     <div className="p-6 max-w-6xl mx-auto">
       <div className="bg-white rounded-lg">
 
-        {/* Search */}
+        {/* Search Bar */}
         <div className="py-4 border-b border-gray-200 flex justify-end">
           <div className="relative w-80">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -77,7 +74,7 @@ const ITAssetsPage = () => {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
                 <th className="px-4 py-3 text-left">Asset ID</th>
                 <th className="px-4 py-3 text-left">Asset Tag</th>
@@ -94,6 +91,7 @@ const ITAssetsPage = () => {
                 <th className="px-4 py-3 text-left">User</th>
               </tr>
             </thead>
+
             <tbody className="bg-white divide-y divide-gray-200">
               {loading ? (
                 <tr>
@@ -116,7 +114,17 @@ const ITAssetsPage = () => {
                     <td className="px-4 py-2">{asset.assetName}</td>
                     <td className="px-4 py-2">{asset.description}</td>
                     <td className="px-4 py-2">{asset.assetStatus}</td>
-                    <td className="px-4 py-2">{asset.approvalStatus}</td>
+
+                    {/* Approval Status — Blinking if Pending */}
+                    <td className={`px-4 py-2 font-semibold 
+                      ${asset.approvalStatus === 'Approved'
+                        ? 'text-green-600'
+                        : 'text-green-600 blink'
+                      }`}
+                    >
+                      {asset.approvalStatus}
+                    </td>
+
                     <td className="px-4 py-2">{asset.condition}</td>
                     <td className="px-4 py-2">{asset.warrantyExpirationDate}</td>
                     <td className="px-4 py-2">{asset.category}</td>
@@ -129,7 +137,6 @@ const ITAssetsPage = () => {
             </tbody>
           </table>
         </div>
-
 
         {/* Pagination */}
         {totalPages > 1 && (

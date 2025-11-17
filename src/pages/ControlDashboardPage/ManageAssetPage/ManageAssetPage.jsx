@@ -5,6 +5,7 @@ import { getAssetByStatus } from '../../../services/apiServices';
 import { useAssetContext } from '../../../contexts/AssetContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleApproveAsset, handleRejectAsset } from '../../../utils/assetActions';
+
 const statusTabs = ['PENDING', 'APPROVED', 'REJECTED'];
 
 const ManageAssetsPage = () => {
@@ -15,7 +16,7 @@ const ManageAssetsPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
   const { cache, updateCache, clearCacheFor } = useAssetContext();
 
@@ -60,7 +61,7 @@ const ManageAssetsPage = () => {
       fetchAssets,
     });
 
-  // Pagination + Search (same as before)
+  // Pagination + Search
   const filteredAssets = assets.filter(asset =>
     asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (asset.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
@@ -79,6 +80,19 @@ const ManageAssetsPage = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <style>
+        {`
+          /* Custom blink animation */
+          @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+          }
+          .animate-blink {
+            animation: blink 1.2s infinite;
+          }
+        `}
+      </style>
+
       <div className="bg-white rounded-lg">
 
         {/* Status Tabs */}
@@ -120,27 +134,27 @@ const ManageAssetsPage = () => {
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Asset Tag
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Asset Name
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Department
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Created By
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Approval Status
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Created At
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -161,7 +175,11 @@ const ManageAssetsPage = () => {
                 </tr>
               ) : (
                 currentAssets.map((asset) => (
-                  <tr onClick={() => navigate(`/manage-assets/${asset.assetId}`, { state: { asset, status } })} key={asset.assetId} className="hover:bg-gray-50">
+                  <tr
+                    onClick={() => navigate(`/manage-assets/${asset.assetId}`, { state: { asset, status } })}
+                    key={asset.assetId}
+                    className="hover:bg-gray-50 cursor-pointer"
+                  >
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {asset.assetTag}
                     </td>
@@ -174,12 +192,23 @@ const ManageAssetsPage = () => {
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       {asset.createdBy?.username || '—'}
                     </td>
-                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+
+                    {/* ✅ Dynamic Approval Status with Blinking for Pending */}
+                    <td
+                      className={`px-4 py-4 whitespace-nowrap text-sm font-semibold
+                        ${asset.approvalStatus === 'PENDING'
+                          ? 'text-red-600 animate-blink'
+                          : asset.approvalStatus === 'APPROVED'
+                          ? 'text-green-600'
+                          : 'text-orange-500'}`}
+                    >
                       {asset.approvalStatus.charAt(0) + asset.approvalStatus.slice(1).toLowerCase()}
                     </td>
+
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(asset.createdAt).toLocaleDateString("en-GB")}
                     </td>
+
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
                         {status === 'PENDING' && (

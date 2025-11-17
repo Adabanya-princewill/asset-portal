@@ -64,6 +64,7 @@ const ViewAssetDetailsPage = () => {
         <div><strong>Location:</strong> {asset.location?.locationName}</div>
         <div><strong>Department:</strong> {asset.department?.departmentName || '--'}</div>
         <div><strong>Purchase Price:</strong> ₦{asset.purchasePrice}</div>
+        <div><strong>Current Value:</strong> ₦{asset.currentValue}</div>
         <div><strong>Condition:</strong> {asset.condition}</div>
         <div><strong>Acquisition Date:</strong> {asset.acquisitionDate}</div>
         <div><strong>Warranty Expiration:</strong> {asset.warrantyExpirationDate}</div>

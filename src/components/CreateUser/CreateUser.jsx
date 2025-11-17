@@ -89,11 +89,11 @@ const CreateUser = () => {
         >
           <option value="">-- Select Role --</option>
           <option value="ADMIN">Admin</option>
-          <option value="AUDIT">Audit</option>
+          <option value="AUDITOR">Audit</option>
           <option value="FINANCE">Finance</option>
-          <option value="IT SUPPORT">IT Support</option>
+          <option value="IT_SUPPORT">IT Support</option>
           <option value="CORPORATE_SERVICE">Corporate Service</option>
-          <option value="INTERNAL CONTROL">Internal Control</option>
+          <option value="INTERNAL_CONTROL">Internal Control</option>
         </select>
       </div>
 

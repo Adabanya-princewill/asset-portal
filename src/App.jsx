@@ -75,6 +75,9 @@ export default function App() {
                       {/* IT support Routes */}
                       <Route path="/it-assets" element={<ITAssetsPage />} />
                       <Route path="/it-assets/:assetId" element={<ITAssetDetailsPage />} />
+
+                      {/* Audit Routes
+                      <Route path="/view-log" element={<AuditLogPage />} /> */}
                     </Route>
                   </Route>
                 </Routes>
