@@ -37,6 +37,17 @@ const LocationModal = ({
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Short Code</label>
+            <input
+              type="text"
+              value={modalData.shortCode}
+              onChange={(e) => handleModalInputChange('shortCode', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              placeholder="Enter short code..."
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
             <textarea
               value={modalData.address}

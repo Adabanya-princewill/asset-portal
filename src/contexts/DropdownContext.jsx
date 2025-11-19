@@ -80,6 +80,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getDepartments, getLocations, getCategories } from '../services/apiServices';
 import { AuthContext } from './AuthContext';
 
+
 const DropdownContext = createContext();
 export const useDropdownContext = () => useContext(DropdownContext);
 

@@ -46,9 +46,8 @@ const CreateAssetPage = () => {
       const res = await createAsset(payload);
       toast.success(res || "Asset created successfully!");
       setFormData({
-        assetTag: "",
+        shortCode: "",
         assetName: "",
-        barcode: "",
         description: "",
         acquisitionDate: "",
         purchasePrice: "",
@@ -99,9 +98,8 @@ const CreateAssetPage = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <TextInput label="Asset Tag" name="assetTag" value={formData.assetTag} onChange={handleChange} required />
+              <TextInput label="Short Code" name="shortCode" value={formData.shortCode} onChange={handleChange} required />
               <TextInput label="Asset Name" name="assetName" value={formData.assetName} onChange={handleChange} required />
-              <TextInput label="Barcode" name="barcode" value={formData.barcode} onChange={handleChange} required />
               <TextInput label="Purchase Price" name="purchasePrice" type="number" value={formData.purchasePrice} onChange={handleChange} required />
               <TextInput label="Acquisition Date" name="acquisitionDate" type="date" value={formData.acquisitionDate} onChange={handleChange} required />
               <TextInput label="Warranty Expiry Date" name="warrantyExpirationDate" type="date" value={formData.warrantyExpirationDate} onChange={handleChange} required />

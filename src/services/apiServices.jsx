@@ -188,6 +188,7 @@ export const getAssetByCategoryName = async (categoryName) => {
 };
 
 export const deleteUser = async (employeeId) => {
+  console.log("Deleting user with employeeId:", employeeId);
   try {
     const response = await api.delete(`/auth/delete?employeeId=${employeeId}`);
     return response;
@@ -213,6 +214,45 @@ export const createUser = async (formData) => {
     throw new Error(message);
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const response = await api.get(`/ad/all-users`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch users:", error);
+    throw error;
+  }
+};
+
+export const editUserRole = async (payload) => {
+  try {
+    const response = await api.put(`/ad/edit-role`, payload);
+    if (response.data?.code === "200") {
+      return response.data?.message;
+    } else {
+      throw new Error(response.data?.message);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error?.response?.data?.message;
+  }
+};
+
+// export const EditUserRole = async (username, role) => {
+//   try {
+//     const response = await api.put(`/ad/edit-role`, { username, role });
+//     if (response.data?.code === "200") {
+//       return response.data?.message;
+//     } else {
+//       throw new Error(response.data?.message || "Failed to edit role");
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     const message = error.response?.data?.message || error.message || "Failed to edit user role";
+//     throw new Error(message);
+//   }
+// };
 
 export const transferAsset = async (payload) => {
   try {
@@ -256,21 +296,6 @@ export const retrieveAsset = async (retrievalType, payload) => {
   }
 };
 
-
-export const EditUserRole = async (username, role) => {
-  try {
-    const response = await api.put(`/ad/edit-role`, { username, role });
-    if (response.data?.code === "200") {
-      return response.data?.message;
-    } else {
-      throw new Error(response.data?.message || "Failed to edit role");
-    }
-  } catch (error) {
-    console.log(error);
-    const message = error.response?.data?.message || error.message || "Failed to edit user role";
-    throw new Error(message);
-  }
-};
 
 
 export const getUserProfile = async () => {

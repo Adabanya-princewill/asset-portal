@@ -1,19 +1,10 @@
-import { useContext } from 'react'
-import './FinanceDashboardPage.css'
-import { AuthContext } from '../../contexts/AuthContext'
+import './FinanceDashboardPage.css';
+import DashBoardView from '../../components/DashBoardView';
 
 
 const FinanceDashboardPage = () => {
-  const { user } = useContext(AuthContext);
   return (
-    <>
-      <div className="main-dashboard">
-        <span className='page-title'>Dashboard</span>
-        <div className='dashboard'>
-          <h1>Welcome Finance {user?.username} . id: {user?.id}</h1>
-        </div>
-      </div>
-    </>
+   <DashBoardView />
   )
 }
 

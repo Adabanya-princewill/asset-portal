@@ -15,15 +15,16 @@ const ManageCategoryPage = () => {
   const { categories, refreshDropdown } = useDropdownContext();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalData, setModalData] = useState({
     categoryName: '',
+    shortCode: '',
     description: '',
-    usefulLifeYears: '',
+    usefulLifeMonths: '', // store months in frontend
     depreciationRate: '',
     categoryId: null
   });
@@ -32,8 +33,9 @@ const ManageCategoryPage = () => {
     setIsEditing(false);
     setModalData({
       categoryName: '',
+      shortCode: '',
       description: '',
-      usefulLifeYears: '',
+      usefulLifeMonths: '',
       depreciationRate: '',
       categoryId: null
     });
@@ -44,9 +46,10 @@ const ManageCategoryPage = () => {
     setIsEditing(true);
     setModalData({
       categoryName: cat.categoryName,
+      //shortCode: cat.shortCode,
       description: cat.description,
-      usefulLifeYears: cat.usefulLifeYears,
-      depreciationRate: cat.depreciationRate,
+      usefulLifeMonths: cat.usefulLifeYears * 12, // convert years → months for display
+      depreciationRate: cat.depreciationRate * 100,
       categoryId: cat.categoryId
     });
     setShowModal(true);
@@ -62,23 +65,29 @@ const ManageCategoryPage = () => {
   };
 
   const validateInputs = () => {
-    const { categoryName, description, usefulLifeYears, depreciationRate } = modalData;
+    const { categoryName, description, usefulLifeMonths, depreciationRate } = modalData;
     return categoryName.trim() && description.trim() &&
-      usefulLifeYears && depreciationRate && !isNaN(depreciationRate);
+      usefulLifeMonths && depreciationRate && !isNaN(depreciationRate);
   };
+
+  // Convert months → years for backend only
+  const convertMonthsToYears = (months) => Number(months) / 12;
 
   const handleCreate = async () => {
     if (!validateInputs()) {
       toast.error("All fields are required and must be valid");
       return;
     }
+
     try {
       const res = await createCategory({
         categoryName: modalData.categoryName.trim(),
+        shortCode: modalData.shortCode.trim(),
         description: modalData.description.trim(),
-        usefulLifeYears: modalData.usefulLifeYears,
-        depreciationRate: Number(modalData.depreciationRate)
+        usefulLifeYears: convertMonthsToYears(modalData.usefulLifeMonths),
+        depreciationRate: Number(modalData.depreciationRate) / 100
       });
+
       toast.success(res || "Category created");
       handleCloseModal();
       refreshDropdown("categories");
@@ -92,13 +101,16 @@ const ManageCategoryPage = () => {
       toast.error("All fields are required and must be valid");
       return;
     }
+
     try {
       const res = await editCategory(modalData.categoryId, {
         categoryName: modalData.categoryName.trim(),
+        //shortCode: modalData.shortCode.trim(),
         description: modalData.description.trim(),
-        usefulLifeYears: modalData.usefulLifeYears,
-        depreciationRate: Number(modalData.depreciationRate)
+        usefulLifeYears: convertMonthsToYears(modalData.usefulLifeMonths),
+        depreciationRate: Number(modalData.depreciationRate) / 100
       });
+
       toast.success(res || "Category updated");
       handleCloseModal();
       refreshDropdown("categories");
@@ -155,11 +167,11 @@ const ManageCategoryPage = () => {
           <table className="w-full">
             <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
-                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Name</th>
-                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Description</th>
-                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Useful Life (yrs)</th>
-                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Depreciation Rate</th>
-                <th className="px-6 py-3 text-left text-xs text-500 uppercase">Actions</th>
+                <th className="px-6 py-3 text-left text-xs uppercase">Name</th>
+                <th className="px-6 py-3 text-left text-xs uppercase">Description</th>
+                <th className="px-6 py-3 text-left text-xs uppercase">Useful Life (months)</th>
+                <th className="px-6 py-3 text-left text-xs uppercase">Depreciation Rate</th>
+                <th className="px-6 py-3 text-left text-xs uppercase">Actions</th>
               </tr>
             </thead>
 
@@ -171,21 +183,20 @@ const ManageCategoryPage = () => {
                   </td>
                 </tr>
               ) : currentCategories.map(cat => (
-                <tr onClick={() => navigate(`/manage-categories/${cat.categoryId}`, { state: cat })} key={cat.categoryId} className="hover:bg-gray-50">
+                <tr key={cat.categoryId} className="hover:bg-gray-50">
                   <td className="px-6 py-4">{cat.categoryName}</td>
                   <td className="px-6 py-4">{cat.description}</td>
-                  <td className="px-6 py-4">{cat.usefulLifeYears}</td>
-                  <td className="px-6 py-4">{cat.depreciationRate}</td>
+                  <td className="px-6 py-4">{cat.usefulLifeYears * 12}</td>
+                  <td className="px-6 py-4">{(cat.depreciationRate * 100).toFixed(1)}%</td>
                   <td className="px-6 py-4 flex gap-2">
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenEditModal(cat);
-                      }}
+                      onClick={() => handleOpenEditModal(cat)}
                       className="text-blue-600 hover:text-blue-900 p-1">
                       <Edit size={16} />
                     </button>
-                    <button onClick={(e) =>{ e.stopPropagation(); handleDelete(cat.categoryId)}} className="text-red-600 hover:text-red-900 p-1">
+                    <button
+                      onClick={() => handleDelete(cat.categoryId)}
+                      className="text-red-600 hover:text-red-900 p-1">
                       <Trash2 size={16} />
                     </button>
                   </td>
@@ -243,6 +254,14 @@ const ManageCategoryPage = () => {
                   className="w-full border px-3 py-2 rounded" />
               </div>
               <div>
+                <label className="block text-sm font-medium">Short Code</label>
+                <input type="text" value={modalData.shortCode}
+                  onChange={e => handleModalChange('shortCode', e.target.value)}
+                  className="w-full border px-3 py-2 rounded" placeholder="OE,IT,etc" />
+                  
+              </div>
+              
+              <div>
                 <label className="block text-sm font-medium">Description</label>
                 <textarea value={modalData.description}
                   onChange={e => handleModalChange('description', e.target.value)}
@@ -250,15 +269,15 @@ const ManageCategoryPage = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium">Useful Life (years)</label>
+                  <label className="block text-sm font-medium">Useful Life (months)</label>
                   <input type="number" min="1" step="1"
-                    value={modalData.usefulLifeYears}
-                    onChange={e => handleModalChange('usefulLifeYears', e.target.value)}
+                    value={modalData.usefulLifeMonths}
+                    onChange={e => handleModalChange('usefulLifeMonths', e.target.value)}
                     className="w-full border px-3 py-2 rounded" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">Depreciation Rate</label>
-                  <input type="number" min="0" max="1" step="0.01"
+                  <label className="block text-sm font-medium">Depreciation Rate (%)</label>
+                  <input type="number" min="0" max="100" step="0.1"
                     value={modalData.depreciationRate}
                     onChange={e => handleModalChange('depreciationRate', e.target.value)}
                     className="w-full border px-3 py-2 rounded" />

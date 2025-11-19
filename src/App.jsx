@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { UserProvider } from "./contexts/UserContext";
 import { Toaster } from 'react-hot-toast';
 import LoginPage from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -37,6 +38,7 @@ export default function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <BrowserRouter>
         <AuthProvider>
+          <UserProvider>
           <AssetProvider>
             <DropdownProvider>
               <AssetHistoryProvider>
@@ -84,6 +86,7 @@ export default function App() {
               </AssetHistoryProvider>
             </DropdownProvider>
           </AssetProvider>
+          </UserProvider>
         </AuthProvider>
       </BrowserRouter>
     </>

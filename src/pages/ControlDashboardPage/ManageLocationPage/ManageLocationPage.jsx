@@ -17,6 +17,7 @@ const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [modalData, setModalData] = useState({
     locationName: '',
+    shortCode: '',
     address: '',
     locationId: null
   });

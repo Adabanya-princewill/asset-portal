@@ -32,7 +32,7 @@ export const controlMenuItems = [
     label: "Manage Departments",
     to: "/manage-departments",
     icon: <FaBuildingUser size={20} />,
-  }
+  },
 ];
 
 export const adminMenuItems = [
@@ -53,13 +53,11 @@ export const adminMenuItems = [
     submenuKey: "user",
     submenu: [
       { label: "Create User", to: "/create-user" },
-      { label: "Edit Role", to: "/edit-user" },
-      { label: "Deactivate User", to: "/delete-user" },
+     // { label: "Edit Role", to: "/edit-user" },
+      //{ label: "Deactivate User", to: "/delete-user" },
     ],
   },
-  
 ];
-
 
 export const corporateMenuItems = [
   {
@@ -100,7 +98,7 @@ export const auditMenuItems = [
     label: "View Log",
     to: "/view-log",
     icon: <FaHistory size={20} />,
-  }
+  },
 ];
 
 export const financeMenuItems = [
@@ -108,6 +106,18 @@ export const financeMenuItems = [
     label: "Dashboard",
     to: "/",
     icon: <TbLayoutDashboardFilled size={20} />,
+  },
+
+  {
+    label: "View Assets",
+    to: "/view",
+    icon: <CiBoxList size={20} />,
+  },
+
+  {
+    label: "Manage Categories",
+    to: "/manage-categories",
+    icon: <TbCategoryPlus size={20} />,
   }
 ];
 
@@ -120,11 +130,11 @@ export const supportMenuItems = [
   {
     label: "Transfer Assets",
     to: "/transfer-asset",
-    icon: <BiTransferAlt size={20} />
+    icon: <BiTransferAlt size={20} />,
   },
   {
     label: "Assets",
     to: "/it-assets",
-    icon: <BsDatabaseFillGear size={20} />
-  }
+    icon: <BsDatabaseFillGear size={20} />,
+  },
 ];
