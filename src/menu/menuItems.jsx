@@ -48,14 +48,8 @@ export const adminMenuItems = [
   },
   {
     label: "User Management",
-    to: "/user",
+    to: "/create-user",
     icon: <FaUsersGear size={20} />,
-    submenuKey: "user",
-    submenu: [
-      { label: "Create User", to: "/create-user" },
-     // { label: "Edit Role", to: "/edit-user" },
-      //{ label: "Deactivate User", to: "/delete-user" },
-    ],
   },
 ];
 

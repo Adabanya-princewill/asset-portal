@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import '../SideBar/SideBar.css';
-import logo from '../../assets/novabank_logo.png';
+import logo from '../../assets/novabank_logo copy.png';
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { AuthContext } from '../../contexts/AuthContext';
 import { adminMenuItems, auditMenuItems, controlMenuItems, corporateMenuItems, financeMenuItems, supportMenuItems } from '../../menu/menuItems';
@@ -50,7 +50,7 @@ const SideBar = ({
       <img
         src={logo}
         alt="Nova Bank Logo"
-        className="w-[134.93px] h-[50px]"
+        className="w-[130px] h-[80px]"
       />
       <div className="navlinks">
         {menuItems.map((item, idx) =>

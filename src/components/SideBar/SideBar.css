@@ -18,7 +18,7 @@
   transform: translateY(0);
   pointer-events: auto;
   padding: 12px;
-  border-left: 2px solid #D9D9D9;
+  border-left: 2px solid #d9d9d9;
   margin-left: 18px;
   display: flex;
   flex-direction: column;
@@ -29,26 +29,31 @@
   margin-top: 60px;
   display: flex;
   flex-direction: column;
-  /* gap: 20px;   */
-  color: #000000;
+  gap: 20px;
+  color: #ffffff;
   font-weight: 500;
   font-size: 16px;
+  width: 100%;
 }
 
 .sidebar {
-  background-color: #F9FAFA;
-  border-radius: 16px;
-  height: 97vh;
+  background-color: #00b0f0;
+  height: 100vh;
   position: fixed;
   display: flex;
-  width: 20%;
   padding: 32px 24px;
   flex-direction: column;
   overflow: auto;
+  align-items: center;
+  background-image: url("/src/assets/spiralImage.jpg");
+  background-size: cover;
 }
 
 .sidebar-link-active {
-  color: #01B0F1;
+  color: #00b0f0;
+  background-color: #ffffff;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .sidebar-link {
@@ -57,6 +62,7 @@
   white-space: nowrap;
   gap: 10px;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
@@ -64,6 +70,13 @@
   padding: 4px 8px;
 }
 
+.submenu-link.active {
+  color: #00b0f0;
+   padding: 4px 8px;
+  background-color: #ffffff;
+   padding: 5px;
+  border-radius: 10px;
+}
 
 @media (max-width: 1024px) {
   .sidebar {
@@ -72,9 +85,9 @@
 }
 
 @media (min-width: 1441px) {
-  .sidebar {
-    width: 15%;
-  }
+  /* .sidebar {
+    width: 18%;
+  } */
 }
 
 @media (max-width: 900px) {
@@ -89,8 +102,8 @@
     right: 0;
     width: 300px;
     height: 100vh;
-      background-color: #daecee;
-    /* background-color: #aacde7; */
+    /* background-color: #daecee; */
+    background-color: #aacde7;
     color: black;
     padding: 20px;
     border-radius: 20px 0 0 20px;
@@ -107,5 +120,4 @@
     opacity: 1;
     pointer-events: auto;
   }
-
 }
