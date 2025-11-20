@@ -46,7 +46,7 @@ const ManageCategoryPage = () => {
     setIsEditing(true);
     setModalData({
       categoryName: cat.categoryName,
-      //shortCode: cat.shortCode,
+      shortCode: cat.shortCode,
       description: cat.description,
       usefulLifeMonths: cat.usefulLifeYears * 12, // convert years → months for display
       depreciationRate: cat.depreciationRate * 100,
@@ -105,7 +105,7 @@ const ManageCategoryPage = () => {
     try {
       const res = await editCategory(modalData.categoryId, {
         categoryName: modalData.categoryName.trim(),
-        //shortCode: modalData.shortCode.trim(),
+        shortCode: modalData.shortCode.trim(),
         description: modalData.description.trim(),
         usefulLifeYears: convertMonthsToYears(modalData.usefulLifeMonths),
         depreciationRate: Number(modalData.depreciationRate) / 100

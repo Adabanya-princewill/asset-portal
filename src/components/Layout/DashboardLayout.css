@@ -1,37 +1,35 @@
 .wrapper {
   display: grid;
   grid-template-columns: 20% 1fr;
-  padding: 10px;
-     /* background-color: #F9FAFA; */
-
-    /* height: 100vh; */
-
-  /* column-gap: 40px; */
-
-  /*index.css should have something like this*/
-  max-width: 1440px;
   margin: 0 auto;
 }
 
 .outlets {
-  margin-left: 320px;
-  width: 1010px;
-  /* overflow-x: hidden; */
+  /* flex: 1; */
+  margin-left: 300px;
+  width: 1050px;
+}
+
+@media (min-width: 2560px) {
+  .outlets {
+    /* background-color: blue; */
+    margin-left: 320px;
+    width: 1050px;
+  }
 }
 
 @media (min-width: 1441px) {
   .outlets {
-    margin-left: 420px;
-    width: 1015px;
+    /* background-color: red; */
+    margin-left: 300px;
+    width: 1210px;
   }
 }
 
-
 @media (max-width: 1024px) {
   .outlets {
-    /* wasn't good in macbook initial value - 300px */
     margin-left: 280px;
-    width: 735px
+    width: 735px;
   }
 }
 

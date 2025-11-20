@@ -144,8 +144,6 @@
 
 // export default CreateUser;
 
-
-
 import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -164,7 +162,6 @@ const CreateUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { departments } = useDropdownContext();
 
- 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -183,7 +180,6 @@ const CreateUser = () => {
         employeeId: "",
         departmentId: "",
       });
-
     } catch (error) {
       toast.error(error.message || "Failed to create user");
     } finally {
@@ -257,7 +253,9 @@ const CreateUser = () => {
             </label>
             <select
               value={formData.departmentId}
-              onChange={(e) => handleInputChange("departmentId", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("departmentId", e.target.value)
+              }
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00B0F0] focus:outline-none"
               required
             >
@@ -271,11 +269,12 @@ const CreateUser = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end">
+          <div className="col-span-full flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="cursor-pointer w-full md:w-auto flex justify-center items-center gap-2 bg-[#00B0F0] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#0090c0] transition disabled:opacity-60"
+              className="cursor-pointer flex justify-center items-center gap-2 bg-[#00B0F0] text-white 
+               font-semibold py-3 px-6 rounded-lg hover:bg-[#0090c0] transition disabled:opacity-60"
             >
               {isSubmitting ? (
                 <>
@@ -295,4 +294,3 @@ const CreateUser = () => {
 };
 
 export default CreateUser;
-

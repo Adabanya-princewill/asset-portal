@@ -239,20 +239,20 @@ export const editUserRole = async (payload) => {
   }
 };
 
-// export const EditUserRole = async (username, role) => {
-//   try {
-//     const response = await api.put(`/ad/edit-role`, { username, role });
-//     if (response.data?.code === "200") {
-//       return response.data?.message;
-//     } else {
-//       throw new Error(response.data?.message || "Failed to edit role");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     const message = error.response?.data?.message || error.message || "Failed to edit user role";
-//     throw new Error(message);
-//   }
-// };
+export const EditUserRole = async (username, role) => {
+  try {
+    const response = await api.put(`/ad/edit-role`, { username, role });
+    if (response.data?.code === "200") {
+      return response.data?.message;
+    } else {
+      throw new Error(response.data?.message || "Failed to edit role");
+    }
+  } catch (error) {
+    console.log(error);
+    const message = error.response?.data?.message || error.message || "Failed to edit user role";
+    throw new Error(message);
+  }
+};
 
 export const transferAsset = async (payload) => {
   try {

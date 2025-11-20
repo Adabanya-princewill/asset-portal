@@ -3,7 +3,7 @@
   display: grid;
   grid-template-rows: 30px 220px 1fr;
   row-gap: 30px;
-    background-color: #faf9f9;
+    /* background-color: #faf9f9; */
     height: 85vh;
     padding: 1rem;
 

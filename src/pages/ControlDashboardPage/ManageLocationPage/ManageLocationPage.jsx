@@ -24,7 +24,7 @@ const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setIsEditing(false);
-    setModalData({ locationName: '', address: '', locationId: null });
+    setModalData({ locationName: '', shortCode: '', address: '', locationId: null });
     setShowModal(true);
   };
 
@@ -32,6 +32,7 @@ const navigate = useNavigate();
     setIsEditing(true);
     setModalData({
       locationName: location.locationName,
+      shortCode: location.shortCode,
       address: location.address,
       locationId: location.locationId
     });
@@ -60,7 +61,9 @@ const navigate = useNavigate();
     try {
       const res = await createLocation({
         locationName: modalData.locationName.trim(),
+        shortCode: modalData.shortCode.trim(),
         address: modalData.address.trim()
+
       });
       toast.success(res || "Location created");
       handleCloseModal();

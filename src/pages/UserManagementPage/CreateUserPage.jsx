@@ -3,8 +3,10 @@ import CreateUser from "../../components/CreateUser/CreateUser";
 
 const CreateUserPage = () => {
   return (
-    <div style={{ height: '85vh' }} className='bg-[#faf9f9] h-screen rounded-2xl p-10 flex items-center justify-center'>
-      <CreateUser />
+    <div className="min-h-[85vh] w-full flex items-center justify-center p-6">
+      <div className="w-full max-w-6xl rounded-2xl p-10 border border-gray-100">
+        <CreateUser />
+      </div>
     </div>
   );
 };

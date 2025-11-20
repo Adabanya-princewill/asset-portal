@@ -6,7 +6,7 @@ const DashBoardView = () => {
     
   return (
      <div className="main-dashboard">
-         <div className="bg-white rounded-t-2xl">
+         <div className="rounded-t-2xl">
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-32 relative rounded-2xl">
             <div className="absolute -bottom-8 left-8">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
