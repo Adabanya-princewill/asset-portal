@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { createAsset } from "../../../services/apiServices";
-import { useDropdownContext } from "../../../contexts/DropdownContext"; // adjust path as needed
+import { useDropdownContext } from "../../../contexts/DropdownContext";
+import {
+  Package,
+  FileText,
+  DollarSign,
+  Calendar,
+  Tag,
+  MapPin,
+  Building2,
+  Users,
+} from "lucide-react";
 
 const CreateAssetPage = () => {
-  const {
-    categories,
-    departments,
-    locations,
-    loading,
-    refreshDropdown
-  } = useDropdownContext();
+  const { categories, departments, locations, loading, refreshDropdown } =
+    useDropdownContext();
 
   const [formData, setFormData] = useState({
     assetTag: "",
@@ -23,8 +28,8 @@ const CreateAssetPage = () => {
     warrantyExpirationDate: "",
     categoryId: "",
     locationId: "",
-    departmentId: "", // optional
-    employeeId: "", // optional
+    departmentId: "",
+    employeeId: "",
   });
 
   const handleChange = (e) => {
@@ -64,7 +69,7 @@ const CreateAssetPage = () => {
     }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (!categories || !departments || !locations) {
       refreshDropdown();
     }
@@ -84,88 +89,272 @@ const CreateAssetPage = () => {
   }));
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white p-8 rounded-xl shadow-md space-y-6"
-      >
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
-          Create New Asset
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 px-4 py-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Create New Asset
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Fill in the details below to register a new asset in the system
+          </p>
+        </div>
 
-        {loading ? (
-          <p className="text-center text-gray-500">Loading dropdowns...</p>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <TextInput label="Short Code" name="shortCode" value={formData.shortCode} onChange={handleChange} required />
-              <TextInput label="Asset Name" name="assetName" value={formData.assetName} onChange={handleChange} required />
-              <TextInput label="Purchase Price" name="purchasePrice" type="number" value={formData.purchasePrice} onChange={handleChange} required />
-              <TextInput label="Acquisition Date" name="acquisitionDate" type="date" value={formData.acquisitionDate} onChange={handleChange} required />
-              <TextInput label="Warranty Expiry Date" name="warrantyExpirationDate" type="date" value={formData.warrantyExpirationDate} onChange={handleChange} required />
-              <SelectInput label="Condition" name="condition" value={formData.condition} onChange={handleChange} options={[
-                { id: "GOOD", name: "GOOD" },
-                { id: "EXCELLENT", name: "EXCELLENT" },
-                { id: "FAIR", name: "FAIR" },
-                { id: "POOR", name: "POOR" },
-              ]} />
-              <TextInput label="Employee ID (optional)" name="employeeId" value={formData.employeeId} onChange={handleChange} />
-              <SelectInput label="Category" name="categoryId" value={formData.categoryId} onChange={handleChange} options={categoryOptions} required />
-              <SelectInput label="Location" name="locationId" value={formData.locationId} onChange={handleChange} options={locationOptions} required />
-              <SelectInput label="Department (optional)" name="departmentId" value={formData.departmentId} onChange={handleChange} options={departmentOptions} />
+        {/* Form Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {loading ? (
+            <div className="p-12 text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+              <p className="text-gray-600 text-lg">Loading form data...</p>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="p-8 lg:p-10">
+              {/* Basic Information Section */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-blue-100">
+                  <Tag className="w-5 h-5 text-blue-600" />
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Basic Information
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <TextInput
+                    label="Short Code"
+                    name="shortCode"
+                    value={formData.shortCode}
+                    onChange={handleChange}
+                    required
+                    placeholder="e.g., TAB,CHA,etc."
+                  />
+                  <TextInput
+                    label="Asset Name"
+                    name="assetName"
+                    value={formData.assetName}
+                    onChange={handleChange}
+                    required
+                    placeholder="e.g., Dell Laptop XPS 15"
+                  />
+                  <SelectInput
+                    label="Condition"
+                    name="condition"
+                    value={formData.condition}
+                    onChange={handleChange}
+                    options={[
+                      { id: "EXCELLENT", name: "Excellent" },
+                      { id: "GOOD", name: "Good" },
+                      { id: "FAIR", name: "Fair" },
+                      { id: "POOR", name: "Poor" },
+                    ]}
+                    required
+                  />
+                </div>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
-              />
-            </div>
+              {/* Financial Information Section */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-green-100">
+                  <DollarSign className="w-5 h-5 text-green-600" />
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Financial Details
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <TextInput
+                    label="Purchase Price"
+                    name="purchasePrice"
+                    type="number"
+                    value={formData.purchasePrice}
+                    onChange={handleChange}
+                    required
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                  <TextInput
+                    label="Acquisition Date"
+                    name="acquisitionDate"
+                    type="date"
+                    value={formData.acquisitionDate}
+                    onChange={handleChange}
+                    required
+                  />
+                  <TextInput
+                    label="Warranty Expiry Date"
+                    name="warrantyExpirationDate"
+                    type="date"
+                    value={formData.warrantyExpirationDate}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
-            >
-              Create Asset
-            </button>
-          </>
-        )}
-      </form>
+              {/* Location & Assignment Section */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-purple-100">
+                  <MapPin className="w-5 h-5 text-purple-600" />
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Location & Assignment
+                  </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <SelectInput
+                    label="Category"
+                    name="categoryId"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                    options={categoryOptions}
+                    required
+                  />
+                  <SelectInput
+                    label="Location"
+                    name="locationId"
+                    value={formData.locationId}
+                    onChange={handleChange}
+                    options={locationOptions}
+                    required
+                  />
+                  <SelectInput
+                    label="Department"
+                    name="departmentId"
+                    value={formData.departmentId}
+                    onChange={handleChange}
+                    options={departmentOptions}
+                    optional
+                  />
+                  <TextInput
+                    label="Employee ID (Optional)"
+                    name="employeeId"
+                    value={formData.employeeId}
+                    onChange={handleChange}
+                    placeholder="Optional"
+                  />
+                </div>
+              </div>
+
+              {/* Description Section */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-orange-100">
+                  <FileText className="w-5 h-5 text-orange-600" />
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Additional Details
+                  </h2>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows={4}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                    placeholder="Enter detailed description of the asset..."
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex gap-4 pt-6">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData({
+                      assetTag: "",
+                      assetName: "",
+                      barcode: "",
+                      description: "",
+                      acquisitionDate: "",
+                      purchasePrice: "",
+                      condition: "GOOD",
+                      warrantyExpirationDate: "",
+                      categoryId: "",
+                      locationId: "",
+                      departmentId: "",
+                      employeeId: "",
+                    })
+                  }
+                  className="flex-1 bg-gray-100 text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-200 transition-all duration-200 font-semibold text-lg cursor-pointer"
+                >
+                  Reset Form
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer"
+                >
+                  Create Asset
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-const TextInput = ({ label, name, value, onChange, type = "text", required = false }) => (
+const TextInput = ({
+  label,
+  name,
+  value,
+  onChange,
+  type = "text",
+  required = false,
+  placeholder = "",
+  step,
+  optional = false,
+}) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <label className="block text-sm font-semibold text-gray-700 mb-2">
+      {label} {required && <span className="text-red-500">*</span>}
+      {optional && (
+        <span className="text-gray-400 text-xs font-normal ml-1">
+          (Optional)
+        </span>
+      )}
+    </label>
     <input
       type={type}
       name={name}
       value={value}
       onChange={onChange}
       required={required}
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      placeholder={placeholder}
+      step={step}
+      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
     />
   </div>
 );
 
-const SelectInput = ({ label, name, value, onChange, options, required = false }) => (
+const SelectInput = ({
+  label,
+  name,
+  value,
+  onChange,
+  options,
+  required = false,
+  optional = false,
+}) => (
   <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <label className="block text-sm font-semibold text-gray-700 mb-2">
+      {label} {required && <span className="text-red-500">*</span>}
+      {optional && (
+        <span className="text-gray-400 text-xs font-normal ml-1">
+          (Optional)
+        </span>
+      )}
+    </label>
     <select
       name={name}
       value={value}
       onChange={onChange}
       required={required}
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white"
     >
-      <option value="">-- Select --</option>
-      {options.map((opt) => (
+      <option value="">-- Select {label} --</option>
+      {options?.map((opt) => (
         <option key={opt.id} value={opt.id}>
           {opt.name}
         </option>

@@ -11,7 +11,7 @@ const ManageLocationPage = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(10);
 const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -41,7 +41,7 @@ const navigate = useNavigate();
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setModalData({ locationName: '', address: '', locationId: null });
+    setModalData({ locationName: '', shortCode: '', address: '', locationId: null });
     setIsEditing(false);
   };
 
@@ -82,6 +82,7 @@ const navigate = useNavigate();
     try {
       const res = await editLocation(modalData.locationId, {
         locationName: modalData.locationName.trim(),
+        shortCode: modalData.shortCode.trim(),
         address: modalData.address.trim()
       });
       toast.success(res || "Location updated");
@@ -174,7 +175,7 @@ const navigate = useNavigate();
                 </tr>
               ) : (
                 currentLocations.map((loc) => (
-                  <tr onClick={() => navigate(`/manage-locations/${loc.locationId}`, { state: loc })} key={loc.locationId} className="hover:bg-gray-50">
+                  <tr className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {loc.locationName}
                     </td>

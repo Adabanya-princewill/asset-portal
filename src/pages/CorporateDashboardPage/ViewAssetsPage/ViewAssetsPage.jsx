@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Cards } from "../../../components/Cards/Cards";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAssetContext } from "../../../contexts/AssetContext";
-import "../../../index.css"; // ensure Tailwind + custom CSS is available
+import "../../../index.css";
 
 const ViewAssetsPage = () => {
   const [loading, setLoading] = useState(false);
@@ -33,12 +33,8 @@ const ViewAssetsPage = () => {
       try {
         setLoading(true);
         const res = await getAllAssets();
-        console.log(res);
-        if (!Array.isArray(res)) {
-          console.error("Unexpected response format:", res);
-          return;
-        }
-
+        if (!Array.isArray(res))
+          return console.error("Unexpected response format:", res);
         setAssets(res);
       } catch (error) {
         console.error("Error fetching assets:", error);
@@ -46,7 +42,6 @@ const ViewAssetsPage = () => {
         setLoading(false);
       }
     };
-
     fetchAssets();
   }, []);
 
@@ -67,18 +62,16 @@ const ViewAssetsPage = () => {
   const indexOfLastItem = Math.min(indexOfFirstItem + itemsPerPage, totalItems);
   const currentAssets = filteredAssets.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handlePageChange = (page) => {
-    if (page < 1 || page > totalPages) return;
-    setCurrentPage(page);
-  };
+  const handlePageChange = (page) =>
+    page > 0 && page <= totalPages && setCurrentPage(page);
 
   return (
-    <>
+    <div className="p-6 bg-gray-50 min-h-screen rounded-xl shadow-sm">
       {/* Search */}
       <div className="py-4 flex justify-end">
         <div className="relative w-80">
           <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
             size={20}
           />
           <input
@@ -89,13 +82,13 @@ const ViewAssetsPage = () => {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full pl-10 pr-4 h-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="w-full pl-10 pr-4 h-12 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
       </div>
 
       {/* Cards */}
-      <div className="flex justify-between flex-wrap">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <Cards
           title="TOTAL ASSETS"
           number={totalAssets}
@@ -135,46 +128,39 @@ const ViewAssetsPage = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto mt-8">
-        <table className="w-full">
-          <thead className="bg-[#00B0F0] font-bold text-[#000000]">
+      <div className="overflow-x-auto shadow-lg rounded-xl bg-white">
+        <table className="w-full rounded-xl overflow-hidden">
+          <thead className="bg-[#00B0F0] text-white">
             <tr>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Asset Tag
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Asset Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Location
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Department
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Purchase Price
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Current Value
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Approval Status
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                Category
-              </th>
+              {[
+                "Asset Tag",
+                "Asset Name",
+                "Location",
+                "Department",
+                "Purchase Price",
+                "Current Value",
+                "Approval Status",
+                "Category",
+              ].map((head) => (
+                <th
+                  key={head}
+                  className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
+                >
+                  {head}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200">
             {loading ? (
               <tr>
-                <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
+                <td colSpan="8" className="px-4 py-4 text-center text-gray-500">
                   Loading assets...
                 </td>
               </tr>
             ) : currentAssets.length === 0 ? (
               <tr>
-                <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
+                <td colSpan="8" className="px-4 py-4 text-center text-gray-500">
                   No assets found
                 </td>
               </tr>
@@ -187,44 +173,41 @@ const ViewAssetsPage = () => {
                       state: { asset, status },
                     })
                   }
-                  className="hover:bg-gray-50 cursor-pointer"
+                  className="hover:bg-gray-100 cursor-pointer transition"
                 >
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <td className="px-4 py-4 text-sm font-bold text-black">
                     {asset.assetTag}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <td className="px-4 py-4 text-sm text-900">
                     {asset.assetName}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     {asset.location?.locationName || "--"}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     {asset.department?.departmentName || "--"}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     {asset.purchasePrice || "--"}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     {asset.currentValue || "--"}
                   </td>
-
-                  {/* ✅ Color + Blink Status */}
                   <td
-                    className={`px-4 py-4 whitespace-nowrap text-sm font-semibold ${
+                    className={`px-4 py-4 text-sm font-semibold ${
                       asset.approvalStatus === "PENDING"
-                        ? "text-red-600 blink"
+                        ? "text-yellow-600"
                         : asset.approvalStatus === "APPROVED"
                         ? "text-green-600"
                         : asset.approvalStatus === "REJECTED"
-                        ? "text-orange-500 blink"
+                        ? "text-red-600"
                         : "text-gray-600"
                     }`}
                   >
                     {asset.approvalStatus.charAt(0) +
                       asset.approvalStatus.slice(1).toLowerCase()}
                   </td>
-
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 py-4 text-sm text-gray-500">
                     {asset.category?.categoryName || "--"}
                   </td>
                 </tr>
@@ -236,7 +219,7 @@ const ViewAssetsPage = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-4 py-4 border-t border-gray-200 flex items-center justify-between">
+        <div className="px-4 py-4 mt-4 flex items-center justify-between bg-white shadow rounded-xl">
           <div className="text-sm text-gray-700">
             Showing {indexOfFirstItem + 1} to {indexOfLastItem} of {totalItems}{" "}
             assets
@@ -245,20 +228,19 @@ const ViewAssetsPage = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 disabled:opacity-50"
             >
-              <ChevronLeft size={16} />
-              Previous
+              <ChevronLeft size={16} /> Previous
             </button>
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-3 py-1 text-sm rounded ${
+                className={`px-3 py-1 text-sm rounded-lg ${
                   currentPage === page
                     ? "bg-blue-600 text-white"
-                    : "border border-gray-300 hover:bg-gray-50"
+                    : "border border-gray-300 hover:bg-gray-100"
                 }`}
               >
                 {page}
@@ -268,15 +250,14 @@ const ViewAssetsPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 px-3 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 disabled:opacity-50"
             >
-              Next
-              <ChevronRight size={16} />
+              Next <ChevronRight size={16} />
             </button>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

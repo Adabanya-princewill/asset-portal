@@ -145,7 +145,7 @@ const ManageDepartmentPage = () => {
                 </tr>
               ) : (
                 currentDepartments.map((dept) => (
-                  <tr onClick={() => navigate(`/manage-departments/${dept.departmentId}`, { state: dept })} key={dept.departmentId} className="hover:bg-gray-50">
+                  <tr className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       {editingDepartment?.departmentId === dept.departmentId ? (
                         <input

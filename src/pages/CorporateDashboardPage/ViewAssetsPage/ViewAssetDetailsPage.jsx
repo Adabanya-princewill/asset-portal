@@ -26,23 +26,23 @@ const ViewAssetDetailsPage = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
       </div>
     );
   }
 
   if (!asset) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
-        <h2 className="text-red-600 text-lg font-semibold">Asset not found</h2>
+      <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-50 p-6">
+        <h2 className="text-red-600 text-xl font-semibold">Asset not found</h2>
         <button
           onClick={() =>
             navigate("/view", {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }
-          className="mt-4 px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="mt-4 px-6 py-2.5 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
         >
           Back to Assets
         </button>
@@ -51,71 +51,101 @@ const ViewAssetDetailsPage = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6 mt-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">{asset.assetName}</h1>
+    <div className="max-w-6xl mx-auto p-6 mt-6 bg-gray-50 min-h-screen">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 tracking-wide">
+          {asset.assetName}
+        </h1>
         <button
           onClick={() =>
             navigate("/view", {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-5 py-2 cursor-pointer bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
         >
           Back to Assets
         </button>
       </div>
 
-      <div className="bg-white shadow rounded-lg p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-800 mb-6">
+      {/* Details Card */}
+      <div className="bg-white shadow-xl rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-800 mb-10 border border-gray-100">
         <div>
-          <strong>Asset Tag:</strong> {asset.assetTag}
+          <strong className="font-semibold text-gray-700">Asset Tag:</strong>
+          <p className="mt-1 text-black">{asset.assetTag}</p>
         </div>
         <div>
-          <strong>Status:</strong> {asset.assetStatus}
+          <strong className="font-semibold text-gray-700">Status:</strong>
+          <p className="mt-1 text-gray-900">{asset.assetStatus}</p>
         </div>
         <div>
-          <strong>Category:</strong> {asset.category?.categoryName}
+          <strong className="font-semibold text-gray-700">Category:</strong>
+          <p className="mt-1 text-gray-900">{asset.category?.categoryName}</p>
         </div>
         <div>
-          <strong>Location:</strong> {asset.location?.locationName}
+          <strong className="font-semibold text-gray-700">Location:</strong>
+          <p className="mt-1 text-gray-900">{asset.location?.locationName}</p>
         </div>
         <div>
-          <strong>Department:</strong>{" "}
-          {asset.department?.departmentName || "--"}
+          <strong className="font-semibold text-gray-700">Department:</strong>
+          <p className="mt-1 text-gray-900">
+            {asset.department?.departmentName || "--"}
+          </p>
         </div>
         <div>
-          <strong>Purchase Price:</strong> ₦{asset.purchasePrice}
+          <strong className="font-semibold text-gray-700">
+            Purchase Price:
+          </strong>
+          <p className="mt-1 text-gray-900">₦{asset.purchasePrice}</p>
         </div>
         <div>
-          <strong>Current Value:</strong> ₦{asset.currentValue}
+          <strong className="font-semibold text-gray-700">
+            Current Value:
+          </strong>
+          <p className="mt-1 text-gray-900">₦{asset.currentValue}</p>
         </div>
         <div>
-          <strong>Condition:</strong> {asset.condition}
+          <strong className="font-semibold text-gray-700">Condition:</strong>
+          <p className="mt-1 text-gray-900">{asset.condition}</p>
         </div>
         <div>
-          <strong>Acquisition Date:</strong> {asset.acquisitionDate}
+          <strong className="font-semibold text-gray-700">
+            Acquisition Date:
+          </strong>
+          <p className="mt-1 text-gray-900">{asset.acquisitionDate}</p>
         </div>
         <div>
-          <strong>Bar Code:</strong> {asset.barcode}
-        </div>
-        <Barcode
-          value={asset.barcode}
-          format="CODE128"
-          width={1}
-          height={60}
-          displayValue={true}
-        />
-        <div>
-          <strong>Warranty Expiration:</strong> {asset.warrantyExpirationDate}
+          <strong className="font-semibold text-gray-700">
+            Warranty Expiration:
+          </strong>
+          <p className="mt-1 text-gray-900">{asset.warrantyExpirationDate}</p>
         </div>
         <div>
-          <strong>Created By:</strong> {asset.createdBy?.username || "--"}
+          <strong className="font-semibold text-gray-700">Created By:</strong>
+          <p className="mt-1 text-gray-900">
+            {asset.createdBy?.username || "--"}
+          </p>
         </div>
         <div className="sm:col-span-2">
-          <strong>Description:</strong> {asset.description}
+          <strong className="font-semibold text-gray-700">Description:</strong>
+          <p className="mt-1 text-gray-900 leading-relaxed">
+            {asset.description}
+          </p>
+        </div>
+        {/* Barcode */}
+        <div className="sm:col-span-2 flex flex-col items-center py-4 bg-gray-50 rounded-xl border border-gray-200">
+          <Barcode
+            value={asset.barcode}
+            format="CODE128"
+            width={1.4}
+            height={70}
+            displayValue={true}
+          />
         </div>
       </div>
 
+      {/* Asset History */}
       <AssetHistoryPreview assetTag={asset.assetTag} />
     </div>
   );
