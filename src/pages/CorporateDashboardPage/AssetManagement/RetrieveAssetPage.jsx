@@ -61,7 +61,7 @@ const RetrieveAssetPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-indigo-50 px-4 py-8">
+    <div className="min-h-screen px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="mb-8 text-center">
@@ -77,7 +77,7 @@ const RetrieveAssetPage = () => {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
           <div className="p-8 lg:p-10">
             {/* Info Card */}
             <div className="mt-6 bg-blue-50 rounded-xl p-6">
@@ -271,7 +271,6 @@ const RetrieveAssetPage = () => {
                         name="employeeId"
                         value={formData.employeeId}
                         onChange={handleInputChange}
-                        placeholder="e.g., NOVA002"
                         className="w-full px-4 py-3 pl-11 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
                         required
                       />
@@ -279,7 +278,7 @@ const RetrieveAssetPage = () => {
                     </div>
                     <p className="mt-2 text-xs text-gray-500 flex items-center gap-1">
                       <span className="inline-block w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
-                      Enter the employee's unique identifier
+                      Enter the employee's ID
                     </p>
                   </div>
 
@@ -298,7 +297,7 @@ const RetrieveAssetPage = () => {
                           name="assetTag"
                           value={formData.assetTag}
                           onChange={handleInputChange}
-                          placeholder="e.g., AST-2024-001"
+                          placeholder="e.g., NOVA/HO/FF/TAB/0001"
                           className="w-full px-4 py-3 pl-11 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                           required
                         />

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // backend URL
-const baseUrl = "http://10.0.240.31:9024/api";
+const baseUrl = "http://localhost:9002/api";
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -62,14 +62,14 @@ api.interceptors.request.use((config) => {
 
 export const login = async (username, password, setUser, setToken) => {
   try {
-    const response = await api.post('/auth/login', { username, password });
+    const response = await api.post("/auth/login", { username, password });
     if (response.data?.code === "200") {
       const { accessToken, data } = response.data;
 
       const user = data[0];
 
-      localStorage.setItem('token', accessToken);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("user", JSON.stringify(user));
 
       // Update app state
       setUser({
@@ -80,18 +80,18 @@ export const login = async (username, password, setUser, setToken) => {
 
       setToken(accessToken);
 
-      console.log('Login successful');
+      console.log("Login successful");
 
       return response.data?.data;
     } else {
       throw new Error(response.data?.message || "Invalid credential");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
-
 
 export const refreshToken = async () => {
   try {
@@ -182,7 +182,7 @@ export const getAssetByCategoryName = async (categoryName) => {
     const response = await api.get(`/it/view-all?categoryName=${categoryName}`);
     return response.data.data || [];
   } catch (error) {
-    console.error("Failed to fetch assets in category: "+ categoryName, error);
+    console.error("Failed to fetch assets in category: " + categoryName, error);
     throw error;
   }
 };
@@ -193,11 +193,11 @@ export const deleteUser = async (employeeId) => {
     const response = await api.delete(`/auth/delete?employeeId=${employeeId}`);
     return response;
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
-
 
 export const createUser = async (formData) => {
   try {
@@ -208,9 +208,9 @@ export const createUser = async (formData) => {
     } else {
       throw new Error(response.data?.message || "User creation failed");
     }
-
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
@@ -249,7 +249,10 @@ export const EditUserRole = async (username, role) => {
     }
   } catch (error) {
     console.log(error);
-    const message = error.response?.data?.message || error.message || "Failed to edit user role";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to edit user role";
     throw new Error(message);
   }
 };
@@ -263,17 +266,16 @@ export const transferAsset = async (payload) => {
     } else {
       throw new Error(response.data?.message || "Asset transfer failed");
     }
-
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
 
-
 export const retrieveAsset = async (retrievalType, payload) => {
   try {
-    if (retrievalType === 'all') {
+    if (retrievalType === "all") {
       const response = await api.put(`/cs/asset/retrieve-all`, payload);
       if (response.data?.code === "200") {
         return response.data?.message;
@@ -288,15 +290,12 @@ export const retrieveAsset = async (retrievalType, payload) => {
         throw new Error(response.data?.message || "Asset retrieval failed");
       }
     }
-
-
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Something went wrong";
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);
   }
 };
-
-
 
 export const getUserProfile = async () => {
   try {
@@ -334,7 +333,6 @@ export const logout = (setUser, setToken) => {
   setToken(null);
 };
 
-
 export const createDepartment = async (payload) => {
   try {
     const response = await api.post("/ic/create-department", payload);
@@ -344,7 +342,10 @@ export const createDepartment = async (payload) => {
       throw new Error(response.data?.message || "Failed to create department");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to create department";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create department";
     throw new Error(message);
   }
 };
@@ -358,7 +359,10 @@ export const createAsset = async (payload) => {
       throw new Error(response.data?.message || "Failed to create asset");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to create asset";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create asset";
     throw new Error(message);
   }
 };
@@ -369,11 +373,14 @@ export const editDepartment = async (id, payload) => {
     if (response.data?.code === "200") {
       return response.data?.message;
     } else {
-      console.log(response.data?.message)
+      console.log(response.data?.message);
       throw new Error(response.data?.message || "Failed to edit department");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to edit department role";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to edit department role";
     throw new Error(message);
   }
 };
@@ -386,18 +393,20 @@ export const deleteDepartment = async (id) => {
     } else {
       throw new Error(response.data?.message || "Failed to delete department");
     }
-  } catch (error) {    
-    console.log(error.status)
+  } catch (error) {
+    console.log(error.status);
     if (error.status === 403) {
       const message = "You do not have permission to delete this department.";
       throw new Error(message);
     } else {
-      const message = error.response?.data?.message || error.message || "Failed to delete department";
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to delete department";
       throw new Error(message);
     }
   }
 };
-
 
 export const createLocation = async (payload) => {
   try {
@@ -408,7 +417,10 @@ export const createLocation = async (payload) => {
       throw new Error(response.data?.message || "Failed to create location");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to create location";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create location";
     throw new Error(message);
   }
 };
@@ -419,11 +431,14 @@ export const editLocation = async (id, payload) => {
     if (response.data?.code === "200") {
       return response.data?.message;
     } else {
-      console.log(response.data?.message)
+      console.log(response.data?.message);
       throw new Error(response.data?.message || "Failed to edit location");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to edit location role";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to edit location role";
     throw new Error(message);
   }
 };
@@ -437,7 +452,10 @@ export const deleteLocation = async (id) => {
       throw new Error(response.data?.message || "Failed to delete location");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to delete location";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to delete location";
     throw new Error(message);
   }
 };
@@ -451,7 +469,10 @@ export const approveAsset = async (id) => {
       throw new Error(response.data?.message || "Failed to approve asset");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to approve asset";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to approve asset";
     throw new Error(message);
   }
 };
@@ -465,7 +486,10 @@ export const rejectAsset = async (id) => {
       throw new Error(response.data?.message || "Failed to reject asset");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to reject asset";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to reject asset";
     throw new Error(message);
   }
 };
@@ -479,7 +503,10 @@ export const createCategory = async (payload) => {
       throw new Error(response.data?.message || "Failed to create category");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to create category";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to create category";
     throw new Error(message);
   }
 };
@@ -490,11 +517,14 @@ export const editCategory = async (id, payload) => {
     if (response.data?.code === "200") {
       return response.data?.message;
     } else {
-      console.log(response.data?.message)
+      console.log(response.data?.message);
       throw new Error(response.data?.message || "Failed to edit category");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to edit category role";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to edit category role";
     throw new Error(message);
   }
 };
@@ -508,7 +538,20 @@ export const deleteCategory = async (id) => {
       throw new Error(response.data?.message || "Failed to delete category");
     }
   } catch (error) {
-    const message = error.response?.data?.message || error.message || "Failed to delete category";
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to delete category";
     throw new Error(message);
+  }
+};
+
+export const getDepreciationRecords = async (assetId) => {
+  try {
+    const response = await api.get(`/fi/depreciation?assetId=${assetId}`);
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to get records:", error);
+    throw error;
   }
 };

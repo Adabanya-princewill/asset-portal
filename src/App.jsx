@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import DashboardLayout from "./components/Layout/DashboardLayout";
@@ -30,7 +30,8 @@ import AssetHistoryDetailPage from "./pages/CorporateDashboardPage/AssetHistoryP
 import { AssetHistoryProvider } from "./contexts/AssetHistoryContext";
 import ITAssetsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetPage";
 import ITAssetDetailsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetDetailsPage";
-
+import ViewFinanceAssetsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetsPage";
+import ViewFinanceAssetDetailsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetDetailsPage";
 
 export default function App() {
   return (
@@ -39,53 +40,111 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <UserProvider>
-          <AssetProvider>
-            <DropdownProvider>
-              <AssetHistoryProvider>
-                <Routes>
-                  <Route path="/login" element={<LoginPage />} />
+            <AssetProvider>
+              <DropdownProvider>
+                <AssetHistoryProvider>
+                  <Routes>
+                    <Route path="/login" element={<LoginPage />} />
 
-                  <Route path="/" element={<ProtectedRoute />}>
-                    <Route element={<DashboardLayout />}>
-                      <Route index element={<DashboardPage />} />
+                    <Route path="/" element={<ProtectedRoute />}>
+                      <Route element={<DashboardLayout />}>
+                        <Route index element={<DashboardPage />} />
 
-                      {/* Admin Routes */}
-                      <Route path="/edit-user" element={<EditRolePage />} />
+                        {/* Admin Routes */}
+                        <Route path="/edit-user" element={<EditRolePage />} />
 
-                      <Route path="/create-user" element={<CreateUserPage />} />
-                      <Route path="/delete-user" element={<DeleteUserPage />} />
+                        <Route
+                          path="/create-user"
+                          element={<CreateUserPage />}
+                        />
+                        <Route
+                          path="/delete-user"
+                          element={<DeleteUserPage />}
+                        />
 
-                      {/* Internal Control Routes */}
-                      <Route path="/manage-assets" element={<ManageAssetPage />} />
-                      <Route path="/manage-assets/:assetId" element={<AssetDetailsPage />} />
-                      <Route path="/manage-locations" element={<ManageLocationPage />} />
-                      <Route path="/manage-locations/:locationId" element={<LocationDetailsPage />} />
-                      <Route path="/manage-departments" element={<ManageDepartmentPage />} />
-                      <Route path="/manage-departments/:departmentId" element={<DepartmentDetailsPage />} />
-                      <Route path="/manage-categories" element={<ManageCategoryPage />} />
-                      <Route path="/manage-categories/:catoryId" element={<CategoryDetailsPage />} />
+                        {/* Internal Control Routes */}
+                        <Route
+                          path="/manage-assets"
+                          element={<ManageAssetPage />}
+                        />
+                        <Route
+                          path="/manage-assets/:assetId"
+                          element={<AssetDetailsPage />}
+                        />
+                        <Route
+                          path="/manage-locations"
+                          element={<ManageLocationPage />}
+                        />
+                        <Route
+                          path="/manage-locations/:locationId"
+                          element={<LocationDetailsPage />}
+                        />
+                        <Route
+                          path="/manage-departments"
+                          element={<ManageDepartmentPage />}
+                        />
+                        <Route
+                          path="/manage-departments/:departmentId"
+                          element={<DepartmentDetailsPage />}
+                        />
+                        <Route
+                          path="/manage-categories"
+                          element={<ManageCategoryPage />}
+                        />
+                        <Route
+                          path="/manage-categories/:catoryId"
+                          element={<CategoryDetailsPage />}
+                        />
 
-                      {/* Corporate Service Routes */}
-                      <Route path="/view" element={<ViewAssetsPage />} />
-                      <Route path="/view/:assetId" element={<ViewAssetDetailsPage />} />
-                      <Route path="/create-asset" element={<CreateAssetPage />} />
-                      <Route path="/transfer-asset" element={<TransferAssetPage />} />
-                      <Route path="/retrieve-asset" element={<RetrieveAssetPage />} />
-                      <Route path="/history/:id" element={<AssetHistoryDetailPage />} />
-                      <Route path="/history" element={<AllAssetHistoriesPage />} />
+                        {/* Corporate Service Routes */}
+                        <Route path="/view" element={<ViewAssetsPage />} />
+                        <Route
+                          path="/view/:assetId"
+                          element={<ViewAssetDetailsPage />}
+                        />
+                        <Route
+                          path="/create-asset"
+                          element={<CreateAssetPage />}
+                        />
+                        <Route
+                          path="/transfer-asset"
+                          element={<TransferAssetPage />}
+                        />
+                        <Route
+                          path="/retrieve-asset"
+                          element={<RetrieveAssetPage />}
+                        />
+                        <Route
+                          path="/history/:id"
+                          element={<AssetHistoryDetailPage />}
+                        />
+                        <Route
+                          path="/history"
+                          element={<AllAssetHistoriesPage />}
+                        />
 
-                      {/* IT support Routes */}
-                      <Route path="/it-assets" element={<ITAssetsPage />} />
-                      <Route path="/it-assets/:assetId" element={<ITAssetDetailsPage />} />
+                        {/* IT support Routes */}
+                        <Route path="/it-assets" element={<ITAssetsPage />} />
+                        <Route
+                          path="/it-assets/:assetId"
+                          element={<ITAssetDetailsPage />}
+                        />
 
-                      {/* Audit Routes
-                      <Route path="/view-log" element={<AuditLogPage />} /> */}
+                        {/* Finance Routes*/}
+                        <Route
+                          path="/view-assets"
+                          element={<ViewFinanceAssetsPage />}
+                        />
+                        <Route
+                          path="/view-details/:assetId"
+                          element={<ViewFinanceAssetDetailsPage />}
+                        />
+                      </Route>
                     </Route>
-                  </Route>
-                </Routes>
-              </AssetHistoryProvider>
-            </DropdownProvider>
-          </AssetProvider>
+                  </Routes>
+                </AssetHistoryProvider>
+              </DropdownProvider>
+            </AssetProvider>
           </UserProvider>
         </AuthProvider>
       </BrowserRouter>

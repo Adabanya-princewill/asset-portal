@@ -146,6 +146,9 @@ const ManageAssetsPage = () => {
                   Department
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Created By
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
@@ -176,7 +179,7 @@ const ManageAssetsPage = () => {
               ) : (
                 currentAssets.map((asset) => (
                   <tr
-                    onClick={() => navigate(`/manage-assets/${asset.assetId}`, { state: { asset, status } })}
+                    // onClick={() => navigate(`/manage-assets/${asset.assetId}`, { state: { asset, status } })}
                     key={asset.assetId}
                     className="hover:bg-gray-50 cursor-pointer"
                   >
@@ -188,6 +191,9 @@ const ManageAssetsPage = () => {
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       {asset.department?.departmentName || '—'}
+                    </td>
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {asset.category?.categoryName || '—'}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       {asset.createdBy?.username || '—'}

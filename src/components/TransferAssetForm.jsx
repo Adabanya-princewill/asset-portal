@@ -2,10 +2,19 @@ import { useState } from "react";
 import { transferAsset } from "../services/apiServices";
 import toast from "react-hot-toast";
 import { useDropdownContext } from "../contexts/DropdownContext";
-import { ArrowRightLeft, Package, User, Building2, MapPin, FileText, MessageSquare } from "lucide-react";
+import {
+  ArrowRightLeft,
+  Package,
+  User,
+  Building2,
+  MapPin,
+  FileText,
+  MessageSquare,
+} from "lucide-react";
 
 const TransferAssetForm = () => {
-  const { departments, locations, loadingDepartments, loadingLocations } = useDropdownContext();
+  const { departments, locations, loadingDepartments, loadingLocations } =
+    useDropdownContext();
 
   const [formData, setFormData] = useState({
     assetTag: "",
@@ -65,53 +74,93 @@ const TransferAssetForm = () => {
   };
 
   const transferOptions = [
-    { value: "employee", label: "To Another Employee", icon: <User className="w-4 h-4" /> },
-    { value: "department", label: "To Another Department", icon: <Building2 className="w-4 h-4" /> },
-    { value: "location", label: "To Another Location", icon: <MapPin className="w-4 h-4" /> },
-    { value: "employee-department", label: "Employee & Department", icon: <User className="w-4 h-4" /> },
-    { value: "department-location", label: "Department & Location", icon: <Building2 className="w-4 h-4" /> },
-    { value: "employee-location", label: "Employee & Location", icon: <User className="w-4 h-4" /> },
-    { value: "employee-department-location", label: "Employee, Department & Location", icon: <ArrowRightLeft className="w-4 h-4" /> },
+    {
+      value: "employee",
+      label: "To Another Employee",
+      icon: <User className="w-4 h-4" />,
+    },
+    {
+      value: "department",
+      label: "To Another Department",
+      icon: <Building2 className="w-4 h-4" />,
+    },
+    {
+      value: "location",
+      label: "To Another Location",
+      icon: <MapPin className="w-4 h-4" />,
+    },
+    {
+      value: "employee-department",
+      label: "Employee & Department",
+      icon: <User className="w-4 h-4" />,
+    },
+    {
+      value: "department-location",
+      label: "Department & Location",
+      icon: <Building2 className="w-4 h-4" />,
+    },
+    {
+      value: "employee-location",
+      label: "Employee & Location",
+      icon: <User className="w-4 h-4" />,
+    },
+    {
+      value: "employee-department-location",
+      label: "Employee, Department & Location",
+      icon: <ArrowRightLeft className="w-4 h-4" />,
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 px-4 py-8">
+    <div className="min-h-screen px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="mb-8 text-center">
           {/* <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl mb-4 shadow-lg">
             <ArrowRightLeft className="w-8 h-8 text-white" />
           </div> */}
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Transfer Asset</h1>
-          <p className="text-gray-600 text-lg">Reassign assets to different employees, departments, or locations</p>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Transfer Asset
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Reassign assets to different employees, departments, or locations
+          </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
           <form onSubmit={handleSubmit} className="p-8 lg:p-10 space-y-8">
+            {/* Info Card */}
+            <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
+              <div className="flex gap-3">
+                <div className="flex-shrink-0">
+                  <MessageSquare className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-1">
+                    Transfer Guidelines
+                  </h3>
+                  <ul className="text-sm text-blue-800 space-y-1">
+                    <li>
+                      • Ensure the asset tag is correct before transferring
+                    </li>
+                    <li>• Provide clear reasons for audit trail purposes</li>
+                    <li>
+                      • All transfers are logged and can be tracked in the
+                      system
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-             {/* Info Card */}
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <div className="flex gap-3">
-            <div className="flex-shrink-0">
-              <MessageSquare className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-blue-900 mb-1">Transfer Guidelines</h3>
-              <ul className="text-sm text-blue-800 space-y-1">
-                <li>• Ensure the asset tag is correct before transferring</li>
-                <li>• Provide clear reasons for audit trail purposes</li>
-                <li>• All transfers are logged and can be tracked in the system</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-            
             {/* Transfer Type Selection */}
             <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border-2 border-indigo-100">
               <div className="flex items-center gap-2 mb-4">
                 <ArrowRightLeft className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-lg font-semibold text-gray-800">Transfer Type</h2>
+                <h2 className="text-lg font-semibold text-gray-800">
+                  Transfer Type
+                </h2>
                 <span className="text-red-500 text-sm">*</span>
               </div>
               <select
@@ -137,9 +186,11 @@ const TransferAssetForm = () => {
 
             {/* Asset Information Section */}
             <div>
-              <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-blue-100">
+              <div className="flex items-center gap-2 mb-6">
                 <Package className="w-5 h-5 text-blue-600" />
-                <h2 className="text-xl font-semibold text-gray-800">Asset Information</h2>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Asset Information
+                </h2>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -152,7 +203,7 @@ const TransferAssetForm = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="e.g., AST-2024-001"
+                  placeholder="e.g., NOVA/HO/FF/TAB/0001"
                 />
               </div>
             </div>
@@ -160,18 +211,21 @@ const TransferAssetForm = () => {
             {/* Transfer Destination Section */}
             {transferType && (
               <div>
-                <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-green-100">
+                <div className="flex items-center gap-2 mb-6">
                   <ArrowRightLeft className="w-5 h-5 text-green-600" />
-                  <h2 className="text-xl font-semibold text-gray-800">Transfer Destination</h2>
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    Transfer Destination
+                  </h2>
                 </div>
-                
+
                 <div className="space-y-6">
                   {transferType.includes("employee") && (
                     <div className="bg-green-50 rounded-xl p-6 border border-green-100">
                       <div className="flex items-center gap-2 mb-3">
                         <User className="w-5 h-5 text-green-600" />
                         <label className="text-sm font-semibold text-gray-700">
-                          Transfer to Employee <span className="text-red-500">*</span>
+                          Transfer to Employee{" "}
+                          <span className="text-red-500">*</span>
                         </label>
                       </div>
                       <input
@@ -191,7 +245,8 @@ const TransferAssetForm = () => {
                       <div className="flex items-center gap-2 mb-3">
                         <Building2 className="w-5 h-5 text-purple-600" />
                         <label className="text-sm font-semibold text-gray-700">
-                          Transfer to Department <span className="text-red-500">*</span>
+                          Transfer to Department{" "}
+                          <span className="text-red-500">*</span>
                         </label>
                       </div>
                       <select
@@ -204,7 +259,10 @@ const TransferAssetForm = () => {
                       >
                         <option value="">-- Select Department --</option>
                         {departments?.map((dept) => (
-                          <option key={dept?.departmentId} value={dept?.departmentId}>
+                          <option
+                            key={dept?.departmentId}
+                            value={dept?.departmentId}
+                          >
                             {dept?.departmentName}
                           </option>
                         ))}
@@ -223,7 +281,8 @@ const TransferAssetForm = () => {
                       <div className="flex items-center gap-2 mb-3">
                         <MapPin className="w-5 h-5 text-orange-600" />
                         <label className="text-sm font-semibold text-gray-700">
-                          Transfer to Location <span className="text-red-500">*</span>
+                          Transfer to Location{" "}
+                          <span className="text-red-500">*</span>
                         </label>
                       </div>
                       <select
@@ -255,11 +314,13 @@ const TransferAssetForm = () => {
 
             {/* Transfer Details Section */}
             <div>
-              <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-amber-100">
+              <div className="flex items-center gap-2 mb-6">
                 <FileText className="w-5 h-5 text-amber-600" />
-                <h2 className="text-xl font-semibold text-gray-800">Transfer Details</h2>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Transfer Details
+                </h2>
               </div>
-              
+
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">

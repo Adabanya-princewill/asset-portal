@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAssetContext } from "../../../contexts/AssetContext";
 import "../../../index.css";
 
-const ViewAssetsPage = () => {
+const ViewFinanceAssetsPage = () => {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,15 +15,7 @@ const ViewAssetsPage = () => {
   const [status, setStatus] = useState(initialStatus);
 
   const navigate = useNavigate();
-  const {
-    assets,
-    setAssets,
-    totalAssets,
-    pendingAssets,
-    approvedAssets,
-    rejectedAssets,
-    getAssetsByStatus,
-  } = useAssetContext();
+  const { assets, setAssets, getAssetsByStatus } = useAssetContext();
 
   const itemsPerPage = 15;
 
@@ -87,46 +79,6 @@ const ViewAssetsPage = () => {
         </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <Cards
-          title="TOTAL ASSETS"
-          number={totalAssets}
-          onClick={() => {
-            setStatus("TOTAL ASSETS");
-            setCurrentPage(1);
-          }}
-          isActive={status === "TOTAL ASSETS"}
-        />
-        <Cards
-          title="PENDING ASSETS"
-          number={pendingAssets.length}
-          onClick={() => {
-            setStatus("PENDING ASSETS");
-            setCurrentPage(1);
-          }}
-          isActive={status === "PENDING ASSETS"}
-        />
-        <Cards
-          title="APPROVED ASSETS"
-          number={approvedAssets.length}
-          onClick={() => {
-            setStatus("APPROVED ASSETS");
-            setCurrentPage(1);
-          }}
-          isActive={status === "APPROVED ASSETS"}
-        />
-        <Cards
-          title="REJECTED ASSETS"
-          number={rejectedAssets.length}
-          onClick={() => {
-            setStatus("REJECTED ASSETS");
-            setCurrentPage(1);
-          }}
-          isActive={status === "REJECTED ASSETS"}
-        />
-      </div>
-
       {/* Table */}
       <div className="overflow-x-auto shadow-lg rounded-xl bg-white">
         <table className="w-full rounded-xl overflow-hidden">
@@ -169,7 +121,7 @@ const ViewAssetsPage = () => {
                 <tr
                   key={asset.assetId}
                   onClick={() =>
-                    navigate(`/view/${asset.assetId}`, {
+                    navigate(`/view-details/${asset.assetId}`, {
                       state: { asset, status },
                     })
                   }
@@ -261,4 +213,4 @@ const ViewAssetsPage = () => {
   );
 };
 
-export default ViewAssetsPage;
+export default ViewFinanceAssetsPage;

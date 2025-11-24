@@ -21,7 +21,7 @@ export const AssetHistoryProvider = ({ children }) => {
         return;
       }
       
-      if (user?.role == "CORPORATE_SERVICE") {
+      if (user?.role == "CORPORATE_SERVICE" || "IT_SUPPORT") {
         try {
           const res = await getAllAssetHistories();
           const sorted = res.sort((a, b) => new Date(b.actionDate) - new Date(a.actionDate));

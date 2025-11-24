@@ -21,7 +21,7 @@ const ITAssetsPage = () => {
   const fetchAssets = async () => {
     setLoading(true);
     try {
-      const res = await getAssetByCategoryName("Laptop");
+      const res = await getAssetByCategoryName("IT Equipment");
       const reversed = res.reverse() || [];
       setAssets(reversed);
       setCurrentPage(1);
@@ -76,15 +76,12 @@ const ITAssetsPage = () => {
           <table className="w-full text-sm">
             <thead className="bg-[#00B0F0] font-bold text-[#000000]">
               <tr>
-                <th className="px-4 py-3 text-left">Asset ID</th>
                 <th className="px-4 py-3 text-left">Asset Tag</th>
-                <th className="px-4 py-3 text-left">Barcode</th>
                 <th className="px-4 py-3 text-left">Asset Name</th>
                 <th className="px-4 py-3 text-left">Description</th>
                 <th className="px-4 py-3 text-left">Asset Status</th>
                 <th className="px-4 py-3 text-left">Approval Status</th>
                 <th className="px-4 py-3 text-left">Condition</th>
-                <th className="px-4 py-3 text-left">Warranty Exp.</th>
                 <th className="px-4 py-3 text-left">Category</th>
                 <th className="px-4 py-3 text-left">Location</th>
                 <th className="px-4 py-3 text-left">Department</th>
@@ -108,9 +105,7 @@ const ITAssetsPage = () => {
                     className="hover:bg-gray-50 cursor-pointer"
                     onClick={() => navigate(`/it-assets/${asset.assetId}`, { state: { asset } })}
                   >
-                    <td className="px-4 py-2">{asset.assetId}</td>
                     <td className="px-4 py-2">{asset.assetTag}</td>
-                    <td className="px-4 py-2">{asset.barcode}</td>
                     <td className="px-4 py-2">{asset.assetName}</td>
                     <td className="px-4 py-2">{asset.description}</td>
                     <td className="px-4 py-2">{asset.assetStatus}</td>
@@ -126,7 +121,6 @@ const ITAssetsPage = () => {
                     </td>
 
                     <td className="px-4 py-2">{asset.condition}</td>
-                    <td className="px-4 py-2">{asset.warrantyExpirationDate}</td>
                     <td className="px-4 py-2">{asset.category}</td>
                     <td className="px-4 py-2">{asset.location}</td>
                     <td className="px-4 py-2">{asset.department || '—'}</td>

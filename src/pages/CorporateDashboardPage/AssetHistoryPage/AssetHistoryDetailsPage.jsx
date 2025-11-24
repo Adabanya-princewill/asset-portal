@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { getAllAssetHistories } from '../../../services/apiServices';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { getAllAssetHistories } from "../../../services/apiServices";
 import {
-  ArrowLeft, Calendar, UserRound, Info, Users, Building, MapPin, ArrowRight
-} from 'lucide-react';
+  ArrowLeft,
+  Calendar,
+  UserRound,
+  Info,
+  Users,
+  Building,
+  MapPin,
+  ArrowRight,
+} from "lucide-react";
 
 const AssetHistoryDetailPage = () => {
   const { historyId } = useParams();
@@ -23,7 +30,7 @@ const AssetHistoryDetailPage = () => {
         const found = all.find((e) => String(e.historyId) === historyId);
         setEntry(found);
       } catch (err) {
-        console.error('Error fetching entry:', err);
+        console.error("Error fetching entry:", err);
       } finally {
         setLoading(false);
       }
@@ -33,29 +40,41 @@ const AssetHistoryDetailPage = () => {
   }, [historyId, passedEntry]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        Loading...
+      </div>
+    );
   }
 
   if (!entry) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-red-500">History not found</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-red-500">
+        History not found
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f8ff] p-6 md:p-10">
+    <div className="p-6 md:p-10">
       <div className="max-w-4xl mx-auto">
-
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 text-sm hover:underline">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center text-blue-600 text-sm hover:underline"
+          >
             <ArrowLeft size={16} className="mr-1" />
             Back to History
           </button>
-          <div className="text-xs text-gray-400">History ID: <span className="font-semibold">{entry.historyId}</span></div>
+          {/* <div className="text-xs text-gray-400">History ID: <span className="font-semibold">{entry.historyId}</span></div> */}
         </div>
 
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Asset History Detail</h1>
+            <h1 className="text-2xl font-bold text-gray-800">
+              Asset History Detail
+            </h1>
             <div className="flex items-center text-sm text-gray-600 mt-1">
               <Calendar size={16} className="mr-1" />
               {new Date(entry.actionDate).toLocaleString()}
@@ -68,7 +87,6 @@ const AssetHistoryDetailPage = () => {
 
         {/* Main Card */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
-
           {/* Asset Info Section */}
           <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-5">
             <div className="text-sm opacity-75">Asset Information</div>
@@ -85,7 +103,9 @@ const AssetHistoryDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
               <div>
                 <p className="text-gray-500">Reason</p>
-                <p className="font-medium text-gray-800">{entry.reason || '-'}</p>
+                <p className="font-medium text-gray-800">
+                  {entry.reason || "-"}
+                </p>
               </div>
               <div>
                 <p className="text-gray-500">Performed By</p>
@@ -109,20 +129,35 @@ const AssetHistoryDetailPage = () => {
 
           {/* Transfer Information */}
           <div className="border-t p-6 bg-gray-50">
-            <p className="text-sm font-medium text-gray-700 mb-4">Transfer Information</p>
+            <p className="text-sm font-medium text-gray-700 mb-4">
+              Transfer Information
+            </p>
 
             <div className="space-y-4">
-
               {(entry.fromEmployee || entry.toEmployee) && (
-                <TransferRow label="Employee" from={entry.fromEmployee} to={entry.toEmployee} Icon={Users} />
+                <TransferRow
+                  label="Employee"
+                  from={entry.fromEmployee}
+                  to={entry.toEmployee}
+                  Icon={Users}
+                />
               )}
               {(entry.fromDepartment || entry.toDepartment) && (
-                <TransferRow label="Department" from={entry.fromDepartment} to={entry.toDepartment} Icon={Building} />
+                <TransferRow
+                  label="Department"
+                  from={entry.fromDepartment}
+                  to={entry.toDepartment}
+                  Icon={Building}
+                />
               )}
               {(entry.fromLocation || entry.toLocation) && (
-                <TransferRow label="Location" from={entry.fromLocation} to={entry.toLocation} Icon={MapPin} />
+                <TransferRow
+                  label="Location"
+                  from={entry.fromLocation}
+                  to={entry.toLocation}
+                  Icon={MapPin}
+                />
               )}
-
             </div>
           </div>
         </div>
@@ -138,9 +173,9 @@ const TransferRow = ({ label, from, to, Icon }) => (
       <span className="text-sm font-medium text-gray-800">{label}</span>
     </div>
     <div className="flex items-center gap-4 text-sm text-gray-700">
-      <span className="text-gray-500">{from || '-'}</span>
+      <span className="text-gray-500">{from || "-"}</span>
       <ArrowRight size={14} className="text-gray-400" />
-      <span>{to || '-'}</span>
+      <span>{to || "-"}</span>
     </div>
   </div>
 );

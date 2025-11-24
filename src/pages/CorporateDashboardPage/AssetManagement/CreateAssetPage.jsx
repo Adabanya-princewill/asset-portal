@@ -89,7 +89,7 @@ const CreateAssetPage = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 px-4 py-8">
+    <div className="min-h-screen px-4 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
         <div className="mb-8 text-center">
@@ -102,7 +102,7 @@ const CreateAssetPage = () => {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
           {loading ? (
             <div className="p-12 text-center">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
@@ -223,11 +223,11 @@ const CreateAssetPage = () => {
                     optional
                   />
                   <TextInput
-                    label="Employee ID (Optional)"
+                    label="Employee ID"
                     name="employeeId"
                     value={formData.employeeId}
                     onChange={handleChange}
-                    placeholder="Optional"
+                    optional
                   />
                 </div>
               </div>

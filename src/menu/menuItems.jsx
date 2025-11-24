@@ -104,7 +104,7 @@ export const financeMenuItems = [
 
   {
     label: "View Assets",
-    to: "/view",
+    to: "/view-assets",
     icon: <CiBoxList size={20} />,
   },
 
@@ -112,7 +112,7 @@ export const financeMenuItems = [
     label: "Manage Categories",
     to: "/manage-categories",
     icon: <TbCategoryPlus size={20} />,
-  }
+  },
 ];
 
 export const supportMenuItems = [

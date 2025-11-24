@@ -42,7 +42,7 @@ const ViewAssetDetailsPage = () => {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }
-          className="mt-4 px-6 py-2.5 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
+          className="mt-4 px-6 py-2.5 bg-[#00B0F0] text-white rounded-xl shadow transition"
         >
           Back to Assets
         </button>
@@ -51,7 +51,7 @@ const ViewAssetDetailsPage = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 mt-6 bg-gray-50 min-h-screen">
+    <div className="max-w-6xl mx-auto p-6 mt-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800 tracking-wide">
@@ -63,14 +63,14 @@ const ViewAssetDetailsPage = () => {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }
-          className="px-5 py-2 cursor-pointer bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition"
+          className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
         >
           Back to Assets
         </button>
       </div>
 
       {/* Details Card */}
-      <div className="bg-white shadow-xl rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-800 mb-10 border border-gray-100">
+      <div className="bg-white shadow-md rounded-2xl p-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm text-gray-800 mb-10 border border-gray-100">
         <div>
           <strong className="font-semibold text-gray-700">Asset Tag:</strong>
           <p className="mt-1 text-black">{asset.assetTag}</p>
@@ -127,7 +127,7 @@ const ViewAssetDetailsPage = () => {
             {asset.createdBy?.username || "--"}
           </p>
         </div>
-        <div className="sm:col-span-2">
+        <div>
           <strong className="font-semibold text-gray-700">Description:</strong>
           <p className="mt-1 text-gray-900 leading-relaxed">
             {asset.description}
