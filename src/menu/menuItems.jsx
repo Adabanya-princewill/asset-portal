@@ -6,6 +6,7 @@ import { TbCategoryPlus } from "react-icons/tb";
 import { FaBuildingUser, FaUsersGear } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
+import { HiCollection } from "react-icons/hi";
 
 export const controlMenuItems = [
   {
@@ -63,6 +64,11 @@ export const corporateMenuItems = [
     label: "View Assets",
     to: "/view",
     icon: <CiBoxList size={20} />,
+  },
+  {
+    label: "All Assets",
+    to: "/dashboard",
+    icon: <HiCollection size={20} />,
   },
   {
     label: "Manage Assets",

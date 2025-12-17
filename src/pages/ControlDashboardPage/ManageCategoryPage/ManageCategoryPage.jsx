@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Plus,
   Edit,
@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import { useDropdownContext } from "../../../contexts/DropdownContext";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const ManageCategoryPage = () => {
   const { categories, refreshDropdown } = useDropdownContext();
@@ -23,7 +24,9 @@ const ManageCategoryPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
 
+  console.log(user);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [modalData, setModalData] = useState({
@@ -171,12 +174,14 @@ const ManageCategoryPage = () => {
               className="w-full pl-10 pr-4 h-12 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <button
-            onClick={handleOpenModal}
-            className="h-12 px-4 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
-          >
-            <Plus size={20} /> Add Category
-          </button>
+          {!user.role == "FINANCE" && (
+            <button
+              onClick={handleOpenModal}
+              className="h-12 px-4 bg-blue-600 text-white rounded-lg flex items-center gap-2 hover:bg-blue-700"
+            >
+              <Plus size={20} /> Add Category
+            </button>
+          )}
         </div>
 
         <div className="overflow-x-auto">
@@ -196,9 +201,11 @@ const ManageCategoryPage = () => {
                 <th className="px-6 py-3 text-left text-xs uppercase">
                   Depreciation Rate
                 </th>
-                <th className="px-6 py-3 text-left text-xs uppercase">
-                  Actions
-                </th>
+                {!user.role == "FINANCE" && (
+                  <th className="px-6 py-3 text-left text-xs uppercase">
+                    Actions
+                  </th>
+                )}
               </tr>
             </thead>
 
@@ -219,20 +226,22 @@ const ManageCategoryPage = () => {
                     <td className="px-6 py-4">
                       {(cat.depreciationRate * 100).toFixed(1)}%
                     </td>
-                    <td className="px-6 py-4 flex gap-2">
-                      <button
-                        onClick={() => handleOpenEditModal(cat)}
-                        className="text-blue-600 hover:text-blue-900 p-1"
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(cat.categoryId)}
-                        className="text-red-600 hover:text-red-900 p-1"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </td>
+                    {!user.role == "FINANCE" && (
+                      <td className="px-6 py-4 flex gap-2">
+                        <button
+                          onClick={() => handleOpenEditModal(cat)}
+                          className="text-blue-600 hover:text-blue-900 p-1"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(cat.categoryId)}
+                          className="text-red-600 hover:text-red-900 p-1"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))
               )}

@@ -32,6 +32,7 @@ import ITAssetsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetPa
 import ITAssetDetailsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITAssetDetailsPage";
 import ViewFinanceAssetsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetsPage";
 import ViewFinanceAssetDetailsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetDetailsPage";
+import AssetDashboard from "./pages/CorporateDashboardPage/AssetDashboard";
 
 export default function App() {
   return (
@@ -98,6 +99,7 @@ export default function App() {
 
                         {/* Corporate Service Routes */}
                         <Route path="/view" element={<ViewAssetsPage />} />
+                        <Route path="/dashboard" element={<AssetDashboard />} />
                         <Route
                           path="/view/:assetId"
                           element={<ViewAssetDetailsPage />}

@@ -20,7 +20,7 @@ const AssetHistoryDetailPage = () => {
   const passedEntry = location.state?.entry;
   const [entry, setEntry] = useState(passedEntry || null);
   const [loading, setLoading] = useState(!passedEntry);
-
+  console.log(entry, "entry");
   useEffect(() => {
     if (passedEntry) return;
 
@@ -91,6 +91,9 @@ const AssetHistoryDetailPage = () => {
           <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-5">
             <div className="text-sm opacity-75">Asset Information</div>
             <div className="text-lg font-semibold">{entry.assetTag}</div>
+            <div className="text-sm">
+              {entry.prvAssetTag && "prev. asset Tag: " + entry.prvAssetTag}
+            </div>
           </div>
 
           {/* Action Details */}
