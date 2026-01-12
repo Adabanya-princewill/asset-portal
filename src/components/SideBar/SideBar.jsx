@@ -39,11 +39,16 @@ const SideBar = ({
 
   // Helper to get submenu open state
   const isSubmenuOpen = (key) => {
-    if (key === "asset") return showAssetSubmenu;
+    if (key === "actions") return showAssetSubmenu;
     if (key === "report") return showReportSubmenu;
     if (key === "user") return showUserSubmenu;
     return false;
   };
+
+  const pathname = location.pathname; 
+// "/assetportal/users/profile"
+ 
+const normalizedPath = pathname.replace(/^\/?assetportal\//, "");
 
   return (
     <div className="sidebar">
@@ -59,7 +64,7 @@ const SideBar = ({
               <div
                 onClick={() => toggleSubmenu(item.submenuKey)}
                 className={
-                  location.pathname.includes(item.submenuKey)
+                  normalizedPath.includes(item.submenuKey)
                     ? "sidebar-link sidebar-link-active"
                     : "sidebar-link"
                 }
@@ -74,6 +79,7 @@ const SideBar = ({
                     key={subIdx}
                     to={sub.to}
                     className="submenu-link"
+                    onClick={() => console.log("submenu item", sub)}
                   >
                     {sub.label}
                   </NavLink>
@@ -84,6 +90,7 @@ const SideBar = ({
             <NavLink
               key={idx}
               to={item.to}
+              end
               className={({ isActive }) =>
                 isActive ? "sidebar-link sidebar-link-active" : "sidebar-link"
               }

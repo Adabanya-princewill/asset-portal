@@ -34,7 +34,7 @@ const LoginPage = () => {
     try {
       await login(username, password, setUser, setToken);
       toast.success('Login successful');
-      navigate('/');
+      navigate('/assetportal');
     } catch (error) {
       toast.error(error.message);
     } finally {

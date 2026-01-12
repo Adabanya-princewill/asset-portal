@@ -169,7 +169,7 @@ const ViewAssetsPage = () => {
                 <tr
                   key={asset.assetId}
                   onClick={() =>
-                    navigate(`/view/${asset.assetId}`, {
+                    navigate(`${asset.assetId}`, {
                       state: { asset, status },
                     })
                   }

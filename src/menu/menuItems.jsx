@@ -11,27 +11,27 @@ import { HiCollection } from "react-icons/hi";
 export const controlMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
     label: "Manage Assets",
-    to: "/manage-assets",
+    to: "/assetportal/manage-assets",
     icon: <BsDatabaseFillGear size={20} />,
   },
   {
     label: "Manage Categories",
-    to: "/manage-categories",
+    to: "/assetportal/manage-categories",
     icon: <TbCategoryPlus size={20} />,
   },
   {
     label: "Manage Locations",
-    to: "/manage-locations",
+    to: "/assetportal/manage-locations",
     icon: <MdAddLocationAlt size={20} />,
   },
   {
     label: "Manage Departments",
-    to: "/manage-departments",
+    to: "/assetportal/manage-departments",
     icon: <FaBuildingUser size={20} />,
   },
 ];
@@ -39,17 +39,17 @@ export const controlMenuItems = [
 export const adminMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
     label: "Create Department",
-    to: "/manage-departments",
+    to: "/assetportal/manage-departments",
     icon: <FaBuildingUser size={20} />,
   },
   {
     label: "User Management",
-    to: "/create-user",
+    to: "/assetportal/create-user",
     icon: <FaUsersGear size={20} />,
   },
 ];
@@ -57,33 +57,33 @@ export const adminMenuItems = [
 export const corporateMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
     label: "View Assets",
-    to: "/view",
+    to: "/assetportal/view",
     icon: <CiBoxList size={20} />,
   },
   {
     label: "All Assets",
-    to: "/dashboard",
+    to: "/assetportal/dashboard",
     icon: <HiCollection size={20} />,
   },
   {
     label: "Manage Assets",
-    to: "/asset",
+    to: "/actions",
     icon: <BsDatabaseFillGear size={20} />,
-    submenuKey: "asset",
+    submenuKey: "actions",
     submenu: [
-      { label: "Create Asset", to: "/create-asset" },
-      { label: "Transfer Asset", to: "/transfer-asset" },
-      { label: "Retrieve Asset", to: "/retrieve-asset" },
+      { label: "Create Asset", to: "/assetportal/create-asset" },
+      { label: "Transfer Asset", to: "/assetportal/transfer-asset" },
+      { label: "Retrieve Asset", to: "/assetportal/retrieve-asset" },
     ],
   },
   {
     label: "Asset History",
-    to: "/history",
+    to: "/assetportal/history",
     icon: <FaHistory size={20} />,
   },
 ];
@@ -91,12 +91,12 @@ export const corporateMenuItems = [
 export const auditMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
     label: "View Log",
-    to: "/view-log",
+    to: "/assetportal/view-log",
     icon: <FaHistory size={20} />,
   },
 ];
@@ -104,19 +104,19 @@ export const auditMenuItems = [
 export const financeMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
 
   {
     label: "View Assets",
-    to: "/view-assets",
+    to: "/assetportal/view-assets",
     icon: <CiBoxList size={20} />,
   },
 
   {
     label: "Manage Categories",
-    to: "/manage-categories",
+    to: "/assetportal/manage-categories",
     icon: <TbCategoryPlus size={20} />,
   },
 ];
@@ -124,17 +124,17 @@ export const financeMenuItems = [
 export const supportMenuItems = [
   {
     label: "Dashboard",
-    to: "/",
+    to: "/assetportal",
     icon: <TbLayoutDashboardFilled size={20} />,
   },
   {
     label: "Transfer Assets",
-    to: "/transfer-asset",
+    to: "/assetportal/transfer-asset",
     icon: <BiTransferAlt size={20} />,
   },
   {
     label: "Assets",
-    to: "/it-assets",
+    to: "/assetportal/it-assets",
     icon: <BsDatabaseFillGear size={20} />,
   },
 ];

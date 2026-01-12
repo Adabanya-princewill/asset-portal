@@ -14,7 +14,7 @@ const DashboardLayout = () => {
   const [showUserSubmenu, setShowUserSubmenu] = useState(false);
 
   const toggleSubmenu = (option) => {
-    if (option == "asset") {
+    if (option == "actions") {
       return setShowAssetSubmenu(!showAssetSubmenu);
     }
     if (option == "user") {

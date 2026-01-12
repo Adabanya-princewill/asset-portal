@@ -38,7 +38,7 @@ const AssetDetailsPage = () => {
   return (
     <div className="p-6 max-w-4xl mx-auto mt-8">
       <button
-        onClick={() => navigate('/manage-assets', { state: { status } })}
+        onClick={() => navigate('assetportal/manage-assets', { state: { status } })}
         className="flex items-center gap-2 text-blue-600 hover:underline mb-6"
       >
         <ChevronLeft size={20} /> Back to Assets

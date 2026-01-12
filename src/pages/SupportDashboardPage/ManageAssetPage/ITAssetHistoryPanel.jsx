@@ -53,7 +53,7 @@ const ITAssetHistoryPanel = ({ assetTag }) => {
                   <tr
                     key={entry.historyId}
                     onClick={() =>
-                      navigate(`/history/${entry.historyId}`, {
+                      navigate(`/assetportal/history/${entry.historyId}`, {
                         state: { entry },
                       })
                     }

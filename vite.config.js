@@ -4,11 +4,13 @@ import tailwindcss from '@tailwindcss/vite'
 
 
 export default defineConfig({
-   content: [],
-  theme: {
-    extend: {},
+  plugins: [react(), tailwindcss()],
+  base: "/assetportal",
+  server: {
+    port: 5173,
   },
-  plugins: [
-    tailwindcss(),
-    react()],
-})
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+  },
+});

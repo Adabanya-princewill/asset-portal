@@ -63,7 +63,7 @@ const AssetHistoryPreview = ({ assetTag }) => {
       {filteredHistory.length > 0 && !loading && (
         <div className="mt-4 text-right">
           <Link
-            to={`/history`}
+            to={`/assetportal/history`}
             state={{ search: assetTag }}
             className="text-sm text-blue-600 hover:underline"
           >

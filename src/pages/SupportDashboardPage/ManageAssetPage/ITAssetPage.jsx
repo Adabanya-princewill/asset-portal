@@ -103,7 +103,7 @@ const ITAssetsPage = () => {
                   <tr
                     key={asset.assetId}
                     className="hover:bg-gray-50 cursor-pointer"
-                    onClick={() => navigate(`/it-assets/${asset.assetId}`, { state: { asset } })}
+                    onClick={() => navigate(`${asset.assetId}`, { state: { asset } })}
                   >
                     <td className="px-4 py-2">{asset.assetTag}</td>
                     <td className="px-4 py-2">{asset.assetName}</td>

@@ -73,7 +73,7 @@ const ViewFinanceAssetDetailsPage = () => {
         <h1 className="text-2xl font-bold text-gray-800">{asset.assetName}</h1>
         <button
           onClick={() =>
-            navigate("/view-assets", {
+            navigate("/assetportal/view-assets", {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }

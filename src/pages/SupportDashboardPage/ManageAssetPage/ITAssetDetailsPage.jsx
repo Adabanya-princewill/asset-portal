@@ -15,7 +15,7 @@ const ITAssetDetailsPage = () => {
       <div className="flex flex-col items-center justify-center min-h-screen text-center bg-gray-50 p-6">
         <h2 className="text-red-600 text-xl font-semibold">Asset not found</h2>
         <button
-          onClick={() => navigate("/it-assets")}
+          onClick={() => navigate("/assetportal/it-assets")}
           className="mt-4 px-6 py-2.5 bg-[#00B0F0] text-white rounded-xl shadow transition"
         >
           Back to Assets
@@ -32,7 +32,7 @@ const ITAssetDetailsPage = () => {
           {asset.assetName}
         </h1>
         <button
-          onClick={() => navigate("/it-assets")}
+          onClick={() => navigate("/assetportal/it-assets")}
           className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
         >
           Back to Assets

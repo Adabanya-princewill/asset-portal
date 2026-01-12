@@ -126,7 +126,7 @@ const AllAssetHistoriesPage = () => {
                             key={entry.historyId}
                             className="hover:bg-gray-50 cursor-pointer"
                             onClick={() =>
-                              navigate(`/history/${entry.historyId}`, {
+                              navigate(`${entry.historyId}`, {
                                 state: { entry },
                               })
                             }

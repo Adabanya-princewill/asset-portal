@@ -84,7 +84,7 @@ const ViewAssetDetailsPage = () => {
         </h1>
         <button
           onClick={() =>
-            navigate("/view", {
+            navigate("/assetportal/view", {
               state: { status: state?.status || "TOTAL ASSETS" },
             })
           }
