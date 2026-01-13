@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // backend URL
-const baseUrl = "http://10.0.240.31:9024/api";
+const baseUrl = "http://localhost:9024/api";
 
 const api = axios.create({
   baseURL: baseUrl,
@@ -150,7 +150,20 @@ export const getAllAssets = async () => {
 export const getAllAssetsDashboard = async () => {
   try {
     const response = await api.get(`/cs/assets/dashboard`);
-    console.log(response, "response");
+    // console.log(response, "response");
+    return response.data.data || [];
+  } catch (error) {
+    console.error("Failed to fetch assets:", error);
+    throw error;
+  }
+};
+
+export const getCategoryFinancialSummary = async (params = {}) => {
+  try {
+    const response = await api.get(`/fi/category-financial-summary`, {
+      params,
+    });
+    // console.log(response, "response");
     return response.data.data || [];
   } catch (error) {
     console.error("Failed to fetch assets:", error);

@@ -1,16 +1,27 @@
-import { useState } from 'react';
-import { Plus, Edit, Trash2, Search, ChevronLeft, ChevronRight } from 'lucide-react';
-import { createDepartment, deleteDepartment, editDepartment } from '../../../services/apiServices';
-import toast from 'react-hot-toast';
-import { useDropdownContext } from '../../../contexts/DropdownContext';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import {
+  createDepartment,
+  deleteDepartment,
+  editDepartment,
+} from "../../../services/apiServices";
+import toast from "react-hot-toast";
+import { useDropdownContext } from "../../../contexts/DropdownContext";
+import { useNavigate } from "react-router-dom";
 
 const ManageDepartmentPage = () => {
   const { departments, refreshDropdown } = useDropdownContext();
-  const [newDepartmentName, setNewDepartmentName] = useState('');
+  const [newDepartmentName, setNewDepartmentName] = useState("");
   const [editingDepartment, setEditingDepartment] = useState(null);
-  const [editName, setEditName] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [editName, setEditName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -18,9 +29,11 @@ const ManageDepartmentPage = () => {
   const handleCreate = async () => {
     if (!newDepartmentName.trim()) return;
     try {
-      const res = await createDepartment({ departmentName: newDepartmentName.trim() });
+      const res = await createDepartment({
+        departmentName: newDepartmentName.trim(),
+      });
       toast.success(res || "Department created");
-      setNewDepartmentName('');
+      setNewDepartmentName("");
       refreshDropdown("departments");
     } catch (err) {
       toast.error(err.message || "Error creating department");
@@ -31,7 +44,9 @@ const ManageDepartmentPage = () => {
     if (editingDepartment?.departmentId === department.departmentId) {
       if (!editName.trim()) return;
       try {
-        const res = await editDepartment(department.departmentId, { departmentName: editName.trim() });
+        const res = await editDepartment(department.departmentId, {
+          departmentName: editName.trim(),
+        });
         toast.success(res || "Updated successfully");
         setEditingDepartment(null);
         refreshDropdown("departments");
@@ -45,7 +60,7 @@ const ManageDepartmentPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Delete this department?')) return;
+    if (!window.confirm("Delete this department?")) return;
     try {
       const res = await deleteDepartment(id);
       toast.success(res || "Deleted");
@@ -57,11 +72,11 @@ const ManageDepartmentPage = () => {
 
   const cancelEdit = () => {
     setEditingDepartment(null);
-    setEditName('');
+    setEditName("");
   };
 
   const handleKeyPress = (e, action) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       action();
     }
   };
@@ -70,14 +85,18 @@ const ManageDepartmentPage = () => {
     setCurrentPage(pageNumber);
   };
 
-  const filteredDepartments = departments.filter(d =>
-    d.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (d.createdBy || '').toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredDepartments = departments.filter(
+    (d) =>
+      d.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (d.createdBy || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDepartments = filteredDepartments.slice(indexOfFirstItem, indexOfLastItem);
+  const currentDepartments = filteredDepartments.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const totalPages = Math.ceil(filteredDepartments.length / itemsPerPage);
 
   return (
@@ -85,10 +104,12 @@ const ManageDepartmentPage = () => {
       <div className="bg-white rounded-lg">
         <div className="py-4 border-b border-gray-200">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-
             {/* Search */}
             <div className="relative w-full lg:w-80">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
               <input
                 type="text"
                 placeholder="Search departments..."
@@ -139,20 +160,25 @@ const ManageDepartmentPage = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentDepartments.length === 0 ? (
                 <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="3"
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No departments found
                   </td>
                 </tr>
               ) : (
                 currentDepartments.map((dept) => (
-                  <tr className="hover:bg-gray-50">
+                  <tr key={dept.departmentId} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       {editingDepartment?.departmentId === dept.departmentId ? (
                         <input
                           type="text"
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
-                          onKeyPress={(e) => handleKeyPress(e, () => handleEdit(dept))}
+                          onKeyPress={(e) =>
+                            handleKeyPress(e, () => handleEdit(dept))
+                          }
                           className="w-full px-2 py-1 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           autoFocus
                         />
@@ -163,20 +189,29 @@ const ManageDepartmentPage = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{dept.createdBy}</div>
+                      <div className="text-sm text-gray-500">
+                        {dept.createdBy}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
-                        {editingDepartment?.departmentId === dept.departmentId ? (
+                        {editingDepartment?.departmentId ===
+                        dept.departmentId ? (
                           <>
                             <button
-                              onClick={(e) => {e.stopPropagation(); handleEdit(dept)}}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(dept);
+                              }}
                               className="text-green-600 hover:text-green-900 p-1"
                             >
                               Save
                             </button>
                             <button
-                              onClick={(e) => {e.stopPropagation(); cancelEdit()}}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                cancelEdit();
+                              }}
                               className="text-gray-600 hover:text-gray-900 p-1"
                             >
                               Cancel
@@ -185,13 +220,19 @@ const ManageDepartmentPage = () => {
                         ) : (
                           <>
                             <button
-                              onClick={(e) => {e.stopPropagation(); handleEdit(dept)}}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(dept);
+                              }}
                               className="text-blue-600 hover:text-blue-900 p-1"
                             >
                               <Edit size={16} />
                             </button>
                             <button
-                              onClick={(e) => {e.stopPropagation(); handleDelete(dept.departmentId)}}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(dept.departmentId);
+                              }}
                               className="text-red-600 hover:text-red-900 p-1"
                             >
                               <Trash2 size={16} />
@@ -211,7 +252,9 @@ const ManageDepartmentPage = () => {
         {totalPages > 1 && (
           <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredDepartments.length)} of {filteredDepartments.length} departments
+              Showing {indexOfFirstItem + 1} to{" "}
+              {Math.min(indexOfLastItem, filteredDepartments.length)} of{" "}
+              {filteredDepartments.length} departments
             </div>
             <div className="flex gap-2">
               <button
@@ -223,18 +266,21 @@ const ManageDepartmentPage = () => {
                 Previous
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 text-sm rounded ${currentPage === page
-                    ? 'bg-blue-600 text-white'
-                    : 'border border-gray-300 hover:bg-gray-50'
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-3 py-1 text-sm rounded ${
+                      currentPage === page
+                        ? "bg-blue-600 text-white"
+                        : "border border-gray-300 hover:bg-gray-50"
                     }`}
-                >
-                  {page}
-                </button>
-              ))}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
 
               <button
                 onClick={() => handlePageChange(currentPage + 1)}

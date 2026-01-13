@@ -33,6 +33,7 @@ import ITAssetDetailsPage from "./pages/SupportDashboardPage/ManageAssetPage/ITA
 import ViewFinanceAssetsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetsPage";
 import ViewFinanceAssetDetailsPage from "./pages/FinanceDashboardPage/ViewAssetsPage/ViewFinanceAssetDetailsPage";
 import AssetDashboard from "./pages/CorporateDashboardPage/AssetDashboard";
+import OverviewPage from "./pages/FinanceDashboardPage/OverviewPage";
 
 export default function App() {
   return (
@@ -137,6 +138,7 @@ export default function App() {
                           path="view-assets"
                           element={<ViewFinanceAssetsPage />}
                         />
+                        <Route path="overview" element={<OverviewPage />} />
                         <Route
                           path="view-assets/:assetId"
                           element={<ViewFinanceAssetDetailsPage />}

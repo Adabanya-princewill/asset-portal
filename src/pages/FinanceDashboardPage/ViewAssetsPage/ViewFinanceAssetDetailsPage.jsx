@@ -35,7 +35,7 @@ const ViewFinanceAssetDetailsPage = () => {
   useEffect(() => {
     const loadDepreciation = async () => {
       const data = await getDepreciationRecords(assetId);
-      console.log(data, "dep records");
+      //console.log(data, "dep records");
       setDepRecords(data);
       setLoadingDep(false);
     };

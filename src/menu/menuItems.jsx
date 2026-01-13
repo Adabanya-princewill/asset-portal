@@ -7,6 +7,7 @@ import { FaBuildingUser, FaUsersGear } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { BiTransferAlt } from "react-icons/bi";
 import { HiCollection } from "react-icons/hi";
+import { CgProfile } from "react-icons/cg";
 
 export const controlMenuItems = [
   {
@@ -103,15 +104,20 @@ export const auditMenuItems = [
 
 export const financeMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
 
   {
     label: "View Assets",
     to: "/assetportal/view-assets",
     icon: <CiBoxList size={20} />,
+  },
+  {
+    label: "Dashboard",
+    to: "/assetportal/overview",
+    icon: <TbLayoutDashboardFilled size={20} />,
   },
 
   {
