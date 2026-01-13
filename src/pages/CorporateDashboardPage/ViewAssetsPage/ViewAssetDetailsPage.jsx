@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, Download } from "lucide-react";
 import { useAssetContext } from "../../../contexts/AssetContext";
+import { exportAssetToCSV } from "../../../utils/exportUtils";
 import AssetHistoryPreview from "../AssetHistoryPage/AssetHistoryPreview";
 import Barcode from "react-barcode";
 
@@ -82,16 +83,33 @@ const ViewAssetDetailsPage = () => {
         <h1 className="text-3xl font-bold text-gray-800 tracking-wide">
           {asset.assetName}
         </h1>
-        <button
-          onClick={() =>
-            navigate("/assetportal/view", {
-              state: { status: state?.status || "TOTAL ASSETS" },
-            })
-          }
-          className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
-        >
-          Back to Assets
-        </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() =>
+              exportAssetToCSV(
+                asset,
+                `${asset.assetTag || asset.assetId || "asset"}-${new Date()
+                  .toISOString()
+                  .slice(0, 10)}.csv`
+              )
+            }
+            className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl flex items-center gap-2"
+          >
+            <Download size={20} className="inline-block mr-2 -mb-0.5" />
+            Download
+          </button>
+          <button
+            onClick={() =>
+              navigate("/assetportal/view", {
+                state: { status: state?.status || "TOTAL ASSETS" },
+              })
+            }
+            className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
+          >
+            Back to Assets
+          </button>
+        </div>
       </div>
 
       {/* Details Card */}

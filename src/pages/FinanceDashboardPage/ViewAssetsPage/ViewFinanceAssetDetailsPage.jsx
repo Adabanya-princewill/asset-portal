@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { Clock, Loader2, ChevronDown, ChevronUp } from "lucide-react";
+import { Clock, Loader2, ChevronDown, ChevronUp, Download } from "lucide-react";
 import { useAssetContext } from "../../../contexts/AssetContext";
+import { exportAssetToCSV } from "../../../utils/exportUtils";
 import Barcode from "react-barcode";
 import { getDepreciationRecords } from "../../../services/apiServices";
 import DepreciationTable from "./DepreciationTable";
@@ -71,16 +72,34 @@ const ViewFinanceAssetDetailsPage = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-800">{asset.assetName}</h1>
-        <button
-          onClick={() =>
-            navigate("/assetportal/view-assets", {
-              state: { status: state?.status || "TOTAL ASSETS" },
-            })
-          }
-          className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
-        >
-          Back to Assets
-        </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() =>
+              exportAssetToCSV(
+                asset,
+                `${asset.assetTag || asset.assetId || "asset"}-${new Date()
+                  .toISOString()
+                  .slice(0, 10)}.csv`
+              )
+            }
+            className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl flex items-center gap-2"
+          >
+            <Download size={20} className="inline-block mr-2 -mb-0.5" />
+            Download
+          </button>
+
+          <button
+            onClick={() =>
+              navigate("/assetportal/view-assets", {
+                state: { status: state?.status || "TOTAL ASSETS" },
+              })
+            }
+            className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl shadow transition"
+          >
+            Back to Assets
+          </button>
+        </div>
       </div>
 
       {/* Collapsible Asset Details Card */}

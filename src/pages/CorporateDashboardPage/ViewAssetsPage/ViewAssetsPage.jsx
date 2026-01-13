@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getAllAssets } from "../../../services/apiServices";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, Download } from "lucide-react";
 import { Cards } from "../../../components/Cards/Cards";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAssetContext } from "../../../contexts/AssetContext";
+import { exportAssetsToCSV, exportAssetsToJSON } from "../../../utils/exportUtils";
 import "../../../index.css";
 
 const ViewAssetsPage = () => {
@@ -128,6 +129,24 @@ const ViewAssetsPage = () => {
       </div>
 
       {/* Table */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-sm text-gray-700">Export current results for <strong className="ml-1">{status}</strong></div>
+        <div className="flex gap-2">
+          <button
+            onClick={() =>
+              exportAssetsToCSV(
+                filteredAssets,
+                `assets-${status.replace(/\s+/g, "_")}-${new Date()
+                  .toISOString()
+                  .slice(0, 10)}.csv`
+              )
+            }
+             className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl flex items-center gap-2"
+          >            <Download size={20} className="inline-block mr-2 -mb-0.5" />            Download All
+          </button>
+        </div>
+      </div>
+
       <div className="overflow-x-auto shadow-lg rounded-xl bg-white">
         <table className="w-full rounded-xl overflow-hidden">
           <thead className="bg-[#00B0F0] text-white">

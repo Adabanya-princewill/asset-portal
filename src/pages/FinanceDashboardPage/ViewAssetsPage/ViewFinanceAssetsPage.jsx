@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getAllAssets } from "../../../services/apiServices";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, Download } from "lucide-react";
 import { Cards } from "../../../components/Cards/Cards";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAssetContext } from "../../../contexts/AssetContext";
+import { exportAssetsToCSV } from "../../../utils/exportUtils";
 import "../../../index.css";
 
 const ViewFinanceAssetsPage = () => {
@@ -60,7 +61,7 @@ const ViewFinanceAssetsPage = () => {
   return (
     <div className="p-6">
       {/* Search */}
-      <div className="py-4 flex justify-end">
+      <div className="py-4 flex justify-end gap-4">
         <div className="relative w-80">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -77,9 +78,23 @@ const ViewFinanceAssetsPage = () => {
             className="w-full pl-10 pr-4 h-12 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
+        <button
+            onClick={() =>
+              exportAssetsToCSV(
+                filteredAssets,
+                `assets-${status.replace(/\s+/g, "_")}-${new Date()
+                  .toISOString()
+                  .slice(0, 10)}.csv`
+              )
+            }
+             className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl flex items-center gap-2"
+          >
+            <Download size={20} className="inline-block mr-2 -mb-0.5" />
+            Download All
+          </button>
       </div>
 
-      {/* Table */}
+
       <div className="overflow-x-auto shadow-lg rounded-xl bg-white">
         <table className="w-full rounded-xl overflow-hidden">
           <thead className="bg-[#00B0F0] text-white">

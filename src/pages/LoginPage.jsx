@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../services/apiServices";
 import { AuthContext } from '../contexts/AuthContext';
 import logo from '../assets/novabank_logo.png';
+import backgroundImage from '../assets/background.png';
+
 import toast from 'react-hot-toast';
 
 const LoginPage = () => {
@@ -51,7 +53,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-cover bg-center"
       style={{
-        backgroundImage: "url('/background.png')",
+        backgroundImage: `url(${backgroundImage})`,
         backgroundBlendMode: 'overlay',
         backgroundColor: 'rgba(170, 205, 231, 1)',
       }}>
