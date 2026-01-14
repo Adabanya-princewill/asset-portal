@@ -1,20 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Search, ChevronLeft, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
-import { getAssetByStatus } from '../../../services/apiServices';
-import { useAssetContext } from '../../../contexts/AssetContext';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { handleApproveAsset, handleRejectAsset } from '../../../utils/assetActions';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
+import toast from "react-hot-toast";
+import { getAssetByStatus } from "../../../services/apiServices";
+import { useAssetContext } from "../../../contexts/AssetContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  handleApproveAsset,
+  handleRejectAsset,
+} from "../../../utils/assetActions";
 
-const statusTabs = ['PENDING', 'APPROVED', 'REJECTED'];
+const statusTabs = ["PENDING", "APPROVED", "REJECTED"];
 
 const ManageAssetsPage = () => {
   const location = useLocation();
-  const initialStatus = location.state?.status || 'PENDING';
+  const initialStatus = location.state?.status || "PENDING";
   const [status, setStatus] = useState(initialStatus);
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const navigate = useNavigate();
@@ -38,7 +47,7 @@ const ManageAssetsPage = () => {
       setAssets(reversed);
       setCurrentPage(1);
     } catch (err) {
-      toast.error(err.message || 'Failed to load assets');
+      toast.error(err.message || "Failed to load assets");
       setAssets([]);
     } finally {
       setLoading(false);
@@ -62,9 +71,10 @@ const ManageAssetsPage = () => {
     });
 
   // Pagination + Search
-  const filteredAssets = assets.filter(asset =>
-    asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (asset.assetTag || '').toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAssets = assets.filter(
+    (asset) =>
+      asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (asset.assetTag || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalItems = filteredAssets.length;
@@ -94,7 +104,6 @@ const ManageAssetsPage = () => {
       </style>
 
       <div className="bg-white rounded-lg">
-
         {/* Status Tabs */}
         <div className="flex gap-4 p-4 border-b border-gray-200">
           {statusTabs.map((tab) => (
@@ -102,12 +111,13 @@ const ManageAssetsPage = () => {
               key={tab}
               onClick={() => {
                 setStatus(tab);
-                setSearchTerm('');
+                setSearchTerm("");
               }}
-              className={`px-4 py-2 rounded-lg font-medium ${status === tab
-                ? 'bg-blue-600 text-white'
-                : 'border border-gray-300 hover:bg-gray-50'
-                }`}
+              className={`px-4 py-2 rounded-lg font-medium ${
+                status === tab
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-300 hover:bg-gray-50"
+              }`}
             >
               {tab.charAt(0) + tab.slice(1).toLowerCase()}
             </button>
@@ -117,7 +127,10 @@ const ManageAssetsPage = () => {
         {/* Search */}
         <div className="py-4 border-b border-gray-200 flex justify-end">
           <div className="relative w-80">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search assets..."
@@ -157,6 +170,18 @@ const ManageAssetsPage = () => {
                 <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Created At
                 </th>
+
+                {status == "PENDING" && (
+                  <>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
+                      Action Details
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
+                      Action Type
+                    </th>
+                  </>
+                )}
+
                 <th className="px-4 py-3 text-left text-xs font-medium text-500 uppercase tracking-wider">
                   Actions
                 </th>
@@ -166,13 +191,19 @@ const ManageAssetsPage = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="7"
+                    className="px-4 py-4 text-center text-gray-500"
+                  >
                     Loading assets...
                   </td>
                 </tr>
               ) : currentAssets.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
+                  <td
+                    colSpan="7"
+                    className="px-4 py-4 text-center text-gray-500"
+                  >
                     No assets found
                   </td>
                 </tr>
@@ -190,44 +221,62 @@ const ManageAssetsPage = () => {
                       {asset.assetName}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {asset.department?.departmentName || '—'}
+                      {asset.department?.departmentName || "—"}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {asset.category?.categoryName || '—'}
+                      {asset.category?.categoryName || "—"}
                     </td>
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {asset.createdBy?.username || '—'}
+                      {asset.createdBy?.username || "—"}
                     </td>
 
                     {/* ✅ Dynamic Approval Status with Blinking for Pending */}
                     <td
                       className={`px-4 py-4 whitespace-nowrap text-sm font-semibold
-                        ${asset.approvalStatus === 'PENDING'
-                          ? 'text-red-600 animate-blink'
-                          : asset.approvalStatus === 'APPROVED'
-                          ? 'text-green-600'
-                          : 'text-orange-500'}`}
+                        ${
+                          asset.approvalStatus === "PENDING"
+                            ? "text-red-600 animate-blink"
+                            : asset.approvalStatus === "APPROVED"
+                            ? "text-green-600"
+                            : "text-orange-500"
+                        }`}
                     >
-                      {asset.approvalStatus.charAt(0) + asset.approvalStatus.slice(1).toLowerCase()}
+                      {asset.approvalStatus.charAt(0) +
+                        asset.approvalStatus.slice(1).toLowerCase()}
                     </td>
 
                     <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(asset.createdAt).toLocaleDateString("en-GB")}
                     </td>
-
+                    {status == "PENDING" && (
+                      <>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {asset.pendingActionDetails}
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {asset.pendingActionType}
+                        </td>
+                      </>
+                    )}
                     <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex gap-2">
-                        {status === 'PENDING' && (
+                        {status === "PENDING" && (
                           <>
                             <button
-                              onClick={(e) => { e.stopPropagation(); handleApprove(asset.assetId) }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleApprove(asset.assetId);
+                              }}
                               className="text-green-600 hover:text-green-900 p-1"
                               title="Approve"
                             >
                               <CheckCircle size={20} />
                             </button>
                             <button
-                              onClick={(e) => { e.stopPropagation(); handleReject(asset.assetId) }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleReject(asset.assetId);
+                              }}
                               className="text-red-600 hover:text-red-900 p-1"
                               title="Reject"
                             >
@@ -235,16 +284,21 @@ const ManageAssetsPage = () => {
                             </button>
                           </>
                         )}
-                        {status === 'REJECTED' && (
+                        {status === "REJECTED" && (
                           <button
-                            onClick={(e) => { e.stopPropagation(); handleApprove(asset.assetId) }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleApprove(asset.assetId);
+                            }}
                             className="text-green-600 hover:text-green-900 p-1"
                             title="Approve"
                           >
                             <CheckCircle size={20} />
                           </button>
                         )}
-                        {status === 'APPROVED' && <span className="text-gray-400">—</span>}
+                        {status === "APPROVED" && (
+                          <span className="text-gray-400">—</span>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -258,7 +312,8 @@ const ManageAssetsPage = () => {
         {totalPages > 1 && (
           <div className="px-4 py-4 border-t border-gray-200 flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Showing {indexOfFirstItem + 1} to {indexOfLastItem} of {totalItems} assets
+              Showing {indexOfFirstItem + 1} to {indexOfLastItem} of{" "}
+              {totalItems} assets
             </div>
             <div className="flex gap-2">
               <button
@@ -270,18 +325,21 @@ const ManageAssetsPage = () => {
                 Previous
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1 text-sm rounded ${currentPage === page
-                    ? 'bg-blue-600 text-white'
-                    : 'border border-gray-300 hover:bg-gray-50'
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-3 py-1 text-sm rounded ${
+                      currentPage === page
+                        ? "bg-blue-600 text-white"
+                        : "border border-gray-300 hover:bg-gray-50"
                     }`}
-                >
-                  {page}
-                </button>
-              ))}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
 
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
