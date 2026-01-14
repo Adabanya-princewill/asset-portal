@@ -12,8 +12,9 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { Package, TrendingUp, DollarSign, AlertCircle } from "lucide-react";
+import { Package, TrendingUp, DollarSign, AlertCircle, TrendingDown } from "lucide-react";
 import { getCategoryFinancialSummary } from "../../services/apiServices";
+import { FaNairaSign } from "react-icons/fa6";
 
 const OverviewPage = () => {
   const [activeView, setActiveView] = useState("overview");
@@ -82,6 +83,7 @@ const OverviewPage = () => {
   // Days
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
+  
   // Handle filter application
   const handleApplyFilters = () => {
     const filters = {};
@@ -126,6 +128,66 @@ const OverviewPage = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const downloadCategoryDetailsCSV = () => {
+    if (!dashboardData.length) return;
+
+    const headers = [
+      "Category",
+      "Assets",
+      "Purchase Amount (NGN)",
+      "Current Amount (NGN)",
+      "Depreciation (NGN)",
+      "Depreciation (%)",
+    ];
+
+    const rows = dashboardData.map((category) => {
+      const depreciationPercent =
+        category.totalPurchaseAmount > 0
+          ? (
+              (category.totalDepreciatedAmount / category.totalPurchaseAmount) *
+              100
+            ).toFixed(2)
+          : 0;
+
+      return [
+        category.categoryName,
+        category.assetCount,
+        category.totalPurchaseAmount,
+        category.totalCurrentAmount,
+        category.totalDepreciatedAmount,
+        depreciationPercent,
+      ];
+    });
+
+    // Totals row (matches table footer)
+    rows.push([
+      "TOTAL",
+      totalAssets,
+      totalPurchaseValue,
+      totalCurrentValue,
+      totalDepreciation,
+      totalPurchaseValue > 0
+        ? ((totalDepreciation / totalPurchaseValue) * 100).toFixed(2)
+        : 0,
+    ]);
+
+    const csvContent = [headers, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `Category_Financial_Details.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const StatCard = ({
@@ -214,7 +276,7 @@ const OverviewPage = () => {
             Asset Management Dashboard
           </h1>
           <p className="text-gray-600 mt-2">
-            Financial overview of all organizational assets
+            Financial overview of all assets
           </p>
         </div>
 
@@ -308,12 +370,12 @@ const OverviewPage = () => {
           <StatCard
             title="Total Purchase Value"
             value={totalPurchaseValue}
-            icon={DollarSign}
+            icon={FaNairaSign}
             color="#10b981"
             isCurrency={true}
           />
           <StatCard
-            title="Current Value"
+            title="Total Current Value"
             value={totalCurrentValue}
             icon={TrendingUp}
             color="#8b5cf6"
@@ -322,7 +384,7 @@ const OverviewPage = () => {
           <StatCard
             title="Total Depreciation"
             value={totalDepreciation}
-            icon={TrendingUp}
+            icon={TrendingDown}
             color="#ec4899"
             isCurrency={true}
           />
@@ -469,9 +531,18 @@ const OverviewPage = () => {
           </>
         ) : (
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
-              Category Financial Details
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Category Financial Details
+              </h2>
+
+              <button
+                onClick={downloadCategoryDetailsCSV}
+               className="px-5 py-2 cursor-pointer bg-[#00B0F0] text-white rounded-xl flex items-center gap-2"
+          >
+                Download
+              </button>
+            </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">

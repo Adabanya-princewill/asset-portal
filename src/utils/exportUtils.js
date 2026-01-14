@@ -75,4 +75,5 @@ export const exportAssetToJSON = (asset, filename = "asset.json") => {
 export default {
   exportAssetsToCSV,
   exportAssetToCSV,
+  downloadBlob,
 };

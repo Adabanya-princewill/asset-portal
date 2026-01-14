@@ -11,9 +11,9 @@ import { CgProfile } from "react-icons/cg";
 
 export const controlMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
   {
     label: "Manage Assets",
@@ -39,9 +39,9 @@ export const controlMenuItems = [
 
 export const adminMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
   {
     label: "Create Department",
@@ -57,9 +57,9 @@ export const adminMenuItems = [
 
 export const corporateMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
   {
     label: "View Assets",
@@ -91,9 +91,9 @@ export const corporateMenuItems = [
 
 export const auditMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
   {
     label: "View Log",
@@ -129,9 +129,9 @@ export const financeMenuItems = [
 
 export const supportMenuItems = [
   {
-    label: "Dashboard",
+    label: "Profile",
     to: "/assetportal",
-    icon: <TbLayoutDashboardFilled size={20} />,
+    icon: <CgProfile size={20} />,
   },
   {
     label: "Transfer Assets",
