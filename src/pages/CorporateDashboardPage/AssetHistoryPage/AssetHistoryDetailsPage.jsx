@@ -54,7 +54,7 @@ const AssetHistoryDetailPage = () => {
       </div>
     );
   }
-
+  console.log(entry, "entry");
   return (
     <div className="p-6 md:p-10">
       <div className="max-w-4xl mx-auto">
@@ -100,7 +100,10 @@ const AssetHistoryDetailPage = () => {
           <div className="p-6">
             <div className="flex items-center mb-4 text-indigo-600 font-medium text-sm">
               <Info size={16} className="mr-2" />
-              Action Details
+              <span className="mr-4">Action Details</span>
+              <span className="bg-blue-100 text-blue-700 text-xs px-3 py-1 rounded-full mt-3 md:mt-0">
+                {entry.transferStatus}
+              </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">

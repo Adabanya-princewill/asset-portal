@@ -62,16 +62,6 @@ export const corporateMenuItems = [
     icon: <CgProfile size={20} />,
   },
   {
-    label: "View Assets",
-    to: "/assetportal/view",
-    icon: <CiBoxList size={20} />,
-  },
-  {
-    label: "All Assets",
-    to: "/assetportal/dashboard",
-    icon: <HiCollection size={20} />,
-  },
-  {
     label: "Manage Assets",
     to: "/actions",
     icon: <BsDatabaseFillGear size={20} />,
@@ -81,6 +71,16 @@ export const corporateMenuItems = [
       { label: "Transfer Asset", to: "/assetportal/transfer-asset" },
       { label: "Retrieve Asset", to: "/assetportal/retrieve-asset" },
     ],
+  },
+  {
+    label: "Dashboard",
+    to: "/assetportal/dashboard",
+    icon: <HiCollection size={20} />,
+  },
+  {
+    label: "View Assets",
+    to: "/assetportal/view",
+    icon: <CiBoxList size={20} />,
   },
   {
     label: "Asset History",
