@@ -65,7 +65,7 @@ const LoginPage = () => {
           <img
             src={logo}
             alt="Logo"
-            className="h-12 w-auto object-contain"
+            className="h-20 w-auto object-contain"
           />
         </div>
         <h2 className="mt-12 text-center text-2xl font-bold tracking-tight text-gray-900">

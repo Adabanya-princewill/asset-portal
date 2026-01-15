@@ -55,7 +55,7 @@ const normalizedPath = pathname.replace(/^\/?assetportal\//, "");
       <img
         src={logo}
         alt="Nova Bank Logo"
-        className="w-[130px] h-[80px]"
+        className="w-[190px] h-[90px]"
       />
       <div className="navlinks">
         {menuItems.map((item, idx) =>

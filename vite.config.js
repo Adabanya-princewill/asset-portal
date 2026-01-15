@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/assetportal",
   server: {
-    port: 5173,
+    port: 8080,
   },
   build: {
     outDir: "dist",

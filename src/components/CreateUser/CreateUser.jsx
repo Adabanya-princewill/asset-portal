@@ -223,7 +223,7 @@ const CreateUser = () => {
             >
               <option value="">Select role</option>
               <option value="ADMIN">Admin</option>
-              <option value="AUDITOR">Audit</option>
+              {/* <option value="AUDITOR">Audit</option> */}
               <option value="FINANCE">Finance</option>
               <option value="IT_SUPPORT">IT Support</option>
               <option value="CORPORATE_SERVICE">Corporate Service</option>
@@ -241,7 +241,7 @@ const CreateUser = () => {
               value={formData.employeeId}
               onChange={(e) => handleInputChange("employeeId", e.target.value)}
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00B0F0] focus:outline-none"
-              placeholder="EMP001"
+              placeholder="001"
               required
             />
           </div>

@@ -15,6 +15,41 @@ const UsersTable = () => {
   const [userId, setUserId] = useState(null);
   const [editedUsername, setEditedUsername] = useState(null);
 
+  // Function to get role styling based on role type
+  const getRoleStyle = (role) => {
+    const roleStyles = {
+      ADMIN: {
+        text: "text-black-900",
+        label: "Admin",
+      },
+      SUPER_ADMIN: {
+        text: "text-black-900",
+        label: "Super Admin",
+      },
+      FINANCE: {
+        text: "text-black-900",
+        label: "Finance",
+      },
+      IT_SUPPORT: {
+        text: "text-black-900",
+        label: "IT Support",
+      },
+      CORPORATE_SERVICE: {
+        text: "text-black-900",
+        label: "Corporate Service",
+      },
+      INTERNAL_CONTROL: {
+        text: "text-black-900",
+        label: "Internal Control",
+      },
+    };
+    return roleStyles[role] || {
+      bg: "bg-gray-100",
+      text: "text-gray-800",
+      label: role,
+    };
+  };
+
   const handleEdit = (user) => {
     setEditingUser(user.username);
     setSelectedRole(user.role);
@@ -104,7 +139,7 @@ const UsersTable = () => {
                       >
                         <option value="">Select role</option>
                         <option value="ADMIN">Admin</option>
-                        <option value="AUDITOR">Audit</option>
+                        {/* <option value="AUDITOR">Audit</option> */}
                         <option value="FINANCE">Finance</option>
                         <option value="IT_SUPPORT">IT Support</option>
                         <option value="CORPORATE_SERVICE">
@@ -115,7 +150,13 @@ const UsersTable = () => {
                         </option>
                       </select>
                     ) : (
-                      user.role
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          getRoleStyle(user.role).bg
+                        } ${getRoleStyle(user.role).text}`}
+                      >
+                        {getRoleStyle(user.role).label}
+                      </span>
                     )}
                   </td>
                   <td className="py-3 px-4 text-center flex items-center justify-center gap-4">

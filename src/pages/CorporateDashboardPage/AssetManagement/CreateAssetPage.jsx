@@ -12,6 +12,7 @@ import {
   Building2,
   Users,
 } from "lucide-react";
+import { FaNairaSign } from "react-icons/fa6";
 
 const CreateAssetPage = () => {
   const { categories, departments, locations, loading, refreshDropdown } =
@@ -120,7 +121,7 @@ const CreateAssetPage = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <TextInput
-                    label="Short Code"
+                    label="Asset Short Code"
                     name="shortCode"
                     value={formData.shortCode}
                     onChange={handleChange}
@@ -154,7 +155,7 @@ const CreateAssetPage = () => {
               {/* Financial Information Section */}
               <div className="mb-8">
                 <div className="flex items-center gap-2 mb-6 pb-3 border-b-2 border-green-100">
-                  <DollarSign className="w-5 h-5 text-green-600" />
+                  <FaNairaSign className="w-5 h-5 text-green-600" />
                   <h2 className="text-xl font-semibold text-gray-800">
                     Financial Details
                   </h2>

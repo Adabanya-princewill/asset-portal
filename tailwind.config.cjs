@@ -24,7 +24,13 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', "ui-sans-serif", "system-ui"],
+        sans: [
+          '"Plus Jakarta Sans"',
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "sans-serif",
+        ],
       },
       borderRadius: {
         xl: "12px",
